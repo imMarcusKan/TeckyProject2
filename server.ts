@@ -3,6 +3,7 @@ import { print } from "listening-on";
 import SocketIO from "socket.io";
 import http from "http";
 import { topicRouter } from "./topic";
+import { roomRouter } from "./room";
 
 const app = express();
 const server = new http.Server(app);
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(topicRouter);
+app.use(roomRouter);
 
 let counter = 0;
 io.on("connection", (socket) => {

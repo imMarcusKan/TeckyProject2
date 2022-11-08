@@ -10,5 +10,5 @@ topicRouter.post("/demo", async (req, res) => {
   await client.query(/* sql */ `insert into demo (content) values ($1)`, [
     content,
   ]);
-  res.redirect("/createRoom.html");
+  res.redirect("/homePage.html");
 });
