@@ -6,7 +6,6 @@ create table users(
     id serial primary key,
     username TEXT not null,
     password INTEGER not null,
-    nickname TEXT not null,
     email TEXT not null
 );
 create table category(
