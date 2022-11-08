@@ -1,5 +1,5 @@
 create database socket;
-create role socket with password 'socket';
+create role socket with password 'socket' superuser;
 alter role socket with login;
 -------------------------------------------
 create table users(

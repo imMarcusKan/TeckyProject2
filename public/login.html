@@ -36,16 +36,18 @@
               </div>
        
 
-              <form id="login" class="input-group">
+              <form action="/login" id="login" class="input-group">
                 <input
                   type="text"
                   class="input-field"
+                  name="user-id"
                   placeholder="User Id"
                   required
                 />
                 <input
                   type="text"
                   class="input-field"
+                  name="Password"
                   placeholder="Enter Password"
                   required
                 />
@@ -53,23 +55,33 @@
                   <span class="text">Login</span>
                 </button>
               </form>
-              <form id="register" class="input-group">
+              <form action="/register" method ="post" id="register" class="input-group">
                 <input
                   type="text"
                   class="input-field"
+                  name="user-id"
                   placeholder="User Id"
                   required
                 />
                 <input
                   type="text"
                   class="input-field"
+                  name="username"
+                  placeholder="Username"
+                  required
+                />
+                <input
+                  type="text"
+                  class="input-field"
+                  name="email"
                   placeholder="Email"
                   required
                 />
                 <input
                   type="text"
                   class="input-field remove-margin"
-                  placeholder="Enter Password"
+                  name="Password"
+                  placeholder="Enter Password (At least 8 characters)"
                   required
                 />
                 <input type="checkbox"class="check-box" /><span class="line">
