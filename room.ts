@@ -1,9 +1,16 @@
 import express from "express";
 import { client } from "./database";
+import socketIO from "socket.io";
 
-export let roomRouter = express.Router();
+let roomRouter = express.Router();
 
-roomRouter.get("/room", async (req, res) => {
-  let result = await client.query(/* sql */ `select content from demo`);
-  res.json(result.rows);
-});
+export function createRoomRouter(io: socketIO.Server) {
+  roomRouter.post("/room", async (req, res) => {
+    let result = await client.query(/* sql */ `select content from demo`);
+    // let json = JSON.stringify(result.rows);
+    console.log(result.rows);
+    io.emit("new-room", result.rows);
+    res.json({});
+  });
+  return roomRouter;
+}
