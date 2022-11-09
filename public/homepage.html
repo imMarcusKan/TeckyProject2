@@ -35,7 +35,11 @@
                   </div>
                   <div>
                     <div class="time-remain"></div>
-                    <button class="room-button">Enter</button>
+                    <a href="/chatroom.html"
+                      ><button class="room-button" onclick="checkPassword()">
+                        Enter
+                      </button></a
+                    >
                   </div>
                 </div>
               </div>
@@ -55,6 +59,7 @@
       </div>
     </div>
     <footer>EDIT PROFILE</footer>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="room.js"></script>
     <script

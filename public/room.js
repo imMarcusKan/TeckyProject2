@@ -2,9 +2,13 @@ let roomTemplate = document.querySelector(".room-template");
 let roomContainer = roomTemplate.parentElement;
 let socket = io.connect();
 let counter = document.querySelector("#counter");
-// const fns = require("date-fns");
 
 roomTemplate.remove();
+
+async function getData() {
+  const res = await fetch("/roompassword");
+  const result = await res.json();
+}
 
 function countDown(value) {
   let currentTime = new Date(Date.now());
@@ -20,8 +24,6 @@ function countDown(value) {
   }
   console.log("remaining time updated");
 }
-
-// setInterval(countDown(result), 5000);
 
 function createRoom(input) {
   let roomArr = input;
@@ -43,16 +45,12 @@ function createRoom(input) {
     node.querySelector(".room-headcount").textContent = `1/${room.headcount}`;
     node.querySelector(
       ".time-remain"
-    ).innerHTML = `<div id="time@${room.id}">room remaining time: ${minutes} minutes</div>`;
+    ).innerHTML = `<div id="time@${room.id}">time remaining: ${minutes} minutes</div>`;
     roomContainer.prepend(node);
     setTimeout(() => {
       node.remove();
     }, timeDiff);
-    //To check time, and remove node if delete time is exceeded
-    // if (deleteTime > currentTime) {
-    //   node.remove();
-    //   return;
-    // }
+
     console.log("running function createRoom");
   }
 }
@@ -78,3 +76,7 @@ socket.on("connect", () => {
   console.log("connected to socket.io server");
   callRoomRouter();
 });
+
+function checkPassword() {
+  //TODO check if users have set password for room
+}

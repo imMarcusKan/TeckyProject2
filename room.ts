@@ -17,7 +17,3 @@ export function createRoomRouter(io: socketIO.Server) {
   });
   return roomRouter;
 }
-
-// socket.on("delete", async () => {
-//   await client.query(/* sql */ `update demo set isactive = true`);
-// });

@@ -42,7 +42,7 @@ io.on("connection", function (socket) {
 
   (socket.request as any).session.save();
 
-  console.log("Hello a user has enter");
+  // console.log("Hello a user has enter");
   socket.join("room-A");
 
   socket.emit("hello_user", { data: "hello", userId: req.session["key"] });
