@@ -47,7 +47,7 @@ io.on("connection", function (socket) {
   socket.emit("hello_user", { data: "hello", userId: req.session["key"] });
 
   socket.on("user_message", (data) => {
-    // console.log(data, req.session['key'] );
+    console.log(data, req.session["key"]);
     io.to("room-A").emit("receive_data_from_server", {
       receivedData: data,
       sendUser: req.session["key"],
@@ -56,10 +56,8 @@ io.on("connection", function (socket) {
 });
 
 app.use(topicRouter);
-app.use(createRoomRouter(io));
-
 app.use(userRouter);
-
+app.use(createRoomRouter(io));
 app.use(express.static("public"));
 
 app.post("/message", (req, res) => {
@@ -75,6 +73,7 @@ app.use((req, res) => {
   res.status(404);
   res.sendFile(path.resolve("public", "404.html"));
 });
+
 const PORT = 8080;
 server.listen(PORT, () => {
   print(PORT);
