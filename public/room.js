@@ -21,7 +21,7 @@ function createRoom(input) {
     node.querySelector(".room-headcount").textContent = `1/${room.headcount}`;
     roomContainer.prepend(node);
   }
-  setTimeout(removeNode(node, input.timer));
+  // setTimeout(removeNode(node, input.timer));
 }
 
 socket.on("new-room", (value) => {
