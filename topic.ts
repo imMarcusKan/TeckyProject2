@@ -4,11 +4,10 @@ import { client } from "./database";
 export let topicRouter = express.Router();
 
 topicRouter.post("/demo", async (req, res) => {
-  //   console.log(req.body);
-
-  let { content } = req.body;
-  await client.query(/* sql */ `insert into demo (content) values ($1)`, [
-    content,
-  ]);
+  let { content, headNumber } = req.body;
+  await client.query(
+    /* sql */ `insert into demo (content,headcount) values ($1,$2)`,
+    [content, headNumber]
+  );
   res.redirect("/homePage.html");
 });

@@ -5,16 +5,25 @@ let counter = document.querySelector("#counter");
 
 roomTemplate.remove();
 
+function removeNode(input) {
+  input.remove();
+}
+
 function createRoom(input) {
   let roomArr = input;
+
   roomContainer.textContent = "";
   for (let room of roomArr) {
     let node = roomTemplate.cloneNode(true);
-    let str = `room:${room.content}`;
-    node.querySelector(".room-button").innerHTML = str;
+    node.querySelector(".room-id").textContent = room.id;
+    node.querySelector(".room-content").textContent = room.content;
+    //TOGO headcount, waiting for log-in system to link up db to present how many people accessed chat room
+    node.querySelector(".room-headcount").textContent = `1/${room.headcount}`;
     roomContainer.prepend(node);
   }
+  setTimeout(removeNode(node, input.timer));
 }
+
 socket.on("new-room", (value) => {
   createRoom(value);
 });

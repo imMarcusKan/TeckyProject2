@@ -1,5 +1,5 @@
 create database socket;
-create role socket with password 'socket';
+create role socket with password 'socket' superuser;
 alter role socket with login;
 -------------------------------------------
 create table users(
@@ -21,3 +21,10 @@ create table room (
     IsActive boolean not null,
     category_id integer not null references category(id)
 );
+alter table room
+add column password TEXT not null;
+----------------------------------
+alter table room
+alter column password drop not null;
+----------------------------------
+alter table users drop column nickname;
