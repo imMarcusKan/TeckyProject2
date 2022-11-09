@@ -6,7 +6,6 @@ export let topicRouter = express.Router();
 
 topicRouter.post("/demo", async (req, res) => {
   let { content, headNumber, addTime } = req.body;
-  console.log("addTime", addTime);
   let deleteTime = format(
     add(new Date(), { minutes: addTime }),
     "yyyy-MM-dd HH:mm:ss"
