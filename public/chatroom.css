@@ -169,25 +169,23 @@ body{
   float: right;
 }
 
-.message.info .message-body {
+.message.receiveMsg .message-body {
   background-color: #2da9e9;
   border: 1px solid #2da9e9;
   color: #fff;
 }
 
-.message.info:after, .message.info:before {
+.message.receiveMsg:after, .message.receiveMsg:before {
   border-right: 13px solid #2da9e9;
 }
 
-.message.info .message-info > h4, 
-.message.dark .message-info > h4
+.message.receiveMsg .message-info > h4
  {
   color: #fff;
 }
 
-.message.info .message-info > h5, 
-.message.info .message-info > h5 > i,
-.message.dark .message-info > h5 > i 
+.message.receiveMsg .message-info > h5, 
+.message.receiveMsg .message-info > h5 > i
 {
   color: #fff;
   opacity: 0.9;
