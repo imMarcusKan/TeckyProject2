@@ -36,16 +36,16 @@
               </div>
        
 
-              <form action="/login" id="login" class="input-group">
+              <form action="/login" method ="post" id="login" class="input-group">
                 <input
                   type="text"
                   class="input-field"
-                  name="user-id"
-                  placeholder="User Id"
+                  name="username"
+                  placeholder="Username"
                   required
                 />
                 <input
-                  type="text"
+                  type="password"
                   class="input-field"
                   name="Password"
                   placeholder="Enter Password"
@@ -56,13 +56,7 @@
                 </button>
               </form>
               <form action="/register" method ="post" id="register" class="input-group">
-                <input
-                  type="text"
-                  class="input-field"
-                  name="user-id"
-                  placeholder="User Id"
-                  required
-                />
+               
                 <input
                   type="text"
                   class="input-field"
@@ -71,22 +65,22 @@
                   required
                 />
                 <input
-                  type="text"
+                  type="email"
                   class="input-field"
                   name="email"
                   placeholder="Email"
                   required
                 />
                 <input
-                  type="text"
+                  type="password"
                   class="input-field remove-margin"
-                  name="Password"
+                  name="password"
                   placeholder="Enter Password (At least 8 characters)"
+           
                   required
                 />
-                <input type="checkbox"class="check-box" /><span class="line">
-                  The person Register must be at least 18 years old.</span
-                >
+                <input type="checkbox"class="check-box" required/><span class="line">
+                  The person Register must be at least 18 years old.</span>
                 <button type="submit" class="submit-btn">
                   <span class="text">Register</span>
                 </button>
