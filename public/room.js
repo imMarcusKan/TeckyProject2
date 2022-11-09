@@ -2,12 +2,9 @@ let roomTemplate = document.querySelector(".room-template");
 let roomContainer = roomTemplate.parentElement;
 let socket = io.connect();
 let counter = document.querySelector("#counter");
+// const fns = require("date-fns");
 
 roomTemplate.remove();
-
-function removeNode(input) {
-  input.remove();
-}
 
 function createRoom(input) {
   let roomArr = input;
@@ -22,6 +19,16 @@ function createRoom(input) {
     roomContainer.prepend(node);
   }
   // setTimeout(removeNode(node, input.timer));
+}
+
+function checkTime(input) {
+  // let currentTime = fns.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+  let currentTime = new Date();
+  if (input.deleted_at < currentTime) {
+    function removeNode(input) {
+      input.id.remove();
+    }
+  }
 }
 
 socket.on("new-room", (value) => {
