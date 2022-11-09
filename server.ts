@@ -8,6 +8,7 @@ import { userRouter } from "./userRouter";
 import path from "path";
 import expressSession from "express-session";
 import { passwordRouter } from "./roompassword";
+import { session } from "./session";
 
 const app = express();
 const server = new http.Server(app);
@@ -65,7 +66,6 @@ app.use(express.static("public"));
 app.post("/message", (req, res) => {
   console.log("creating body", req.body);
   const { message } = req.body;
-
   console.log("creating message", message);
 
   res.json({});
