@@ -64,7 +64,6 @@ app.use(express.static("public"));
 app.post("/message", (req, res) => {
   console.log("creating body", req.body);
   const { message } = req.body;
-
   console.log("creating message", message);
 
   res.json({});
