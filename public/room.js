@@ -8,6 +8,12 @@ roomTemplate.remove();
 async function getData() {
   const res = await fetch("/roompassword");
   const result = await res.json();
+  console.log(typeof result);
+}
+let result = getData();
+
+function checkPassword() {
+  //TODO check if users have set password for room
 }
 
 function countDown(value) {
@@ -31,11 +37,13 @@ function createRoom(input) {
 
   roomContainer.textContent = "";
   for (let room of roomArr) {
+    // get time to compare
     let deleteTime = new Date(room.deleted_at);
     let timeDiff = deleteTime.getTime() - currentTime.getTime();
     let time = new Date(timeDiff);
     let minutes = time.getMinutes();
-    console.log("min", minutes);
+
+    //clone room design and add info.
     let node = roomTemplate.cloneNode(true);
     node.querySelector(
       ".room-id"
@@ -47,11 +55,16 @@ function createRoom(input) {
       ".time-remain"
     ).innerHTML = `<div id="time@${room.id}">time remaining: ${minutes} minutes</div>`;
     roomContainer.prepend(node);
+    // set timeout if room has time limit
     setTimeout(() => {
       node.remove();
     }, timeDiff);
-
-    console.log("running function createRoom");
+    // set lock icon if room has password
+    if (room.password) {
+      node.querySelector(
+        ".room-design .lock"
+      ).innerHTML = `<div id="lock@${room.id}"><i class="fa-solid fa-lock"></i></div>`;
+    }
   }
 }
 
@@ -76,7 +89,3 @@ socket.on("connect", () => {
   console.log("connected to socket.io server");
   callRoomRouter();
 });
-
-function checkPassword() {
-  //TODO check if users have set password for room
-}

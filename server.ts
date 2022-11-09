@@ -7,11 +7,13 @@ import { createRoomRouter } from "./room";
 import { userRouter } from "./userRouter";
 import path from "path";
 import expressSession from "express-session";
+import { passwordRouter } from "./roompassword";
 
 const app = express();
 const server = new http.Server(app);
 const io = new SocketIO.Server(server);
 
+app.use(passwordRouter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

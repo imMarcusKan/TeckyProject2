@@ -7,7 +7,7 @@ let roomRouter = express.Router();
 export function createRoomRouter(io: socketIO.Server) {
   roomRouter.post("/room", async (req, res) => {
     let result = await client.query(
-      /* sql */ `select id, content, headcount,deleted_at from demo where deleted_at > now()`
+      /* sql */ `select * from demo where deleted_at > now()`
     );
     io.emit("new-room", result.rows);
     setInterval(function () {
