@@ -4,9 +4,9 @@ alter role socket with login;
 -------------------------------------------
 create table users(
     id serial primary key,
-    username TEXT not null,
-    password INTEGER not null,
-    email TEXT not null
+    username varchar(255) not null,
+    password varchar(255) not null,
+    email varchar(255) not null
 );
 create table category(
     id serial primary key,
