@@ -7,6 +7,7 @@ import { createRoomRouter } from "./room";
 import { userRouter } from "./userRouter";
 import path from "path";
 import expressSession from "express-session";
+import { session } from "./session";
 
 const app = express();
 const server = new http.Server(app);
