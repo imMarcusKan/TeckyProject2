@@ -58,7 +58,6 @@ socket.on("receive_data_from_server", (data) => {
 
   msgBox.innerHTML += creatMsgBox(data);
   document.querySelector(".messages-panel").scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
-
 });
 
 function creatMsgBox(data) {
@@ -68,7 +67,7 @@ function creatMsgBox(data) {
     }">
         <div class="message-body">
             <div class="message-info">
-                <h4> Hardy ${data.sendUser} </h4>
+                <h4> ${data.sendUser} </h4>
                 <h5> <i class="fa fa-clock-o"></i> 2:25 PM </h5>
             </div>
             <hr>

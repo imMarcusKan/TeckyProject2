@@ -16,10 +16,10 @@ export function createChatRoomRouter(io: socketIO.Server) {
       // console.log("Hello a user has enter");
       socket.join("room-A");
     
-      socket.emit("hello_user", { data: "hello", userId: req.session["key"] });
+      socket.emit("hello_user", { data: "hello", userId: req.session["username"] });
     
       socket.on("user_message", (data) => {
-        // console.log(data, req.session["username"]);
+        console.log(data, req.session["username"]);
         io.to("room-A").emit("receive_data_from_server", {
           receivedData: data,
           sendUser: req.session["username"],
