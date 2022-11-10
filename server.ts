@@ -6,23 +6,16 @@ import { topicRouter } from "./topic";
 import { createRoomRouter } from "./room";
 import { userRouter } from "./userRouter";
 import path from "path";
-import { passwordRouter } from "./roompassword";
+import "./session";
+// import expressSession from "express-session";
 import { sessionMiddleware } from "./session";
 
 const app = express();
 const server = new http.Server(app);
 const io = new SocketIO.Server(server);
 
-app.use(passwordRouter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// const sessionMiddleware = expressSession({
-//   secret: "Tecky Academy teaches typescript",
-//   resave: true,
-//   saveUninitialized: true,
-//   cookie: { secure: false },
-// });
 
 app.use(sessionMiddleware);
 
@@ -43,7 +36,7 @@ io.on("connection", function (socket) {
 
   (socket.request as any).session.save();
 
-  // console.log("Hello a user has enter");
+  console.log("Hello a user has enter");
   socket.join("room-A");
 
   socket.emit("hello_user", { data: "hello", userId: req.session["key"] });
@@ -65,6 +58,7 @@ app.use(express.static("public"));
 app.post("/message", (req, res) => {
   console.log("creating body", req.body);
   const { message } = req.body;
+
   console.log("creating message", message);
 
   res.json({});

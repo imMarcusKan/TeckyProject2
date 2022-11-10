@@ -2,6 +2,7 @@ import express from "express";
 import { client } from "./database";
 import { checkPassword } from "./hash";
 import { hashPassword } from "./hash";
+
 // import { Console } from "console";
 
 export const userRouter = express.Router();
@@ -42,8 +43,12 @@ userRouter.post("/login", async (req, res) => {
 
   if (match) {
     res.status(200);
-    req.session.username = username;
-    res.json({ status: true, message: `you can suck now` });
+    req.session["username"] = username;
+    return res.json({
+      status: true,
+      message: `you can suck now`,
+      redirectUrl: "/homepage.html",
+    });
   }
 
   return res.json({ status: false, message: `fail` });
@@ -71,6 +76,6 @@ userRouter.post("/register", async (req, res) => {
     [username, password_hash, email]
   );
   res.status(200);
-  req.session.username = username;
+  req.session["username"] = username;
   return res.json({ status: true, message: `success` });
 });
