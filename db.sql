@@ -41,7 +41,7 @@ create table demo (
     content TEXT,
     headcount INTEGER,
     password varchar(255),
-    created_at timestamp not null,
-    deleted_at timestamp not null,
+    created_at timestamp,
+    deleted_at timestamp,
     isactive boolean 
 );

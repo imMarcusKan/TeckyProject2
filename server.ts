@@ -30,27 +30,6 @@ app.get("/", (req, res) => {
   res.sendFile(path.resolve("public", "login.html"));
 });
 
-// const genId = () => Math.floor(Math.random() * 10000000);
-// io.on("connection", function (socket) {
-//   const req = socket.request as express.Request;
-//   req.session["key"] = genId();
-
-//   (socket.request as any).session.save();
-
-//   // console.log("Hello a user has enter");
-//   socket.join("room-A");
-
-//   socket.emit("hello_user", { data: "hello", userId: req.session["key"] });
-
-//   socket.on("user_message", (data) => {
-//     console.log(data, req.session["key"]);
-//     io.to("room-A").emit("receive_data_from_server", {
-//       receivedData: data,
-//       sendUser: req.session["key"],
-//     });
-//   });
-// });
-
 app.use(topicRouter);
 app.use(userRouter);
 
