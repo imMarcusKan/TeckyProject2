@@ -37,3 +37,9 @@ body {
   justify-content: space-between;
   background-color: chocolate;
 }
+.fa-lock {
+  font-size: 1.5rem;
+}
+.hideitem {
+  opacity: 0;
+}

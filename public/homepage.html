@@ -11,6 +11,13 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="homepage.css" />
   </head>
   <body>
@@ -24,14 +31,25 @@
             <div>choose category</div>
             <div>--------------------</div>
             <div class="room-container row">
+              <div>No room exist yet...</div>
               <div class="room-template col-6 mt-3">
                 <div class="room-design">
-                  <div class="room-id"></div>
+                  <div class="d-flex justify-content-between">
+                    <div class="room-id"></div>
+                    <div class="lock"></div>
+                  </div>
                   <div class="room-header">
                     <div class="room-content"></div>
                     <div class="room-headcount"></div>
                   </div>
-                  <button class="room-button">Enter</button>
+                  <div>
+                    <div class="time-remain"></div>
+                    <a href="/chatroom.html"
+                      ><button id="room-button" onclick="checkPassword()">
+                        Enter
+                      </button></a
+                    >
+                  </div>
                 </div>
               </div>
             </div>
@@ -50,6 +68,7 @@
       </div>
     </div>
     <footer>EDIT PROFILE</footer>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="room.js"></script>
     <script

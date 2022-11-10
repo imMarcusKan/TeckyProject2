@@ -2,37 +2,77 @@ let roomTemplate = document.querySelector(".room-template");
 let roomContainer = roomTemplate.parentElement;
 let socket = io.connect();
 let counter = document.querySelector("#counter");
-// const fns = require("date-fns");
 
 roomTemplate.remove();
 
+async function getData() {
+  const res = await fetch("/roompassword");
+  const result = await res.json();
+  console.log(typeof result);
+}
+let result = getData();
+
+function checkPassword() {
+  //TODO check if users have set password for room
+}
+
+function countDown(value) {
+  let currentTime = new Date(Date.now());
+  for (let x of value) {
+    let deleteTime = new Date(x.deleted_at);
+    let timeDiff = deleteTime.getTime() - currentTime.getTime();
+    let time = new Date(timeDiff);
+    let minutes = time.getMinutes();
+    //break
+    let target = (document.getElementById(
+      "time@" + x.id
+    ).textContent = `time remaining: ${minutes} minutes`);
+  }
+  console.log("remaining time updated");
+}
+
 function createRoom(input) {
   let roomArr = input;
+  let currentTime = new Date(Date.now());
 
   roomContainer.textContent = "";
   for (let room of roomArr) {
+    // get time to compare
+    let deleteTime = new Date(room.deleted_at);
+    let timeDiff = deleteTime.getTime() - currentTime.getTime();
+    let time = new Date(timeDiff);
+    let minutes = time.getMinutes();
+
+    //clone room design and add info.
     let node = roomTemplate.cloneNode(true);
-    node.querySelector(".room-id").textContent = room.id;
+    node.querySelector(
+      ".room-id"
+    ).innerHTML = `<div id="id${room.id}">ROOM: ${room.id}</div>`;
     node.querySelector(".room-content").textContent = room.content;
     //TOGO headcount, waiting for log-in system to link up db to present how many people accessed chat room
     node.querySelector(".room-headcount").textContent = `1/${room.headcount}`;
+    node.querySelector(
+      ".time-remain"
+    ).innerHTML = `<div id="time@${room.id}">time remaining: ${minutes} minutes</div>`;
     roomContainer.prepend(node);
-  }
-  // setTimeout(removeNode(node, input.timer));
-}
-
-function checkTime(input) {
-  // let currentTime = fns.format(new Date(), "yyyy-MM-dd HH:mm:ss");
-  let currentTime = new Date();
-  if (input.deleted_at < currentTime) {
-    function removeNode(input) {
-      input.id.remove();
+    // set timeout if room has time limit
+    setTimeout(() => {
+      node.remove();
+    }, timeDiff);
+    // set lock icon if room has password
+    if (room.password) {
+      node.querySelector(
+        ".room-design .lock"
+      ).innerHTML = `<div id="lock@${room.id}"><i class="fa-solid fa-lock"></i></div>`;
     }
   }
 }
 
 socket.on("new-room", (value) => {
   createRoom(value);
+});
+socket.on("interval", (value) => {
+  countDown(value);
 });
 
 async function callRoomRouter() {

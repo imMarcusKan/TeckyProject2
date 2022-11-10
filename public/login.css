@@ -100,14 +100,14 @@ body {
 }
 
 .check-box {
-  margin: 10px 10px 10px 10px;
+  margin: 20px 10px 10px 10px;
   display: inline-block;
 }
 
 .line {
   color: #777;
   font-size: 12px;
-  bottom: 68px;
+  bottom: 48px;
 }
 
 #login {
@@ -116,4 +116,11 @@ body {
 
 #register {
   left: 450px;
+}
+
+#text {
+  color: #777;
+  font-size: 15px;
+  margin-left: 10em;
+  margin-top: -1.5em;
 }
