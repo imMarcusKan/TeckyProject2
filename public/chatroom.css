@@ -63,13 +63,13 @@ body{
   position: absolute;
   top: 11px;
   left: 38px;
+  right: auto;
   float: left;
   z-index: 100;
   border-top: 10px solid transparent;
   border-left: none;
   border-bottom: 10px solid transparent;
-  /* border-right: 13px solid #fff; */
-  border-right: 13px solid green;
+  border-right: 13px solid #2da9e9;
 }
 
 .message:before {
@@ -77,13 +77,13 @@ body{
   position: absolute;
   top: 10px;
   left: 37px;
+  right: auto;
   float: left;
   z-index: 99;
   border-top: 11px solid transparent;
   border-left: none;
   border-bottom: 11px solid transparent;
-  /* border-right: 13px solid #dbe3e8; */
-  border-right: 13px solid red;
+  border-right: 13px solid #0b222d;
 }
 
 
@@ -174,12 +174,8 @@ body{
 
 .message.receiveMsg .message-body {
   background-color: #2da9e9;
-  border: 1px solid #2da9e9;
+  border: 1px solid #0b222d;
   color: #fff;
-}
-
-.message.receiveMsg:after, .message.receiveMsg:before {
-  border-right: 13px solid #2da9e9;
 }
 
 .message.receiveMsg .message-info > h4

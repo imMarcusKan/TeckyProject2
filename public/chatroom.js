@@ -1,20 +1,20 @@
 const socket = io.connect(); // You can pass in an optional parameter like "http://localhost:8080"
 
-let msg = [
-  {
-    user_id: 1,
-    nickname: "Hardy",
-    content: "Let's go shopping!",
-    time: "2:25PM",
-  },
-  {
-    user_id: 2,
-    nickname: "Marcus",
-    content: "Where shall we go?",
-    time: "2:28PM",
-  },
-  { user_id: 3, nickname: "Dennis", content: "MegaBox", time: "2:32PM" },
-];
+// let msg = [
+//   {
+//     user_id: 1,
+//     nickname: "Hardy",
+//     content: "Let's go shopping!",
+//     time: "2:25PM",
+//   },
+//   {
+//     user_id: 2,
+//     nickname: "Marcus",
+//     content: "Where shall we go?",
+//     time: "2:28PM",
+//   },
+//   { user_id: 3, nickname: "Dennis", content: "MegaBox", time: "2:32PM" },
+// ];
 const msgBox = document.querySelector(".message-chat");
 
 let receivedMsg = document.querySelector("#message receiveMsg");
@@ -46,7 +46,7 @@ submitBtn.addEventListener("click", () => {
 
 socket.on("hello_user", (data) => {
   // data has the content { msg: "Hello Client" }
-  // console.log(data)
+  console.log(data)
   current_user_id = data.userId;
 });
 
@@ -55,9 +55,19 @@ socket.on("receive_data_from_server", (data) => {
   // console.log(data)
   // console.log(data.sendUser);
   // console.log(current_user_id);
+  // msgBox.innerHTML += showToast();
+  // $('.toast').toast('show');
+  // showToast();
+  
 
   msgBox.innerHTML += creatMsgBox(data);
   document.querySelector(".messages-panel").scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
+});
+
+socket.on("user_joined", (data) => {
+  // data has the content { msg: "Hello Client" }
+  console.log("jointed la:",data.userId)
+  showToast(data.userId);
 });
 
 function creatMsgBox(data) {
@@ -78,4 +88,12 @@ function creatMsgBox(data) {
         <br>
     </div>
     `;
+}
+
+function showToast(username){
+  // (library) https://github.com/apvarun/toastify-js
+  Toastify({
+    text: `${username} has enter the room`,
+    duration: 3000
+  }).showToast();
 }
