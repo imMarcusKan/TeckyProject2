@@ -2,7 +2,7 @@ import express from "express";
 import { print } from "listening-on";
 import SocketIO from "socket.io";
 import http from "http";
-import { topicRouter } from "./topic";
+import { roomsubmitRouter } from "./roomsubmit";
 import { createRoomRouter } from "./room";
 import { userRouter } from "./userRouter";
 import path from "path";
@@ -50,7 +50,7 @@ io.on("connection", function (socket) {
   });
 });
 
-app.use(topicRouter);
+app.use(roomsubmitRouter);
 app.use(userRouter);
 app.use(createRoomRouter(io));
 app.use(express.static("public"));

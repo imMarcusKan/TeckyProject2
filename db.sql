@@ -34,5 +34,14 @@ alter table room
 alter column password drop not null;
 ----------------------------------
 alter table users drop column nickname;
-Table "public.demo" Column | Type | Collation | Nullable | Default ------------+-----------------------------+-----------+----------+----------------------------------
-id | integer | | not null | nextval('demo_id_seq'::regclass) content | text | | not null | headcount | integer | | | password | character varying(255) | | | created_at | timestamp without time zone | | | CURRENT_TIMESTAMP deleted_at | timestamp without time zone | | | isactive | boolean
+----------------------------------
+create table demo (
+    id serial primary key,
+    content text not null,
+    headcount integer,
+    password varchar(255),
+    created_at timestamp default current_time,
+    deleted_at timestamp,
+    isactive boolean,
+    haspassword boolean
+);

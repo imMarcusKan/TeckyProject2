@@ -10,10 +10,16 @@ export function createRoomRouter(io: socketIO.Server) {
       /* sql */ `select * from demo where deleted_at > now()`
     );
     io.emit("new-room", result.rows);
-    // setInterval(function () {
-    // io.emit("interval", result.rows);
-    // }, 30000);
+
     res.json({});
   });
+
+  roomRouter.get("/rooms", async (req, res) => {
+    let result = await client.query(
+      /* sql */ `select id, haspassword from demo where password is not null and deleted_at > now()`
+    );
+    res.json(result.rows);
+  });
+
   return roomRouter;
 }

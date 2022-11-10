@@ -45,7 +45,7 @@
                 <div class="room-design">
                   <div class="d-flex justify-content-between">
                     <div class="room-id"></div>
-                    <div class="lock"></div>
+                    <div class="lock"><i class="fa-solid fa-lock"></i></div>
                   </div>
                   <div class="room-header">
                     <div class="room-content"></div>
@@ -54,9 +54,10 @@
                   <div>
                     <div class="time-remain"></div>
                     <!-- <a href="/chatroom.html"> -->
-                    <button class="room-button" onclick="checkPassword()">
-                      Enter
-                    </button>
+                    <div class="room-button">
+                      <button>Enter</button>
+                    </div>
+
                     <!-- </a> -->
                   </div>
                 </div>
@@ -76,22 +77,11 @@
         </div>
       </div>
     </div>
-    <button class="trigger">Click here to trigger the modal!</button>
-    <div class="modal">
-      <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h1>Hello, I am a modal!</h1>
-      </div>
-    </div>
-
-    <div class="modal show-modal">model2</div>
-
     <footer>EDIT PROFILE</footer>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="modal.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="room.js"></script>
-    <script src="homepage.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
