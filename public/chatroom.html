@@ -16,15 +16,12 @@
     
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
-    <div class="panel messages-panel">
+    <div class="panel messages-panel" >
 
-        <div class="tab-content">
-            <div class="tab-pane message-body active" id="inbox-message-1">
-                
-                <div class="message-chat">
+        <!-- <div class="tab-content"> -->
+            <!-- <div class="tab-pane message-body active" id="inbox-message-1"> -->
 
-                    <div class="chat-body">
-
+                <div class="message-chat" >
                         <div class="message receiveMsg">
                             <div class="message-body">
                                 <div class="message-info">
@@ -68,21 +65,19 @@
                             </div>
                             <br>
                         </div>
-                    </div>
-
                 </div>
 
-                <form method="post" action="/message" class="chat-footer">
-                    <textarea class="send-message-text"></textarea>
-                    <label class="upload-file">
-                        <input type="file" required="">
-                        <i class="fa fa-paperclip"></i>
-                    </label>
-                    <button type="button" class="send-message-button btn-info"> <i class="fa fa-send"></i> </button>
-                </form>
-            </div>
-        </div>
+            <!-- </div> -->
+        <!-- </div> -->
     </div>
+    <form method="post" action="/message" class="chat-footer">
+        <textarea class="send-message-text"></textarea>
+        <label class="upload-file">
+            <input type="file" required="">
+            <i class="fa fa-paperclip"></i>
+        </label>
+        <button type="button" class="send-message-button btn-info"> <i class="fa fa-send"></i> </button>
+    </form>
 </div>
 <script
 src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"

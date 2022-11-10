@@ -21,7 +21,7 @@ let sentMsg = document.querySelector('#message my-message')
 
 let user_id = document.querySelector('#user_id')
 
-console.log(user_id);
+// console.log(user_id);
 
 // send message to the server
 let submitBtn = document.querySelector('.send-message-button')
@@ -31,7 +31,7 @@ let current_user_id;
 
 
 submitBtn.addEventListener('click', () => {
-    console.log(message.value);
+    // console.log(message.value);
     // fetch('/message', {
     //     method:'POST',
     //     headers: {
@@ -42,22 +42,27 @@ submitBtn.addEventListener('click', () => {
     // })
 
     socket.emit("user_message", { data: message.value })
+    // console.log("scrollHeight:",document.querySelector(".messages-panel").scrollHeight);
+    
+
+
 })
 
 socket.on("hello_user", (data) => {
     // data has the content { msg: "Hello Client" }
-    console.log(data)
+    // console.log(data)
     current_user_id = data.userId;
 })
 
 socket.on("receive_data_from_server", (data) => {
     // data has the content { msg: "Hello Client" }
-    console.log(data)
-    console.log(data.sendUser);
-    console.log(current_user_id);
+    // console.log(data)
+    // console.log(data.sendUser);
+    // console.log(current_user_id);
 
 
     msgBox.innerHTML += creatMsgBox(data)
+    document.querySelector(".messages-panel").scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
 })
 
 function creatMsgBox(data){
