@@ -2,20 +2,16 @@ import express from "express";
 import { client } from "./database";
 import { checkPassword } from "./hash";
 import { hashPassword } from "./hash";
-
-// import { Console } from "console";
+import "./session";
 
 export const userRouter = express.Router();
 
-userRouter.get("/session", (req, res) => {
+userRouter.get("/current-user", (req, res) => {
   let user = req.session.username;
-  if (!user) {
-    res.json({ user: "Not Found" });
-    return;
-  }
-  // console.log(req.session.username);
+  console.log("get session:", req.session.username);
   res.json({ user });
 });
+
 userRouter.post("/login", async (req, res) => {
   let { username, password } = req.body;
   console.log(req.body);
@@ -52,10 +48,10 @@ userRouter.post("/login", async (req, res) => {
 
   if (match) {
     res.status(200);
-    req.session["username"] = username;
+    req.session.username = username;
     return res.json({
       status: true,
-      message: `you can suck now`,
+      message: `match`,
       redirectUrl: "/homepage.html",
       username: "username",
     });
@@ -86,6 +82,6 @@ userRouter.post("/register", async (req, res) => {
     [username, password_hash, email]
   );
   res.status(200);
-  req.session["username"] = username;
+  req.session.username = username;
   return res.json({ status: true, message: `success` });
 });
