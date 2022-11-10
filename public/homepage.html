@@ -23,7 +23,13 @@
   <body>
     <div class="container">
       <header>
-        <img src="hub.JPG" alt="Loading image" class="chathub" />
+        <div class="d-flex justify-content-between">
+          <img src="hub.JPG" alt="Loading image" class="chathub" />
+          <div>
+            <div>Hello Username</div>
+            <div><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+          </div>
+        </div>
       </header>
       <div>
         <div class="row">
@@ -63,6 +69,13 @@
             <div><button>3. Search</button></div>
             <div><button>4. public chat room</button></div>
             <div></div>
+            <button class="trigger">Click here to trigger the modal!</button>
+            <div class="modal">
+              <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h1>Hello, I am a modal!</h1>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -70,6 +83,7 @@
     <footer>EDIT PROFILE</footer>
 
     <script src="/socket.io/socket.io.js"></script>
+    <script src="modal.js"></script>
     <script src="room.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"

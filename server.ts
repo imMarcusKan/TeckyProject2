@@ -6,9 +6,8 @@ import { topicRouter } from "./topic";
 import { createRoomRouter } from "./room";
 import { userRouter } from "./userRouter";
 import path from "path";
-import expressSession from "express-session";
 import { passwordRouter } from "./roompassword";
-import { session } from "./session";
+import { sessionMiddleware } from "./session";
 
 const app = express();
 const server = new http.Server(app);
@@ -18,12 +17,12 @@ app.use(passwordRouter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const sessionMiddleware = expressSession({
-  secret: "Tecky Academy teaches typescript",
-  resave: true,
-  saveUninitialized: true,
-  cookie: { secure: false },
-});
+// const sessionMiddleware = expressSession({
+//   secret: "Tecky Academy teaches typescript",
+//   resave: true,
+//   saveUninitialized: true,
+//   cookie: { secure: false },
+// });
 
 app.use(sessionMiddleware);
 
