@@ -86,6 +86,8 @@ document
     alert(result.message)
   }else{
     alert(result.message)
+    window.location="/homepage.html"
+    console.log(req.session)
   }
 
   })
