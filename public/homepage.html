@@ -20,6 +20,7 @@
     />
     <link rel="stylesheet" href="homepage.css" />
   </head>
+
   <body>
     <div class="container">
       <header>
@@ -52,11 +53,11 @@
                   </div>
                   <div>
                     <div class="time-remain"></div>
-                    <a href="/chatroom.html"
-                      ><button id="room-button" onclick="checkPassword()">
-                        Enter
-                      </button></a
-                    >
+                    <!-- <a href="/chatroom.html"> -->
+                    <button class="room-button" onclick="checkPassword()">
+                      Enter
+                    </button>
+                    <!-- </a> -->
                   </div>
                 </div>
               </div>
@@ -71,17 +72,20 @@
             <div><button>3. Search</button></div>
             <div><button>4. public chat room</button></div>
             <div></div>
-            <button class="trigger">Click here to trigger the modal!</button>
-            <div class="modal">
-              <div class="modal-content">
-                <span class="close-button">&times;</span>
-                <h1>Hello, I am a modal!</h1>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
+    <button class="trigger">Click here to trigger the modal!</button>
+    <div class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h1>Hello, I am a modal!</h1>
+      </div>
+    </div>
+
+    <div class="modal show-modal">model2</div>
+
     <footer>EDIT PROFILE</footer>
 
     <script src="/socket.io/socket.io.js"></script>

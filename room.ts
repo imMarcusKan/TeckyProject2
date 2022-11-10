@@ -10,9 +10,9 @@ export function createRoomRouter(io: socketIO.Server) {
       /* sql */ `select * from demo where deleted_at > now()`
     );
     io.emit("new-room", result.rows);
-    setInterval(function () {
-      io.emit("interval", result.rows);
-    }, 30000);
+    // setInterval(function () {
+    // io.emit("interval", result.rows);
+    // }, 30000);
     res.json({});
   });
   return roomRouter;

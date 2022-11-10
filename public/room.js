@@ -5,16 +5,23 @@ let counter = document.querySelector("#counter");
 
 roomTemplate.remove();
 
-async function getData() {
+async function checkPassword() {
+  //TODO check if users have set password for room
   const res = await fetch("/roompassword");
   const result = await res.json();
-  console.log(typeof result);
-}
-let result = getData();
 
-function checkPassword() {
-  //TODO check if users have set password for room
+  for (let a of result) {
+    console.log("a:", a);
+    console.log("a.password:", a.password);
+    if (a.password) {
+      let ab = document.getElementById("id" + a.id);
+      let room = ab.parentElement;
+      room.querySelector(".room-button").classList.add("hide");
+    }
+    console.log("update room button");
+  }
 }
+// checkPassword();
 
 function countDown(value) {
   let currentTime = new Date(Date.now());

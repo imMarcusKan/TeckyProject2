@@ -40,7 +40,8 @@ body {
 .fa-lock {
   font-size: 1.5rem;
 }
-/* TO USE MODAL */
+
+/* Below for modal  */
 .modal {
   position: fixed;
   left: 0;
