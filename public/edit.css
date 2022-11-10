@@ -15,23 +15,17 @@
   pointer-events: auto;
   opacity: 1;
 }
-.modal {
+.modalInner {
   background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0, 2px, 4px, rgba(86, 83, 83, 0.2);
+
   padding: 30px 50px;
-  width: 600px;
-  max-width: 100%;
-  text-align: center;
-  font-size: 14px;
+  border: 1px solid #888;
+  width: 80%;
 }
 
-.modal {
-  margin: 0;
-}
 .close {
-  background-color: #777;
-  border: 0;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }

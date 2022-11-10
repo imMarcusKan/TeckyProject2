@@ -6,6 +6,6 @@ editBtn.addEventListener("click", () => {
   modalContainer.classList.add("show");
 });
 
-close.addEventListener("click", () => {
-  modalContainer.classList.remove("show");
-});
+// close.addEventListener("click", () => {
+//   modal.classList.remove("show");
+// });
