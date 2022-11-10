@@ -7,6 +7,15 @@ import { hashPassword } from "./hash";
 
 export const userRouter = express.Router();
 
+userRouter.get("/session", (req, res) => {
+  let user = req.session.username;
+  if (!user) {
+    res.json({ user: "Not Found" });
+    return;
+  }
+  // console.log(req.session.username);
+  res.json({ user });
+});
 userRouter.post("/login", async (req, res) => {
   let { username, password } = req.body;
   console.log(req.body);
@@ -48,6 +57,7 @@ userRouter.post("/login", async (req, res) => {
       status: true,
       message: `you can suck now`,
       redirectUrl: "/homepage.html",
+      username: "username",
     });
   }
 
