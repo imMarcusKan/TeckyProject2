@@ -39,6 +39,42 @@ submitBtn.addEventListener("click", () => {
   //     },
   //     body: JSON.stringify({message: message.value})
 
+<<<<<<< HEAD
+submitBtn.addEventListener('click', () => {
+    // console.log(message.value);
+    // fetch('/message', {
+    //     method:'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({message: message.value})
+
+    // })
+
+    socket.emit("user_message", { data: message.value })
+    // console.log("scrollHeight:",document.querySelector(".messages-panel").scrollHeight);
+    
+
+
+})
+
+socket.on("hello_user", (data) => {
+    // data has the content { msg: "Hello Client" }
+    // console.log(data)
+    current_user_id = data.userId;
+})
+
+socket.on("receive_data_from_server", (data) => {
+    // data has the content { msg: "Hello Client" }
+    // console.log(data)
+    // console.log(data.sendUser);
+    // console.log(current_user_id);
+
+
+    msgBox.innerHTML += creatMsgBox(data)
+    document.querySelector(".messages-panel").scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
+})
+=======
   // })
 
   socket.emit("user_message", { data: message.value });
@@ -58,6 +94,7 @@ socket.on("receive_data_from_server", (data) => {
 
   msgBox.innerHTML += creatMsgBox(data);
 });
+>>>>>>> 6bb82b33b7f9ae8b1dc8811d0bcb88668aec40f5
 
 function creatMsgBox(data) {
   return `
