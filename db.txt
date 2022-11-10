@@ -1,0 +1,10 @@
+                                        Table "public.demo"
+   Column   |            Type             | Collation | Nullable |             Default              
+------------+-----------------------------+-----------+----------+----------------------------------
+ id         | integer                     |           | not null | nextval('demo_id_seq'::regclass)
+ content    | text                        |           | not null | 
+ headcount  | integer                     |           |          | 
+ password   | character varying(255)      |           |          | 
+ created_at | timestamp without time zone |           |          | CURRENT_TIMESTAMP
+ deleted_at | timestamp without time zone |           |          | 
+ isactive   | boolean 
