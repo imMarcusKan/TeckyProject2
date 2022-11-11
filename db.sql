@@ -45,3 +45,8 @@ create table demo (
     isactive boolean,
     haspassword boolean
 );
+create table room_participant (
+    id serial primary key,
+    users_id integer not null references users(id),
+    room_id integer not null references room(id)
+);
