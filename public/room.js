@@ -37,6 +37,13 @@ window.onload = async () => {
   userID = (await getID()).id;
 };
 
+async function checkRoomStatus() {
+  const res = await fetch("/room_status");
+  const result = await res.json();
+  let roomHeadCount = result.roomstatus;
+  return roomHeadCount;
+}
+
 async function checkRoomStatus(userID, roomID) {
   const formObject = {};
 
@@ -57,9 +64,14 @@ async function checkPassword(roomID) {
   const res = await fetch("/rooms");
   const result = await res.json();
   console.log(result);
+  // let roomHeadCount = await checkRoomStatus();
+  // console.log(roomHeadCount);
 
   for (let i = 0; i < result.length; i++) {
     if (result[i].id == roomID) {
+      // if (roomHeadCount >= result[i].headcount) {
+      //   return "room is fulled";
+      // }
       if (result[i].haspassword == true) {
         const { value: password } = await Swal.fire({
           title: "Enter your password",

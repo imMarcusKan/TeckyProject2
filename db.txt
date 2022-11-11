@@ -8,3 +8,5 @@
  created_at | timestamp without time zone |           |          | CURRENT_TIMESTAMP
  deleted_at | timestamp without time zone |           |          | 
  isactive   | boolean 
+
+ select room_id, count(room_id)as count from room_participant group by room_id;
