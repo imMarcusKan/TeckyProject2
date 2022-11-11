@@ -85,3 +85,13 @@ userRouter.post("/register", async (req, res) => {
   req.session.username = username;
   return res.json({ status: true, message: `success` });
 });
+
+userRouter.get("/userID", async (req, res) => {
+  let username = req.session.username;
+  let data = await client.query(
+    /* sql */ `select id from users where username = $1`,
+    [username]
+  );
+  const id = data.rows.length === 1 ? data.rows[0].id : "";
+  res.json({ id: id });
+});

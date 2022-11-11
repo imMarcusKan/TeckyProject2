@@ -50,3 +50,13 @@ create table room_participant (
     users_id integer not null references users(id),
     room_id integer not null references room(id)
 );
+alter table room drop column isactive;
+alter table room drop column timer;
+alter table room
+add column created_at timestamp default now();
+alter table room
+add column deleted_at timestamp;
+alter table room
+add column haspassword boolean;
+alter table room
+    rename column head_limit to headcount;

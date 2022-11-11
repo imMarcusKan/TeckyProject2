@@ -15,17 +15,27 @@ roomsubmitRouter.post("/demo", async (req, res) => {
     checkPW = false;
   }
   await client.query(
-    /* sql */ `insert into demo (content,headcount,deleted_at,password, haspassword) values ($1,$2,$3,$4,$5)`,
+    /* sql */ `insert into room (topic,headcount,deleted_at,password, haspassword) values ($1,$2,$3,$4,$5)`,
     [content, headNumber, deleteTime, password, checkPW]
   );
   res.redirect("/homePage.html");
 });
 
 roomsubmitRouter.post("/password", async (req, res) => {
-  let { id, password } = req.body;
+  let { roomID, password } = req.body;
   let data = await client.query(
-    /* sql */ `select (id) from demo where id = $1 and password = $2 and deleted_at > now()`,
-    [id, password]
+    /* sql */ `select (id) from room where id = $1 and password = $2 and deleted_at > now()`,
+    [roomID, password]
   );
+
   res.json(data.rows);
+});
+
+roomsubmitRouter.post("/user_room_ID", async (req, res) => {
+  let { userID, roomID } = req.body;
+  await client.query(
+    /* sql */ `insert into room_participant (users_id, room_id) values ($1,$2)`,
+    [userID, roomID]
+  );
+  res.json({});
 });

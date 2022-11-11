@@ -9,13 +9,13 @@
   <body>
     <form action="/demo" method="post">
       <label for="topic">Topic</label>
-      <input type="text" name="content" id="topic" />
+      <input type="text" name="content" id="topic" required />
       <label for="password">Password(optional)</label>
       <input type="text" name="password" id="password" />
       <!-- <label for="checkbox">Is Active?</label>
       <input type="checkbox" id="checkbox" name="active" value="true" /> -->
       <div class="head-count">
-        <select name="headNumber">
+        <select name="headNumber" required>
           <option value="0">Room size</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -24,7 +24,7 @@
         </select>
       </div>
       <div class="timer">
-        <select name="addTime">
+        <select name="addTime" required>
           <option value="0">Time (minutes)</option>
           <option value="5">5</option>
           <option value="10">10</option>

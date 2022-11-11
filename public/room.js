@@ -8,7 +8,7 @@ roomTemplate.remove();
 async function checkPw(id, pw) {
   const formObject = {};
 
-  formObject["id"] = id;
+  formObject["roomID"] = id;
   formObject["password"] = pw;
 
   const res = await fetch("/password", {
@@ -19,9 +19,37 @@ async function checkPw(id, pw) {
     body: JSON.stringify(formObject),
   });
   const result = await res.json();
-  console.log("fetched result:", result);
-  console.log("result length", result.length);
+
   return result;
+}
+
+async function getID() {
+  const res = await fetch("/userID");
+  const data = await res.json();
+  let userID = data.id;
+  console.log(data.id);
+  return userID;
+}
+
+let userID;
+
+window.onload = async () => {
+  userID = (await getID()).id;
+};
+
+async function checkRoomStatus(userID, roomID) {
+  const formObject = {};
+
+  formObject["userID"] = userID;
+  formObject["roomID"] = roomID;
+
+  const res = await fetch("/user_room_ID", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formObject),
+  });
 }
 
 async function checkPassword(roomID) {
@@ -50,11 +78,13 @@ async function checkPassword(roomID) {
               return "wrong password";
             } else {
               window.location = "/chatroom.html";
+              checkRoomStatus(userID, roomID);
             }
           },
         });
       } else {
         window.location = "/chatroom.html";
+        checkRoomStatus(userID, roomID);
       }
     }
   }
@@ -70,7 +100,7 @@ function createRoom(input) {
 
     if ("dev") {
       node.querySelector(".room-id").textContent = `ROOM: ${room.id}`;
-      node.querySelector(".room-content").textContent = room.content;
+      node.querySelector(".room-content").textContent = room.topic;
       node.querySelector(".room-headcount").textContent = `1/${room.headcount}`;
       node.querySelector(".room-button button").onclick = () =>
         checkPassword(room.id);
