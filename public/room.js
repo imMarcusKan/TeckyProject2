@@ -31,27 +31,31 @@ async function checkPassword(roomID) {
   console.log(result);
 
   for (let i = 0; i < result.length; i++) {
-    if (result[i].id == roomID && result[i].haspassword == true) {
-      const { value: password } = await Swal.fire({
-        title: "Enter your password",
-        name: "password",
-        input: "text",
-        inputLabel: "Password",
-        inputPlaceholder: "Enter your password",
-        inputAttributes: {
-          maxlength: 10,
-          autocapitalize: "off",
-          autocorrect: "off",
-        },
-        inputValidator: async (password) => {
-          let result = await checkPw(roomID, password);
-          if (result.length == 0) {
-            return "wrong password";
-          } else {
-            window.location = "/chatroom.html";
-          }
-        },
-      });
+    if (result[i].id == roomID) {
+      if (result[i].haspassword == true) {
+        const { value: password } = await Swal.fire({
+          title: "Enter your password",
+          name: "password",
+          input: "text",
+          inputLabel: "Password",
+          inputPlaceholder: "Enter your password",
+          inputAttributes: {
+            maxlength: 10,
+            autocapitalize: "off",
+            autocorrect: "off",
+          },
+          inputValidator: async (password) => {
+            let result = await checkPw(roomID, password);
+            if (result.length == 0) {
+              return "wrong password";
+            } else {
+              window.location = "/chatroom.html";
+            }
+          },
+        });
+      } else {
+        window.location = "/chatroom.html";
+      }
     }
   }
 }
@@ -113,20 +117,6 @@ async function callRoomRouter() {
     body: JSON.stringify({}),
   });
 }
-// function countDown(value) {
-//   let currentTime = new Date(Date.now());
-//   for (let x of value) {
-//     let deleteTime = new Date(x.deleted_at);
-//     let timeDiff = deleteTime.getTime() - currentTime.getTime();
-//     let time = new Date(timeDiff);
-//     let minutes = time.getMinutes();
-//     //break
-//     let target = (document.getElementById(
-//       "time" + x.id
-//     ).textContent = `time remaining: ${minutes} minutes`);
-//   }
-//   console.log("remaining time updated");
-// }
 
 socket.on("connect", () => {
   console.log("connected to socket.io server");
