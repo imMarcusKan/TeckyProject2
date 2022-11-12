@@ -43,7 +43,7 @@ create table demo (
     headcount integer,
     password varchar(255),
     created_at timestamp default current_time,
-    deleted_at timestamp,
+    -- deleted_at timestamp,
     isactive boolean,
     haspassword boolean
 );

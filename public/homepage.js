@@ -9,11 +9,6 @@ async function getName() {
 
 getName();
 
-async function getID() {
-  let res = await fetch("/userID");
-  let result = await res.json();
-  return result;
-}
 
 function logout() {
   document.location.href = "/login.html";

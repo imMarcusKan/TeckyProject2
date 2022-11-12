@@ -34,14 +34,14 @@ async function getID() {
 let userID;
 
 window.onload = async () => {
-  userID = (await getID()).id;
+  userID = await getID();
+  console.log(userID);
 };
 
-async function checkRoomStatus() {
+async function getRoomStatus() {
   const res = await fetch("/room_status");
   const result = await res.json();
-  let roomHeadCount = result.roomstatus;
-  return roomHeadCount;
+  return result;
 }
 
 async function checkRoomStatus(userID, roomID) {
@@ -64,14 +64,21 @@ async function checkPassword(roomID) {
   const res = await fetch("/rooms");
   const result = await res.json();
   console.log(result);
-  // let roomHeadCount = await checkRoomStatus();
-  // console.log(roomHeadCount);
+  let data = await getRoomStatus();
+  console.log("roomHeadCount:", data);
 
   for (let i = 0; i < result.length; i++) {
     if (result[i].id == roomID) {
-      // if (roomHeadCount >= result[i].headcount) {
-      //   return "room is fulled";
-      // }
+      for (let v of data) {
+        if (v.room_id == roomID) {
+          console.log(result[i].id, v.room_id, roomID);
+          if (v.roomstatus >= result[i].headcount) {
+            console.log("data roomstatus", data[i].roomstatus);
+            Swal.fire("The room is fulled");
+            return;
+          }
+        }
+      }
       if (result[i].haspassword == true) {
         const { value: password } = await Swal.fire({
           title: "Enter your password",
@@ -89,33 +96,36 @@ async function checkPassword(roomID) {
             if (result.length == 0) {
               return "wrong password";
             } else {
-              window.location = "/chatroom.html";
+              location.href = `/chatroom.html?roomID${roomID}`;
               checkRoomStatus(userID, roomID);
             }
           },
         });
       } else {
-        window.location = "/chatroom.html";
+        location.href = `/chatroom.html?id${roomID}`;
         checkRoomStatus(userID, roomID);
       }
     }
   }
 }
 
-function createRoom(input) {
+async function createRoom(input) {
+  let data = await getRoomStatus();
   let roomArr = input;
 
   roomContainer.textContent = "";
   for (let room of roomArr) {
     //clone room design and add info.
     let node = roomTemplate.cloneNode(true);
+    let roomStatus = node.querySelector(".room-headcount");
 
     if ("dev") {
       node.querySelector(".room-id").textContent = `ROOM: ${room.id}`;
       node.querySelector(".room-content").textContent = room.topic;
-      node.querySelector(".room-headcount").textContent = `1/${room.headcount}`;
       node.querySelector(".room-button button").onclick = () =>
         checkPassword(room.id);
+      roomStatus.textContent = `0/${room.headcount}`;
+      // roomStatus.textContent = `0/${room.headcount}`;
       node.querySelector(".room-design .lock").hidden = !room.password;
     } else {
       node.querySelector(
@@ -133,16 +143,21 @@ function createRoom(input) {
         clearInterval(setup);
         return;
       }
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].room_id == room.id) {
+          if (data[i].room_id > 0) {
+            roomStatus.textContent = `${data[i].roomstatus}/${room.headcount}`;
+          }
+        }
+      }
       let time = new Date(timeDiff);
       let minutes = time.getMinutes();
       timeRemain.textContent = `time remaining: ${minutes} minutes`;
     };
-    let timer = setInterval(setup, 1000);
+    let timer = setInterval(setup, 2000);
     setup();
 
     roomContainer.prepend(node);
-    // set timeout if room has time limit
-    // set lock icon if room has password
   }
 }
 

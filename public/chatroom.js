@@ -46,7 +46,7 @@ submitBtn.addEventListener("click", () => {
 
 socket.on("hello_user", (data) => {
   // data has the content { msg: "Hello Client" }
-  console.log(data)
+  console.log(data);
   current_user_id = data.userId;
 });
 
@@ -58,15 +58,16 @@ socket.on("receive_data_from_server", (data) => {
   // msgBox.innerHTML += showToast();
   // $('.toast').toast('show');
   // showToast();
-  
 
   msgBox.innerHTML += creatMsgBox(data);
-  document.querySelector(".messages-panel").scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
+  document
+    .querySelector(".messages-panel")
+    .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
 });
 
 socket.on("user_joined", (data) => {
   // data has the content { msg: "Hello Client" }
-  console.log("jointed la:",data.userId)
+  console.log("jointed la:", data.userId);
   showToast(data.userId);
 });
 
@@ -90,10 +91,35 @@ function creatMsgBox(data) {
     `;
 }
 
-function showToast(username){
+function showToast(username) {
   // (library) https://github.com/apvarun/toastify-js
   Toastify({
     text: `${username} has enter the room`,
-    duration: 3000
+    duration: 3000,
   }).showToast();
 }
+
+//testing
+
+async function exitroom() {
+  const a = await fetch("/userID");
+  const data = await a.json();
+  let userID = data.id;
+
+  const formObject = {};
+
+  formObject["userID"] = userID;
+
+  const res = await fetch("/record", {
+    method: "delete",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formObject),
+  });
+}
+let leaveroom = exitroom();
+
+window.addEventListener("beforeunload", async function () {
+  leaveroom;
+});

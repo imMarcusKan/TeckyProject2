@@ -26,7 +26,7 @@ export function createRoomRouter(io: socketIO.Server) {
 
 roomRouter.get("/room_status", async (req, res) => {
   let result = await client.query(
-    /* sql */ `select count(room_id) as roomstatus from room_participant group by room_id`
+    /* sql */ `select room_id, count(room_id) as roomstatus from room_participant group by room_id`
   );
   res.json(result.rows);
 });
