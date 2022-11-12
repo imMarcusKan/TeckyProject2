@@ -3,9 +3,9 @@ const modalContainer = document.getElementById("modalContainer");
 const close = document.getElementById("close");
 
 editBtn.addEventListener("click", () => {
-  modalContainer.classList.add("show");
+  modalContainer.style.display = "block";
 });
 
-// close.addEventListener("click", () => {
-//   modal.classList.remove("show");
-// });
+close.addEventListener("click", () => {
+  modalContainer.style.display = "none";
+});
