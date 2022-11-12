@@ -6,10 +6,25 @@ body {
 
 .logo-container {
   text-align: center;
+
+  cursor: pointer;
 }
 
 .logo {
+  text-align: center;
   width: 15vh;
+}
+.logo-container:hover {
+  animation: flipV 2s linear;
+}
+
+@keyframes flipV {
+  50% {
+    transform: rotateY(180deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
 }
 
 .form-box {
