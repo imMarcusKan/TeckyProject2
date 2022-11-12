@@ -34,7 +34,8 @@ async function getID() {
 let userID;
 
 window.onload = async () => {
-  userID = (await getID()).id;
+  userID = await getID();
+  console.log(userID);
 };
 
 async function getRoomStatus() {
@@ -95,13 +96,13 @@ async function checkPassword(roomID) {
             if (result.length == 0) {
               return "wrong password";
             } else {
-              window.location = "/chatroom.html";
+              location.href = `/chatroom.html?roomID${roomID}`;
               checkRoomStatus(userID, roomID);
             }
           },
         });
       } else {
-        window.location = "/chatroom.html";
+        location.href = `/chatroom.html?id${roomID}`;
         checkRoomStatus(userID, roomID);
       }
     }
@@ -157,8 +158,6 @@ async function createRoom(input) {
     setup();
 
     roomContainer.prepend(node);
-    // set timeout if room has time limit
-    // set lock icon if room has password
   }
 }
 
