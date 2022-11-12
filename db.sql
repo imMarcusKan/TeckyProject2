@@ -15,9 +15,11 @@ create table category(
 create table room (
     id serial primary key,
     topic TEXT not null,
-    timer timestamp not null,
-    head_limit INTEGER not null,
-    IsActive boolean not null,
+    headcount INTEGER not null,
+    password text,
+    created_at timestamp default now(),
+    deleted_at timestamp,
+    haspassword boolean,
     category_id integer not null references category(id)
 );
 create table message (
@@ -45,18 +47,3 @@ create table demo (
     isactive boolean,
     haspassword boolean
 );
-create table room_participant (
-    id serial primary key,
-    users_id integer not null references users(id),
-    room_id integer not null references room(id)
-);
-alter table room drop column isactive;
-alter table room drop column timer;
-alter table room
-add column created_at timestamp default now();
-alter table room
-add column deleted_at timestamp;
-alter table room
-add column haspassword boolean;
-alter table room
-    rename column head_limit to headcount;
