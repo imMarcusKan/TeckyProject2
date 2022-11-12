@@ -144,7 +144,6 @@ async function createRoom(input) {
       }
       for (let i = 0; i < data.length; i++) {
         if (data[i].room_id == room.id) {
-          console.log("room status, head:", data[i].roomstatus);
           if (data[i].room_id > 0) {
             roomStatus.textContent = `${data[i].roomstatus}/${room.headcount}`;
           }
