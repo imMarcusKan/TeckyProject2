@@ -14,7 +14,6 @@ userRouter.get("/current-user", (req, res) => {
 
 userRouter.post("/login", async (req, res) => {
   let { username, password } = req.body;
-  console.log(req.body);
 
   if (!password) {
     res.status(400);
@@ -30,13 +29,10 @@ userRouter.post("/login", async (req, res) => {
     "select username,password from users where username=$1",
     [username]
   );
-  console.log("result:", result);
 
   let user = result.rows[0];
-  console.log("user:", user);
 
   if (!user) {
-    console.log(user);
     return res.json({
       status: false,
       message: `username and password is wrong`,
@@ -62,7 +58,6 @@ userRouter.post("/login", async (req, res) => {
 
 userRouter.post("/register", async (req, res) => {
   let { username, password, email } = req.body;
-  console.log(req.body);
 
   let result = await client.query(
     `select username from users where username=$1`,

@@ -37,13 +37,7 @@ alter column password drop not null;
 ----------------------------------
 alter table users drop column nickname;
 ----------------------------------
-create table demo (
-    id serial primary key,
-    content text not null,
-    headcount integer,
-    password varchar(255),
-    created_at timestamp default current_time,
-    -- deleted_at timestamp,
-    isactive boolean,
-    haspassword boolean
-);
+alter table room_participant
+alter column users_id drop not null;
+alter table room_participant
+alter column room_id drop not null;
