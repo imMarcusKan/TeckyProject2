@@ -45,8 +45,9 @@ document
 
     const result = await res.json();
 
-    if (!result.status) {
+    if (result.status) {
       alert(result.message);
+      window.location = "/homepage.html";
     } else {
       alert(result.message);
     }
