@@ -16,14 +16,10 @@ async function delTime() {
   const result = await res.json();
   for (let i = 0; i < result.length; i++) {
     if (result[i].id == roomID) {
-      console.log("v.id:", result[i].id);
       deleteTime = new Date(result[i].deleted_at);
       timeDiff = deleteTime.getTime() - Date.now();
     }
   }
-  setInterval(() => {
-    console.log(timeDiff);
-  }, 1000);
   setTimeout(() => {
     window.location.href = "/homepage.html";
   }, timeDiff);
@@ -77,7 +73,7 @@ let message = document.querySelector(".send-message-text");
 
 let current_user_id;
 
-let numUsersInRoom =0;
+let numUsersInRoom = 0;
 
 let isConnect = true;
 
@@ -111,7 +107,7 @@ socket.on("user_joined", (data) => {
 });
 
 /* (listen)notify other clients someone left */
-socket.on("user_left", (data) =>{
+socket.on("user_left", (data) => {
   console.log("showToast:", data.userId, "left");
   showToast(data.userId, false);
 });
@@ -120,7 +116,7 @@ function showToast(username, isConnect) {
   /* (library) https://github.com/apvarun/toastify-js */
   // console.log("showToast:", username, isConnect);
   Toastify({
-    text: `${username} has ${isConnect? "enter" : "left"} the room`,
+    text: `${username} has ${isConnect ? "enter" : "left"} the room`,
     duration: 3000,
   }).showToast();
 }
@@ -158,7 +154,6 @@ function creatMsgBox(data) {
     </div>
     `;
 }
-
 
 //testing
 

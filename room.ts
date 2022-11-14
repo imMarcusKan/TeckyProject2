@@ -7,7 +7,7 @@ let roomRouter = express.Router();
 export function createRoomRouter(io: socketIO.Server) {
   roomRouter.post("/room", async (req, res) => {
     let result = await client.query(
-      /* sql */ `select * from room where deleted_at > now()`
+      /* sql */ `select * from room where deleted_at > now() or deleted_at is null`
     );
     io.emit("new-room", result.rows);
 
