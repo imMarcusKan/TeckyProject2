@@ -16,7 +16,7 @@ export function createRoomRouter(io: socketIO.Server) {
 
   roomRouter.get("/rooms", async (req, res) => {
     let result = await client.query(
-      /* sql */ `select id, haspassword, headcount from room where password is not null and deleted_at > now()`
+      /* sql */ `select deleted_at, id, haspassword, headcount from room where password is not null and deleted_at > now()`
     );
     res.json(result.rows);
   });
