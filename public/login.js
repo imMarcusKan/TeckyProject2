@@ -1,5 +1,3 @@
-
-
 const x = document.getElementById("login");
 const y = document.getElementById("register");
 const z = document.getElementById("btn");
@@ -8,7 +6,6 @@ function register() {
   x.style.left = "-400px";
   y.style.left = "50px";
   z.style.left = "110px";
-  
 }
 function login() {
   x.style.left = "50px";
@@ -16,78 +13,72 @@ function login() {
   z.style.left = "0px";
 }
 
-const pwInput = document.querySelector('#pwInput');
-pwInput.addEventListener('input', (e)=>{
-  
-  if(pwInput.value.length < 8){
+const pwInput = document.querySelector("#pwInput");
+pwInput.addEventListener("input", (e) => {
+  if (pwInput.value.length < 8) {
     document.getElementById("text").hidden = false;
-  }else{
+  } else {
     document.getElementById("text").hidden = true;
   }
 });
 
+document
+  .querySelector("#register")
+  .addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    // Serialize the Form afterwards
+    const form = event.target;
+    const formObject = {};
+
+    formObject["username"] = form.username.value;
+    formObject["email"] = form.email.value;
+    formObject["password"] = form.password.value;
+
+    const res = await fetch("/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formObject),
+    });
+
+    const result = await res.json();
+
+    if (!result.status) {
+      alert(result.message);
+    } else {
+      alert(result.message);
+    }
+  });
 
 document
-  .querySelector('#register')
-  .addEventListener('submit', async function (event) {
-    event.preventDefault()
+  .querySelector("#login")
+  .addEventListener("submit", async function (event) {
+    event.preventDefault();
 
     // Serialize the Form afterwards
-    const form = event.target
-    const formObject = {}
+    const form = event.target;
+    const formObject = {};
 
-    formObject['username'] = form.username.value
-    formObject['email'] = form.email.value
-    formObject['password'] = form.password.value
-  
-    const res = await fetch('/register', {
-      method: 'POST',
+    formObject["username"] = form.username.value;
+    formObject["password"] = form.password.value;
+
+    const res = await fetch("/login", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(formObject),
-    })
+    });
 
+    const result = await res.json();
 
-    const result = await res.json()
-
-    if(!result.status){
-    alert(result.message)
-  }else{
-    alert(result.message)
-  }
-
-  })
-
-  document
-  .querySelector('#login')
-  .addEventListener('submit', async function (event) {
-    event.preventDefault()
-
-    // Serialize the Form afterwards
-    const form = event.target
-    const formObject = {}
-
-    formObject['username'] = form.username.value
-    formObject['password'] = form.password.value
-  
-    const res = await fetch('/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formObject),
-    })
-
-
-    const result = await res.json()
-
-    if(!result.status){
-    alert(result.message)
-  }else{
-    alert(result.message)
-    window.location="/homepage.html"
-    console.log(req.session)
-  }
-
-  })
+    if (!result.status) {
+      alert(result.message);
+    } else {
+      alert(result.message);
+      window.location = "/homepage.html";
+      console.log(req.session);
+    }
+  });

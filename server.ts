@@ -18,6 +18,12 @@ const io = new SocketIO.Server(server);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+
+// app.use((req, res, next) => {
+//   console.log(Date.now(), req.method, req.url);
+//   next();
+// });
 
 app.use(sessionMiddleware);
 
