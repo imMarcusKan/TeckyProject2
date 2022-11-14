@@ -10,6 +10,7 @@ import "./session";
 // import expressSession from "express-session";
 import { sessionMiddleware } from "./session";
 import { createChatRoomRouter } from "./chatroom";
+import { messageRouter } from "./message";
 
 const app = express();
 const server = new http.Server(app);
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
 
 app.use(roomsubmitRouter);
 app.use(userRouter);
+app.use(messageRouter);
 app.use(createRoomRouter(io));
 app.use(createChatRoomRouter(io));
 

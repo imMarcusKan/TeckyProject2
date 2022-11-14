@@ -63,12 +63,9 @@ async function checkPassword(roomID) {
   //TODO check if users have set password for room
   const res = await fetch("/rooms");
   const result = await res.json();
-  console.log(result);
+  console.log("result now", result);
   let data = await getRoomStatus();
-  console.log("roomHeadCount:", data);
-
   for (let i = 0; i < result.length; i++) {
-    let roomHeadCount = 0;
     if (result[i].id == roomID) {
       // for (let v of data) {
       //   if (v.room_id == roomID) {
@@ -98,13 +95,16 @@ async function checkPassword(roomID) {
               return "wrong password";
             } else {
               location.href = `/chatroom.html?roomID=${roomID}`;
-              checkRoomStatus(userID, roomID);
+              console.log("forward to chatroom page");
+              // checkRoomStatus(userID, roomID);
             }
           },
         });
       } else {
-        location.href = `/chatroom.html?id=${roomID}`;
-        checkRoomStatus(userID, roomID);
+        location.href = `/chatroom.html?roomID=${roomID}`;
+        console.log("forward to chatroom page");
+
+        // checkRoomStatus(userID, roomID);
       }
     }
   }

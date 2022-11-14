@@ -16,7 +16,7 @@ export function createRoomRouter(io: socketIO.Server) {
 
   roomRouter.get("/rooms", async (req, res) => {
     let result = await client.query(
-      /* sql */ `select deleted_at, id, haspassword, headcount from room where password is not null and deleted_at > now()`
+      /* sql */ `select deleted_at, id, haspassword, headcount from room where password is not null and deleted_at > now() or deleted_at is null`
     );
     res.json(result.rows);
   });
@@ -29,16 +29,4 @@ roomRouter.get("/room_status", async (req, res) => {
     /* sql */ `select room_id, count(room_id) as roomstatus from room_participant group by room_id`
   );
   res.json(result.rows);
-});
-
-roomRouter.get("/messages/:roomID", async (req, res) => {
-  let roomID = req.params.roomID;
-
-  let result = await client.query(
-    /* sql */ `select content, users_id  from message where room_id=$1`,
-    [roomID]
-  );
-  let messages = result.rows;
-
-  res.json(messages);
 });
