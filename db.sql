@@ -42,3 +42,12 @@ create table room_participant(
     users_id integer references users(id),
     room_id integer references room(id)
 );
+create table message(
+    id serial primary key,
+    content text NOT NULL,
+    users_id integer references users(id),
+    room_id integer references room(id)
+);
+INSERT INTO message(content, users_id, room_id)
+values ('hi', 1, 24),
+    ('bye', 2, 24);

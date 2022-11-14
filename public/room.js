@@ -96,13 +96,13 @@ async function checkPassword(roomID) {
             if (result.length == 0) {
               return "wrong password";
             } else {
-              location.href = `/chatroom.html?roomID${roomID}`;
+              location.href = `/chatroom.html?roomID=${roomID}`;
               checkRoomStatus(userID, roomID);
             }
           },
         });
       } else {
-        location.href = `/chatroom.html?id${roomID}`;
+        location.href = `/chatroom.html?id=${roomID}`;
         checkRoomStatus(userID, roomID);
       }
     }
