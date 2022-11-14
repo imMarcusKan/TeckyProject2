@@ -1,5 +1,13 @@
 const socket = io.connect(); // You can pass in an optional parameter like "http://localhost:8080"
+let url = new URL(window.location.href);
+console.log(url);
+let roomID = url.searchParams.get("roomID");
 
+fetch(`/messages/${roomID}`)
+  .then((res) => res.json())
+  .then((messages) => {
+    console.log(messages);
+  });
 // let msg = [
 //   {
 //     user_id: 1,
@@ -119,6 +127,7 @@ async function exitroom() {
   });
 }
 
+let leaveroom = exitroom();
 window.addEventListener("beforeunload", (event) => {
-  event.exitroom();
+  exitroom();
 });

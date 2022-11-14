@@ -30,3 +30,15 @@ roomRouter.get("/room_status", async (req, res) => {
   );
   res.json(result.rows);
 });
+
+roomRouter.get("/messages/:roomID", async (req, res) => {
+  let roomID = req.params.roomID;
+
+  let result = await client.query(
+    /* sql */ `select content, users_id  from message where room_id=$1`,
+    [roomID]
+  );
+  let messages = result.rows;
+
+  res.json(messages);
+});
