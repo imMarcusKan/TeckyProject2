@@ -1,3 +1,5 @@
+
+
 const socket = io.connect(); // You can pass in an optional parameter like "http://localhost:8080"
 let url = new URL(window.location.href);
 console.log(url);
@@ -38,7 +40,7 @@ let message = document.querySelector(".send-message-text");
 
 let current_user_id;
 
-let numUsersInRoom =0;
+let numUsersInRoom = 0;
 
 let isConnect = true;
 
@@ -47,6 +49,11 @@ socket.on("hello_user", (data) => {
   console.log(data);
   current_user_id = data.userId;
 });
+
+// "current_pages"
+socket.emit("join_room", { room: "room-A", pw: "ok" })
+socket.emit("current_pages", { current_pages: "chat_room", current_room: "room-A" })
+
 
 socket.on("receive_data_from_server", (data) => {
   // data has the content { msg: "Hello Client" }
@@ -63,7 +70,7 @@ socket.on("receive_data_from_server", (data) => {
     .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
 });
 
-// (listen) notify other clients someone join
+/* (listen) notify other clients someone join */
 socket.on("user_joined", (data) => {
   // data has the content { msg: "Hello Client" }
   // console.log("jointed la:", data.userId);
