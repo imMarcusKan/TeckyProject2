@@ -32,25 +32,15 @@ let user_id = document.querySelector("#user_id");
 
 // console.log(user_id);
 
-// send message to the server
+/* send message to the server */
 let submitBtn = document.querySelector(".send-message-button");
 let message = document.querySelector(".send-message-text");
 
 let current_user_id;
 
-submitBtn.addEventListener("click", () => {
-  // console.log(message.value);
-  // fetch('/message', {
-  //     method:'POST',
-  //     headers: {
-  //         'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({message: message.value})
+let numUsersInRoom =0;
 
-  // })
-
-  socket.emit("user_message", { data: message.value });
-});
+let isConnect = true;
 
 socket.on("hello_user", (data) => {
   // data has the content { msg: "Hello Client" }
@@ -73,10 +63,41 @@ socket.on("receive_data_from_server", (data) => {
     .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
 });
 
+// (listen) notify other clients someone join
 socket.on("user_joined", (data) => {
   // data has the content { msg: "Hello Client" }
-  console.log("jointed la:", data.userId);
-  showToast(data.userId);
+  // console.log("jointed la:", data.userId);
+  console.log("showToast:", data.userId, "connected");
+  showToast(data.userId, true);
+});
+
+/* (listen)notify other clients someone left */
+socket.on("user_left", (data) =>{
+  console.log("showToast:", data.userId, "left");
+  showToast(data.userId, false);
+});
+
+function showToast(username, isConnect) {
+  /* (library) https://github.com/apvarun/toastify-js */
+  // console.log("showToast:", username, isConnect);
+  Toastify({
+    text: `${username} has ${isConnect? "enter" : "left"} the room`,
+    duration: 3000,
+  }).showToast();
+}
+
+submitBtn.addEventListener("click", () => {
+  // console.log(message.value);
+  // fetch('/message', {
+  //     method:'POST',
+  //     headers: {
+  //         'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({message: message.value})
+
+  // })
+
+  socket.emit("user_message", { data: message.value });
 });
 
 function creatMsgBox(data) {
@@ -99,35 +120,28 @@ function creatMsgBox(data) {
     `;
 }
 
-function showToast(username) {
-  // (library) https://github.com/apvarun/toastify-js
-  Toastify({
-    text: `${username} has enter the room`,
-    duration: 3000,
-  }).showToast();
-}
 
 //testing
 
-async function exitroom() {
-  const a = await fetch("/userID");
-  const data = await a.json();
-  let userID = data.id;
+// async function exitroom() {
+//   const a = await fetch("/userID");
+//   const data = await a.json();
+//   let userID = data.id;
 
-  const formObject = {};
+//   const formObject = {};
 
-  formObject["userID"] = userID;
+//   formObject["userID"] = userID;
 
-  const res = await fetch("/record", {
-    method: "delete",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formObject),
-  });
-}
+//   const res = await fetch("/record", {
+//     method: "delete",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(formObject),
+//   });
+// }
 
-let leaveroom = exitroom();
-window.addEventListener("beforeunload", (event) => {
-  exitroom();
-});
+// let leaveroom = exitroom();
+// window.addEventListener("beforeunload", (event) => {
+//   exitroom();
+// });
