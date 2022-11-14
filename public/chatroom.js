@@ -118,8 +118,7 @@ async function exitroom() {
     body: JSON.stringify(formObject),
   });
 }
-let leaveroom = exitroom();
 
-window.addEventListener("beforeunload", async function () {
-  leaveroom;
+window.addEventListener("beforeunload", (event) => {
+  event.exitroom();
 });

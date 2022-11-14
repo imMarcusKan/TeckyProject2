@@ -37,7 +37,8 @@ alter column password drop not null;
 ----------------------------------
 alter table users drop column nickname;
 ----------------------------------
-alter table room_participant
-alter column users_id drop not null;
-alter table room_participant
-alter column room_id drop not null;
+create table room_participant(
+    id serial primary key,
+    users_id integer reference users(id),
+    room_id integer reference room(id)
+);
