@@ -11,6 +11,7 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
@@ -23,24 +24,54 @@
   </head>
 
   <body>
-    <div class="container">
-      <header>
-        <div class="d-flex justify-content-between">
-          <img src="hub.JPG" alt="Loading image" class="chathub" />
-          <div>
-            <div>Hello</div>
-            <div class="username">Username</div>
-            <button onclick="logout()">
-              <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            </button>
-          </div>
+    <header>
+      <div><img src="hub.JPG" alt="Loading image" class="chathub" /></div>
+      <div class="logoutArea">
+        <div>Hello</div>
+        <div class="username">Username</div>
+        <div onclick="logout()">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
         </div>
-      </header>
+      </div>
+    </header>
+    <div class="container">
       <div id="modalContainer" class="modalContainer">
         <div class="modalbox">
-          <h1>Edit Profile</h1>
-          <p>hello i m a modal</p>
-          <button id="close" class="close">close</button>
+          <img class="usericon" />
+          <form action="/iconupload">
+            <input type="file" id="myFile" name="filename" />
+            <p>
+              <input
+                type="text"
+                class="input-field"
+                name="username"
+                placeholder="Username"
+                required
+              />
+              <input
+                type="email"
+                class="input-field"
+                name="email"
+                placeholder="Email"
+                required
+              />
+              <input
+                id="pwInput"
+                type="password"
+                class="input-field remove-margin"
+                name="password"
+                placeholder="Enter Password"
+                required
+              />
+            </p>
+            <div class="heart" onclick="heart()">
+              <i class="fa-solid fa-heart fa-beat"></i>
+            </div>
+          </form>
+          <div class="submitButton">
+            <button type="submit" id="submit" class="btn">submit</button>
+            <button id="close" class="btn">close</button>
+          </div>
         </div>
       </div>
       <div>
@@ -88,7 +119,7 @@
     </div>
 
     <footer>
-      <button id="editBtn">Edit</button>
+      <div id="editBtn"><i class="fa-solid fa-cog fa-spin"></i></div>
     </footer>
 
     <script src="/socket.io/socket.io.js"></script>

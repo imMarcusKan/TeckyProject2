@@ -1,5 +1,5 @@
 .modalContainer {
-  display: none;
+  display: flex;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -9,30 +9,61 @@
   overflow: auto;
   background-color: rgba(175, 156, 156, 0.768);
 }
+
 .modalContainer.show {
   pointer-events: auto;
   opacity: 1;
 }
-.modalbox {
-  background-color: #fff;
-  color: black;
-  margin: 20% auto;
-  padding: 30px;
-  width: 70%;
-  position: relative;
-  box-shadow: 0 5px 8px 0 rgb(253 153 38);
+
+.usericon {
+  background-color: black;
+  margin: 15px auto;
+  width: 128px;
+  height: 128px;
+  border-radius: 100%;
 }
 
-.close {
+.modalbox {
+  position: relative;
+  background-color: #fff;
+  color: black;
+  border-radius: 25px 25px 25px 25px;
+  margin: 10rem auto;
+  width: 40rem;
+  height: 50rem;
+  box-shadow: 0 5px 8px 0 rgb(253 153 38);
+  text-align: center;
+}
+.p {
+  font-size: 60px;
+}
+
+.submitButton {
+  display: flex;
+  justify-content: space-around;
+  bottom: 10px;
+}
+.heart {
+  font-size: 30px;
+  color: red;
+}
+.btn {
   color: #aaaaaa;
-  margin: auto;
+  margin-bottom: 20px;
   font-size: 28px;
   font-weight: bold;
   background-color: rgb(253 153 38);
   color: black;
 }
 
-.close:hover {
+.btn:hover {
   background-color: #333;
   color: white;
+}
+
+#editBtn {
+  display: flex;
+  margin: auto;
+  font-size: 40px;
+  color: rgb(253 153 38);
 }
