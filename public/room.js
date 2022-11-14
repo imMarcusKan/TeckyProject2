@@ -70,17 +70,18 @@ async function checkPassword(roomID) {
   console.log("roomHeadCount:", data);
 
   for (let i = 0; i < result.length; i++) {
+    let roomHeadCount = 0;
     if (result[i].id == roomID) {
-      for (let v of data) {
-        if (v.room_id == roomID) {
-          console.log(result[i].id, v.room_id, roomID);
-          if (v.roomstatus >= result[i].headcount) {
-            console.log("data roomstatus", data[i].roomstatus);
-            Swal.fire("The room is fulled");
-            return;
-          }
-        }
-      }
+      // for (let v of data) {
+      //   if (v.room_id == roomID) {
+      //     console.log(result[i].id, v.room_id, roomID);
+      //     if (v.roomstatus >= result[i].headcount) {
+      //       console.log("data roomstatus", data[i].roomstatus);
+      //       Swal.fire("The room is fulled");
+      //       return;
+      //     }
+      //   }
+      // }
       if (result[i].haspassword == true) {
         const { value: password } = await Swal.fire({
           title: "Enter your password",
@@ -136,9 +137,15 @@ async function createRoom(input) {
     }
     let timeRemain = node.querySelector(".time-remain");
     let setup = () => {
+      let deleteTime;
+      let timeDiff;
       // get time to compare
-      let deleteTime = new Date(room.deleted_at);
-      let timeDiff = deleteTime.getTime() - Date.now();
+      if (room.deleted_at == null) {
+        deleteTime = null;
+      } else {
+        deleteTime = new Date(room.deleted_at);
+        timeDiff = deleteTime.getTime() - Date.now();
+      }
 
       if (timeDiff <= 0) {
         node.remove();
@@ -152,9 +159,13 @@ async function createRoom(input) {
           }
         }
       }
-      let time = new Date(timeDiff);
-      let minutes = time.getMinutes();
-      timeRemain.textContent = `time remaining: ${minutes} minutes`;
+      if (deleteTime == null) {
+        timeRemain.textContent = `No Limit Time`;
+      } else {
+        let time = new Date(timeDiff);
+        let minutes = time.getMinutes();
+        timeRemain.textContent = `time remaining: ${minutes} minutes`;
+      }
     };
     let timer = setInterval(setup, 2000);
     setup();
@@ -165,6 +176,7 @@ async function createRoom(input) {
 
 socket.on("new-room", (value) => {
   createRoom(value);
+  console.log("value", value);
 });
 
 async function callRoomRouter() {

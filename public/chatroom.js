@@ -2,7 +2,6 @@
 
 const socket = io.connect(); // You can pass in an optional parameter like "http://localhost:8080"
 let url = new URL(window.location.href);
-console.log(url);
 let roomID = url.searchParams.get("roomID");
 
 fetch(`/messages/${roomID}`)
@@ -10,6 +9,42 @@ fetch(`/messages/${roomID}`)
   .then((messages) => {
     console.log(messages);
   });
+
+clearTimeout();
+
+async function delTime() {
+  //TODO check if users have set password for room
+  const res = await fetch("/rooms");
+  const result = await res.json();
+  for (let i = 0; i < result.length; i++) {
+    if (result[i].id == roomID) {
+      deleteTime = new Date(result[i].deleted_at);
+      timeDiff = deleteTime.getTime() - Date.now();
+    }
+  }
+  setTimeout(() => {
+    window.location.href = "/homepage.html";
+  }, timeDiff);
+}
+window.onload = function () {
+  console.log("onload window to set timeout");
+  delTime();
+};
+
+// let time = await delTime();
+// let deleteTime = new Date(time);
+// let timeDiff = deleteTime.getTime() - Date.now();
+// console.log("timeDiff:", timeDiff);
+
+// window.onload = function () {
+//   setTimeout(() => {
+//     window.location.href = "/homepage.html";
+//     console.log(timeDiff);
+//   }, 30000);
+// };
+
+//Set time out to kick user back to homepage when room is expired
+
 // let msg = [
 //   {
 //     user_id: 1,
@@ -79,7 +114,7 @@ socket.on("user_joined", (data) => {
 });
 
 /* (listen)notify other clients someone left */
-socket.on("user_left", (data) =>{
+socket.on("user_left", (data) => {
   console.log("showToast:", data.userId, "left");
   showToast(data.userId, false);
 });
@@ -88,7 +123,7 @@ function showToast(username, isConnect) {
   /* (library) https://github.com/apvarun/toastify-js */
   // console.log("showToast:", username, isConnect);
   Toastify({
-    text: `${username} has ${isConnect? "enter" : "left"} the room`,
+    text: `${username} has ${isConnect ? "enter" : "left"} the room`,
     duration: 3000,
   }).showToast();
 }
@@ -126,7 +161,6 @@ function creatMsgBox(data) {
     </div>
     `;
 }
-
 
 //testing
 

@@ -6,10 +6,17 @@ export let roomsubmitRouter = express.Router();
 
 roomsubmitRouter.post("/demo", async (req, res) => {
   let { content, headNumber, addTime, password } = req.body;
-  let deleteTime = format(
-    add(new Date(), { minutes: addTime }),
-    "yyyy-MM-dd HH:mm:ss"
-  );
+  let deleteTime;
+  console.log("addTime:", addTime);
+  if (addTime == 99) {
+    deleteTime = null;
+  } else {
+    deleteTime = format(
+      add(new Date(), { minutes: addTime }),
+      "yyyy-MM-dd HH:mm:ss"
+    );
+  }
+  console.log("deletedTime:", deleteTime);
   let checkPW = true;
   if (!password) {
     checkPW = false;
