@@ -6,10 +6,17 @@ export let roomsubmitRouter = express.Router();
 
 roomsubmitRouter.post("/demo", async (req, res) => {
   let { content, headNumber, addTime, password } = req.body;
-  let deleteTime = format(
-    add(new Date(), { minutes: addTime }),
-    "yyyy-MM-dd HH:mm:ss"
-  );
+  let deleteTime;
+  console.log("addTime:", addTime);
+  if (addTime == 99) {
+    deleteTime = null;
+  } else {
+    deleteTime = format(
+      add(new Date(), { minutes: addTime }),
+      "yyyy-MM-dd HH:mm:ss"
+    );
+  }
+  console.log("deletedTime:", deleteTime);
   let checkPW = true;
   if (!password) {
     checkPW = false;
@@ -32,20 +39,36 @@ roomsubmitRouter.post("/password", async (req, res) => {
 });
 
 roomsubmitRouter.post("/user_room_ID", async (req, res) => {
-  let { userID, roomID } = req.body;
-  await client.query(
-    /* sql */ `insert into room_participant (users_id, room_id) values ($1,$2)`,
-    [userID, roomID]
-  );
-  res.json({});
+  try {
+    
+    let { userID, roomID } = req.body;
+    await client.query(
+      /* sql */ `insert into room_participant (users_id, room_id) values ($1,$2)`,
+      [userID, roomID]
+    );
+    res.json({});
+  } catch (error) {
+    console.log(error);
+    
+    res.json({});
+
+  }
 });
 
 roomsubmitRouter.delete("/record", async (req, res) => {
-  let { userID } = req.body;
-  console.log("userID when leaving room:", userID);
-  await client.query(
-    /* sql */ `delete from room_participant where users_id = $1`,
-    [userID]
-  );
-  res.json({});
+  try {
+    let { userID } = req.body;
+    
+    console.log("userID when leaving room:", userID);
+  
+    await client.query(
+      /* sql */ `delete from room_participant where users_id = $1`,
+      [+userID]
+    );
+    res.json({});
+
+  } catch (error) {
+    console.log(error);
+    res.json({});
+  }
 });

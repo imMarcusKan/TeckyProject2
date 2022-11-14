@@ -22,20 +22,8 @@ create table room (
     haspassword boolean,
     category_id integer not null references category(id)
 );
-create table message (
-    id serial primary key,
-    content TEXT not null,
-    created_at timestamp not null,
-    room_id INTEGER not null,
-    user_id INTEGER not null
-);
-alter table room
-add column password TEXT not null;
-----------------------------------
-alter table room
-alter column password drop not null;
-----------------------------------
-alter table users drop column nickname;
+
+alter table room drop column category_id;
 ----------------------------------
 create table room_participant(
     id serial primary key,
@@ -45,6 +33,7 @@ create table room_participant(
 create table message(
     id serial primary key,
     content text NOT NULL,
+    created_at timestamp not null,
     users_id integer references users(id),
     room_id integer references room(id)
 );
