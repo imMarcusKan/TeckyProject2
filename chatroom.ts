@@ -59,7 +59,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
 
       if (true) {
         socket.join(data.room);
-        socket.broadcast.emit("user_joined", { userId: userName });
+        socket.broadcast.emit("user_joined", { userId: userName, roomID: data.room });
       }
     });
 

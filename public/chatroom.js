@@ -148,8 +148,13 @@ socket.on("receive_data_from_server", (data) => {
 socket.on("user_joined", (data) => {
   // data has the content { msg: "Hello Client" }
   // console.log("jointed la:", data.userId);
-  console.log("showToast:", data.userId, "connected");
-  showToast(data.userId, true);
+  // console.log("showToast:", data.userId, "connected");
+  console.log("user_joined TESTING: RoomID:",roomID)
+  console.log("user_joined TESTING: data.roomID",data.roomID)
+  console.log("user_joined TESTING: data.current_room",data.current_room)
+  if (roomID == data.roomID){
+    showToast(data.userId, true);
+  }
 });
 
 /* (listen)notify other clients someone left */
