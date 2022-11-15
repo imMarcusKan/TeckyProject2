@@ -1,5 +1,3 @@
-
-
 const socket = io.connect(); // You can pass in an optional parameter like "http://localhost:8080"
 let url = new URL(window.location.href);
 let roomID = url.searchParams.get("roomID");
@@ -127,9 +125,11 @@ socket.on("hello_user", (data) => {
 });
 
 // "current_pages"
-socket.emit("join_room", { room: "room-A", pw: "ok" })
-socket.emit("current_pages", { current_pages: "chat_room", current_room: "room-A" })
-
+socket.emit("join_room", { room: "room-A", pw: "ok" });
+socket.emit("current_pages", {
+  current_pages: "chat_room",
+  current_room: "room-A",
+});
 
 socket.on("receive_data_from_server", (data) => {
   // data has the content { msg: "Hello Client" }
@@ -178,7 +178,7 @@ submitBtn.addEventListener("click", () => {
 
   // })
 
-  socket.emit("user_message", { data: message.value });
+  socket.emit("user_message", { data: message.value, roomID });
 });
 
 function creatMsgBox(data) {

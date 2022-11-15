@@ -2,6 +2,7 @@ import express from "express";
 // import { client } from "./database";
 import socketIO from "socket.io";
 import { v4 as uuidv4 } from "uuid";
+import { client } from "./database";
 
 // const genId = () => Math.floor(Math.random() * 10000000);
 
@@ -15,7 +16,7 @@ let userTracker = {} as any;
 
 export function createChatRoomRouter(io: socketIO.Server) {
   // const req = socket.request as express.Request;
-  // let userName = req.session["username"];
+  // let userName = req.session.user?.username;
 
   io.on("connection", async function (socket) {
     const req = socket.request as express.Request;
@@ -35,8 +36,15 @@ export function createChatRoomRouter(io: socketIO.Server) {
 
     socket.emit("hello_user", { data: "hello", userId: userName });
 
-    socket.on("user_message", (data) => {
+    socket.on("user_message", async (data) => {
       console.log(data, userName);
+      let userIDD = req.session["user.id"];
+      console.log("data on click", data);
+      console.log("userID", userIDD);
+      await client.query(
+        /* sql */ `insert into message(content, users_id,room_id) values ($1,$2,$3)`,
+        [data.data, userIDD, data.roomID]
+      );
       io.to("room-A").emit("receive_data_from_server", {
         receivedData: data,
         sendUser: userName,
@@ -65,7 +73,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
       console.log("reasons", data);
 
       // const req = socket.request as express.Request;
-      // let userName = req.session["username"];
+      // let userName = req.session.user?.username;
       console.log("Bye a user has left:", userName);
       /* notify other clients someone left */
       // socket.broadcast.emit('user_left', {
