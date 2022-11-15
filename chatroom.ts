@@ -41,6 +41,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
       let userIDD = req.session["user.id"];
       console.log("data on click", data);
       console.log("userID", userIDD);
+      console.log("received time:", data.date);
       await client.query(
         /* sql */ `insert into message(content, users_id,room_id) values ($1,$2,$3)`,
         [data.data, userIDD, data.roomID]
@@ -48,6 +49,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
       io.to("room-A").emit("receive_data_from_server", {
         receivedData: data,
         sendUser: userName,
+        msgTime: data.date,
       });
     });
 
