@@ -125,10 +125,10 @@ socket.on("hello_user", (data) => {
 });
 
 // "current_pages"
-socket.emit("join_room", { room: "room-A", pw: "ok" });
+socket.emit("join_room", { room: roomID, pw: "ok" });
 socket.emit("current_pages", {
   current_pages: "chat_room",
-  current_room: "room-A",
+  current_room: roomID,
 });
 
 socket.on("receive_data_from_server", (data) => {

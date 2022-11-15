@@ -33,10 +33,13 @@ create table room_participant(
 create table message(
     id serial primary key,
     content text NOT NULL,
-    created_at timestamp not null,
+    created_at timestamp default NOW() not null,
     users_id integer references users(id),
     room_id integer references room(id)
 );
+
+-- ALTER TABLE message ALTER COLUMN created_at SET DEFAULT NOW();
+
 INSERT INTO message(content, users_id, room_id)
 values ('hi', 1, 24),
     ('bye', 2, 24);

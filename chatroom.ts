@@ -45,7 +45,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
         /* sql */ `insert into message(content, users_id,room_id) values ($1,$2,$3)`,
         [data.data, userIDD, data.roomID]
       );
-      io.to("room-A").emit("receive_data_from_server", {
+      io.to(data.roomID).emit("receive_data_from_server", {
         receivedData: data,
         sendUser: userName,
       });
