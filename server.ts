@@ -18,7 +18,6 @@ const io = new SocketIO.Server(server);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
 
 // app.use((req, res, next) => {
 //   console.log(Date.now(), req.method, req.url);
@@ -44,6 +43,7 @@ app.use(createRoomRouter(io));
 app.use(createChatRoomRouter(io));
 
 app.use(express.static("public"));
+app.use(express.static("views"));
 
 app.post("/message", (req, res) => {
   console.log("creating body", req.body);
