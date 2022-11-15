@@ -15,11 +15,12 @@ let userTracker = {} as any;
 
 export function createChatRoomRouter(io: socketIO.Server) {
   // const req = socket.request as express.Request;
-  // let userName = req.session["username"];
+  // let userName = req.session.user?.username;
 
   io.on("connection", async function (socket) {
     const req = socket.request as express.Request;
-    let userName = req.session["username"] || uuidv4();
+    let userName = req.session.user?.username || uuidv4();
+    console.log("userName", userName);
 
     if (!userTracker[userName]) {
       userTracker[userName] = {};
@@ -27,8 +28,8 @@ export function createChatRoomRouter(io: socketIO.Server) {
 
     (socket.request as any).session.save();
 
-    console.log("Hello a user has enter:", req.session["username"]);
-    // socket.join("room-A");
+    console.log("Hello a user has enter:", req.session.user?.username);
+    socket.join("room-A");
 
     /* notify other clients someone join */
     // socket.broadcast.emit("user_joined",{ userId: userName });
@@ -65,7 +66,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
       console.log("reasons", data);
 
       // const req = socket.request as express.Request;
-      // let userName = req.session["username"];
+      // let userName = req.session.user?.username;
       console.log("Bye a user has left:", userName);
       /* notify other clients someone left */
       // socket.broadcast.emit('user_left', {

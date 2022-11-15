@@ -3,7 +3,7 @@ let roomContainer = roomTemplate.parentElement;
 let socket = io.connect();
 let counter = document.querySelector("#counter");
 
-socket.emit("current_pages", { current_pages: "home_page" })
+socket.emit("current_pages", { current_pages: "home_page" });
 
 roomTemplate.remove();
 
