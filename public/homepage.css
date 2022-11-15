@@ -40,6 +40,15 @@ body {
 .fa-lock {
   font-size: 1.5rem;
 }
+.cate-css {
+  background-color: rgb(253 153 38);
+  padding: 1.5rem;
+  color: black;
+  border-radius: 20%;
+}
+.hideroom {
+  display: none;
+}
 
 .edit {
   margin: 5rem;

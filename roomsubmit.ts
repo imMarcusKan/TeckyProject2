@@ -5,9 +5,9 @@ import { format, add } from "date-fns";
 export let roomsubmitRouter = express.Router();
 
 roomsubmitRouter.post("/demo", async (req, res) => {
-  let { content, headNumber, addTime, password } = req.body;
+  let { content, headNumber, addTime, password, category } = req.body;
   let deleteTime;
-  console.log("addTime:", addTime);
+  console.log("category", category);
   if (addTime == 99) {
     deleteTime = null;
   } else {
@@ -22,19 +22,20 @@ roomsubmitRouter.post("/demo", async (req, res) => {
     checkPW = false;
   }
   await client.query(
-    /* sql */ `insert into room (topic,headcount,deleted_at,password, haspassword) values ($1,$2,$3,$4,$5)`,
-    [content, headNumber, deleteTime, password, checkPW]
+    /* sql */ `insert into room (topic,headcount,deleted_at,password, haspassword,category_id) values ($1,$2,$3,$4,$5,$6)`,
+    [content, headNumber, deleteTime, password, checkPW, category]
   );
+  await client.query;
   res.redirect("/homePage.html");
 });
 
 roomsubmitRouter.post("/password", async (req, res) => {
   let { roomID, password } = req.body;
   let data = await client.query(
-    /* sql */ `select (id) from room where id = $1 and password = $2 and deleted_at > now() or deleted_at is null`,
+    /* sql */ `select (id) from room where id = $1 and password = $2`,
     [roomID, password]
   );
-
+  console.log("data.rows when typing wrong pw", data.rows);
   res.json(data.rows);
 });
 
