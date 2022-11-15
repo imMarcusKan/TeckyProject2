@@ -31,10 +31,10 @@ roomsubmitRouter.post("/demo", async (req, res) => {
 roomsubmitRouter.post("/password", async (req, res) => {
   let { roomID, password } = req.body;
   let data = await client.query(
-    /* sql */ `select (id) from room where id = $1 and password = $2 and deleted_at > now() or deleted_at is null`,
+    /* sql */ `select (id) from room where id = $1 and password = $2`,
     [roomID, password]
   );
-
+  console.log("data.rows when typing wrong pw", data.rows);
   res.json(data.rows);
 });
 
