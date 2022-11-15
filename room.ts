@@ -9,6 +9,7 @@ export function createRoomRouter(io: socketIO.Server) {
     let result = await client.query(
       /* sql */ `select * from room where deleted_at > now() or deleted_at is null`
     );
+    
     io.emit("new-room", result.rows);
 
     res.json({});
