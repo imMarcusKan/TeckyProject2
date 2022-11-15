@@ -177,11 +177,27 @@ submitBtn.addEventListener("click", () => {
   //     body: JSON.stringify({message: message.value})
 
   // })
-
-  socket.emit("user_message", { data: message.value, roomID });
+  let date = Date.now();
+  socket.emit("user_message", { data: message.value, roomID, date });
 });
 
+function convertToTime(time) {
+  let times = new Date(time);
+  console.log("times", times);
+  let hours = times.getHours();
+  let minutes = times.getMinutes();
+  var ampm = hours >= 12 ? "pm" : "am";
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  var strTime = hours + ":" + minutes + " " + ampm;
+  console.log("strTime", strTime);
+  return strTime;
+}
+
 function creatMsgBox(data) {
+  console.log("data.date", data.msgTime);
+  let time = convertToTime(data.msgTime);
   return `
     <div class="message ${
       data.sendUser !== current_user_id ? "receiveMsg" : "my-message"
@@ -189,7 +205,7 @@ function creatMsgBox(data) {
         <div class="message-body">
             <div class="message-info">
                 <h4> ${data.sendUser} </h4>
-                <h5> <i class="fa fa-clock-o"></i> 2:25pm </h5>
+                <h5> <i class="fa fa-clock-o"></i> ${time} </h5>
             </div>
             <hr>
             <div class="message-text">
@@ -202,6 +218,7 @@ function creatMsgBox(data) {
 }
 
 function createMessage(data) {
+  let time = convertToTime(data.created_at);
   return `
     <div class="message ${
       data.username !== current_user_id ? "receiveMsg" : "my-message"
@@ -209,7 +226,7 @@ function createMessage(data) {
         <div class="message-body">
             <div class="message-info">
                 <h4> ${data.username} </h4>
-                <h5> <i class="fa fa-clock-o"></i> ${data.created_at} </h5>
+                <h5> <i class="fa fa-clock-o"></i> ${time} </h5>
             </div>
             <hr>
             <div class="message-text">
