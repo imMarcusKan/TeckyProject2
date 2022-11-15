@@ -31,7 +31,7 @@ roomsubmitRouter.post("/demo", async (req, res) => {
 roomsubmitRouter.post("/password", async (req, res) => {
   let { roomID, password } = req.body;
   let data = await client.query(
-    /* sql */ `select (id) from room where id = $1 and password = $2 and deleted_at > now()`,
+    /* sql */ `select (id) from room where id = $1 and password = $2 and deleted_at > now() or deleted_at is null`,
     [roomID, password]
   );
 
@@ -40,7 +40,6 @@ roomsubmitRouter.post("/password", async (req, res) => {
 
 roomsubmitRouter.post("/user_room_ID", async (req, res) => {
   try {
-    
     let { userID, roomID } = req.body;
     await client.query(
       /* sql */ `insert into room_participant (users_id, room_id) values ($1,$2)`,
@@ -49,24 +48,22 @@ roomsubmitRouter.post("/user_room_ID", async (req, res) => {
     res.json({});
   } catch (error) {
     console.log(error);
-    
-    res.json({});
 
+    res.json({});
   }
 });
 
 roomsubmitRouter.delete("/record", async (req, res) => {
   try {
     let { userID } = req.body;
-    
+
     console.log("userID when leaving room:", userID);
-  
+
     await client.query(
       /* sql */ `delete from room_participant where users_id = $1`,
       [+userID]
     );
     res.json({});
-
   } catch (error) {
     console.log(error);
     res.json({});

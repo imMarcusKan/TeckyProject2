@@ -133,6 +133,7 @@ userRouter.post("/login", async (req, res) => {
   if (match) {
     res.status(200);
     req.session["user.username"] = username;
+    req.session["user.id"] = user.id;
     console.log("username: ", req.session["user.username"]);
     return res.json({
       status: true,

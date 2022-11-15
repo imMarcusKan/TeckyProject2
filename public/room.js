@@ -12,7 +12,7 @@ async function checkPw(id, pw) {
 
   formObject["roomID"] = id;
   formObject["password"] = pw;
-
+  console.log(formObject);
   const res = await fetch("/password", {
     method: "post",
     headers: {
@@ -79,7 +79,7 @@ async function checkPassword(roomID) {
       //     }
       //   }
       // }
-      if (result[i].haspassword == true) {
+      if (result[i].haspassword) {
         const { value: password } = await Swal.fire({
           title: "Enter your password",
           name: "password",

@@ -141,10 +141,9 @@ socket.on("receive_data_from_server", (data) => {
   // showToast();
 
   msgBox.innerHTML += creatMsgBox(data);
-  messagePanel.scrollTo(
-    0,
-    document.querySelector(".messages-panel").scrollHeight
-  );
+  document
+    .querySelector(".messages-panel")
+    .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
 });
 
 /* (listen) notify other clients someone join */
@@ -181,7 +180,7 @@ submitBtn.addEventListener("click", () => {
 
   // })
 
-  socket.emit("user_message", { data: message.value });
+  socket.emit("user_message", { data: message.value, roomID });
 });
 
 function creatMsgBox(data) {
