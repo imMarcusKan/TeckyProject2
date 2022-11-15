@@ -69,16 +69,6 @@ async function checkPassword(roomID) {
   let data = await getRoomStatus();
   for (let i = 0; i < result.length; i++) {
     if (result[i].id == roomID) {
-      // for (let v of data) {
-      //   if (v.room_id == roomID) {
-      //     console.log(result[i].id, v.room_id, roomID);
-      //     if (v.roomstatus >= result[i].headcount) {
-      //       console.log("data roomstatus", data[i].roomstatus);
-      //       Swal.fire("The room is fulled");
-      //       return;
-      //     }
-      //   }
-      // }
       if (result[i].haspassword) {
         const { value: password } = await Swal.fire({
           title: "Enter your password",
@@ -111,6 +101,18 @@ async function checkPassword(roomID) {
     }
   }
 }
+function checkHead(value) {
+  let a = true;
+  console.log(value);
+  console.log(value[0]);
+  console.log(value[2]);
+  if (value[0] >= value[2]) {
+    Swal.fire("Room is fulled!");
+    a = false;
+  }
+  return a;
+}
+
 function setCategory(type) {
   let str;
   if (type == 1) {
@@ -157,8 +159,16 @@ async function createRoom(input) {
       node.querySelector(".room-category").textContent = str;
       node.querySelector(".room-id").textContent = `ROOM: ${room.id}`;
       node.querySelector(".room-content").textContent = room.topic;
-      node.querySelector(".room-button button").onclick = () =>
-        checkPassword(room.id);
+      node.querySelector(".room-button button").onclick = () => {
+        let a = checkHead(node.querySelector(".room-headcount").textContent);
+        if (!a) {
+          Swal.fire("Room is fulled!");
+          return;
+        } else {
+          checkPassword(room.id);
+        }
+      };
+
       roomStatus.textContent = `0/${room.headcount}`;
       // roomStatus.textContent = `0/${room.headcount}`;
       node.querySelector(".room-design .lock").hidden = !room.password;
