@@ -9,10 +9,40 @@ import { sendEmailToUser } from "./email";
 export const userRouter = express.Router();
 const JWT_SECRET = "Some super secret..";
 
-/////////////////////forgot password/////////////////////
+/////////////////////edit username and password/////////////////////
+userRouter.patch("/edit", async (req, res) => {
+  try {
+    let { username, password, password2 } = req.body;
+    let user_id = req.session["user.id"];
 
-userRouter.get("/forgot-password", (req, res, next) => {
-  res.render("forgot-password");
+    if (username) {
+      let result = await client.query(`select * from users where username=$1`, [
+        username,
+      ]);
+      if (result.rows[0]) {
+        return res.json({ message: "username already used" });
+      }
+      await client.query(`UPDATE users set username=$1 where id=$2`, [
+        username,
+        user_id,
+      ]);
+    }
+    if (password) {
+      if (password != password2) {
+        return res.json({ message: "password mismatch" });
+      }
+      let password_hash = await hashPassword(password);
+      await client.query(`UPDATE users set password=$1 where id=$2`, [
+        password_hash,
+        user_id,
+      ]);
+    }
+    return res.json({ message: "success" });
+  } catch (error) {
+    console.log(error);
+
+    return res.json({ message: "error" });
+  }
 });
 
 /////////////////////enter the registered email/////////////////////
@@ -20,10 +50,10 @@ userRouter.post("/forgot-password", async (req, res, next) => {
   const { email } = req.body;
 
   let data = await client.query(`select * from users where email=$1`, [email]);
-  console.log(data);
+  //console.log(data);
   let user = data.rows[0];
   if (!user) {
-    res.end("user not registered");
+    res.json("user not registered");
     return;
   }
   const secret = JWT_SECRET + user.password;
@@ -33,9 +63,9 @@ userRouter.post("/forgot-password", async (req, res, next) => {
   };
 
   const token = jwt.sign(payload, secret, { expiresIn: "600s" });
-  const link = `http://localhost:8080/reset-password/${user.id}/${token}`;
+  const link = `http://localhost:8080/reset-password.html?userId=${user.id}&token=${token}`;
   sendEmailToUser(user.email, link);
-  console.log(link);
+  //console.log(link);
   res.send("password reset link has been sent to ur email...");
 });
 
@@ -45,7 +75,7 @@ userRouter.get("/reset-password/:id/:token", async (req, res, next) => {
   const { id, token } = req.params;
 
   let data = await client.query(`select * from users where id=$1`, [id]);
-  console.log(data);
+  //console.log(data);
   let user = data.rows[0];
   if (id != user.id) {
     res.send("invalid id...");
@@ -58,23 +88,21 @@ userRouter.get("/reset-password/:id/:token", async (req, res, next) => {
     res.render("reset-password");
     console.log(payload);
   } catch (error) {
-    console.log("fuck off");
+    // console.log("fuck off");
     res.send("fuck off");
   }
 });
+
 /////////////////////enter a new password/////////////////////
 
 userRouter.post("/reset-password/:id/:token", async (req, res) => {
   const { id, token } = req.params;
   const { password, password2 } = req.body;
-  console.log(req.params);
+  //console.log(req.params);
   let data = await client.query(`select * from users where id=$1`, [id]);
 
   let user = data.rows[0];
-  if (id != user.id) {
-    res.end("invalid id...");
-    return;
-  }
+
   const secret = JWT_SECRET + user.password;
   try {
     const payload = jwt.verify(token, secret);
@@ -87,18 +115,18 @@ userRouter.post("/reset-password/:id/:token", async (req, res) => {
       hashedPassword,
       user.id,
     ]);
-    return res.end("success");
+    return res.json({ message: "success" });
   } catch (error) {
-    console.log("fuck off2");
-    return res.end("fuck off2");
+    console.log(error);
+    return res.status(400).json({ message: "expired token" });
   }
 });
 
 /////////////////////homepage get username/////////////////////
 
 userRouter.get("/current-user", (req, res) => {
-  let user = req.session["user.username"];
-  res.json(user);
+  let username = req.session["user.username"];
+  res.json(username);
 });
 /////////////////////login part/////////////////////
 userRouter.post("/login", async (req, res) => {
@@ -132,9 +160,9 @@ userRouter.post("/login", async (req, res) => {
 
   if (match) {
     res.status(200);
-    req.session["user.username"] = username;
     req.session["user.id"] = user.id;
-    console.log("username: ", req.session["user.username"]);
+    req.session["user.username"] = username;
+    // console.log("username: ", req.session["user.username"]);
     return res.json({
       status: true,
       message: `match`,
@@ -164,11 +192,13 @@ userRouter.post("/register", async (req, res) => {
 
   let password_hash = await hashPassword(password);
 
-  await client.query(
-    "INSERT INTO users (username,password,email) values ($1,$2,$3)",
+  let returnID = await client.query(
+    "INSERT INTO users (username,password,email) values ($1,$2,$3)returning id",
     [username, password_hash, email]
   );
+  let userID = returnID.rows[0].id;
   res.status(200);
+  req.session["user.id"] = userID;
   req.session["user.username"] = username;
   return res.json({ status: true, message: `success` });
 });
