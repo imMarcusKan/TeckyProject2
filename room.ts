@@ -33,7 +33,7 @@ roomRouter.get("/room_status", async (req, res) => {
 roomRouter.post("/category", async (req, res) => {
   let { categoryID } = req.body;
   let result = await client.query(
-    /* sql */ `select * from room where category_id = $1`,
+    /* sql */ `select * from room where category_id = $1 and deleted_at > now() or deleted_at is null`,
     [categoryID]
   );
   res.json(result.rows);
