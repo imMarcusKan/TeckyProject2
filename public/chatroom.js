@@ -12,31 +12,22 @@ let user_id = document.querySelector("#user_id");
 let submitBtn = document.querySelector(".send-message-button");
 let message = document.querySelector(".send-message-text");
 
-async function getID() {
-  const res = await fetch("/userID");
-  const data = await res.json();
-  let userID = data.id;
-  console.log(data.id);
-  return userID;
-}
+var username;
 
-let userID;
-
-window.onload = async function () {
-  console.log("onload window to set timeout");
+window.onload = function () {
   delTime();
-  userID = await getID();
+  fetch(`/messages/${roomID}`)
+    .then((res) => res.json())
+    .then((data) => {
+      username = data.username;
+      console.log("username", username);
+      let messages = data.messages;
+      for (let message of messages) {
+        msgBox.innerHTML += createMessage(message);
+      }
+    });
+  return username;
 };
-
-window.onload = fetch(`/messages/${roomID}`)
-  .then((res) => res.json())
-  .then((messages) => {
-    console.log(messages);
-    for (let message of messages) {
-      msgBox.innerHTML += createMessage(message);
-    }
-  });
-
 // if ((message.id = userID)) {
 //   let node = sentMsg.cloneNode(true);
 //   node.querySelector(
@@ -120,7 +111,6 @@ let isConnect = true;
 
 socket.on("hello_user", (data) => {
   // data has the content { msg: "Hello Client" }
-  console.log(data);
   current_user_id = data.userId;
 });
 
@@ -139,9 +129,12 @@ socket.on("receive_data_from_server", (data) => {
   // msgBox.innerHTML += showToast();
   // $('.toast').toast('show');
   // showToast();
-
+  console.log("data.sendUser", data.sendUser);
+  console.log("current_user", current_user_id);
   msgBox.innerHTML += creatMsgBox(data);
-  document.querySelector(".messages-panel").scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
+  document
+    .querySelector(".messages-panel")
+    .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
 });
 
 /* (listen) notify other clients someone join */
@@ -182,13 +175,29 @@ submitBtn.addEventListener("click", () => {
   //     body: JSON.stringify({message: message.value})
 
   // })
+  if (!message.value) {
+    console.log("no value sent");
+    return;
+  }
   let date = Date.now();
   socket.emit("user_message", { data: message.value, roomID, date });
+  message.value = "";
+});
+
+message.addEventListener("keypress", (event) => {
+  if (!message.value) {
+    return;
+  }
+  if (event.key === "Enter") {
+    event.preventDefault();
+    let date = Date.now();
+    socket.emit("user_message", { data: message.value, roomID, date });
+    message.value = "";
+  }
 });
 
 function convertToTime(time) {
   let times = new Date(time);
-  console.log("times", times);
   let hours = times.getHours();
   let minutes = times.getMinutes();
   var ampm = hours >= 12 ? "pm" : "am";
@@ -196,16 +205,15 @@ function convertToTime(time) {
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? "0" + minutes : minutes;
   var strTime = hours + ":" + minutes + " " + ampm;
-  console.log("strTime", strTime);
   return strTime;
 }
 
 function creatMsgBox(data) {
-  console.log("data.date", data.msgTime);
   let time = convertToTime(data.msgTime);
+
   return `
     <div class="message ${
-      data.sendUser !== current_user_id ? "receiveMsg" : "my-message"
+      data.sendUser !== username ? "receiveMsg" : "my-message"
     }">
         <div class="message-body">
             <div class="message-info">
@@ -224,9 +232,10 @@ function creatMsgBox(data) {
 
 function createMessage(data) {
   let time = convertToTime(data.created_at);
+
   return `
     <div class="message ${
-      data.username !== current_user_id ? "receiveMsg" : "my-message"
+      data.username !== username ? "receiveMsg" : "my-message"
     }">
         <div class="message-body">
             <div class="message-info">
