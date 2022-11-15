@@ -1,10 +1,7 @@
 import express from "express";
-// import { client } from "./database";
 import socketIO from "socket.io";
 import { v4 as uuidv4 } from "uuid";
 import { client } from "./database";
-
-// const genId = () => Math.floor(Math.random() * 10000000);
 
 let chatRoomRouter = express.Router();
 
@@ -29,10 +26,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
     (socket.request as any).session.save();
 
     console.log("Hello a user has enter:", userName);
-    // socket.join("room-A");
 
-    /* notify other clients someone join */
-    // socket.broadcast.emit("user_joined",{ userId: userName });
 
     socket.emit("hello_user", { data: "hello", userId: userName });
 
@@ -60,12 +54,13 @@ export function createChatRoomRouter(io: socketIO.Server) {
 
       if (true) {
         socket.join(data.room);
+         /* notify other clients someone join */
         socket.broadcast.emit("user_joined", { userId: userName, roomID: data.room });
       }
     });
 
     socket.on("current_pages", (data) => {
-      console.log(data.current_pages);
+      console.log("User:",userName,"Current_page:",data.current_pages);
       userTracker[userName]["current_pages"] = data.current_pages;
       userTracker[userName]["current_room"] = data.current_room;
 
@@ -101,8 +96,6 @@ export function createChatRoomRouter(io: socketIO.Server) {
     });
 
     let roomsDate = io.of("/").adapter.rooms;
-    console.log(roomsDate["t-lJ170IWcG8HoWUAAAB"]);
-
     let roomsList = Array.from(roomsDate).map((v) => [v[0], Array.from(v[1])]);
     console.log(roomsList);
   });
