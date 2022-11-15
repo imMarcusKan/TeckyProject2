@@ -141,9 +141,7 @@ socket.on("receive_data_from_server", (data) => {
   // showToast();
 
   msgBox.innerHTML += creatMsgBox(data);
-  document
-    .querySelector(".messages-panel")
-    .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
+  document.querySelector(".messages-panel").scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
 });
 
 /* (listen) notify other clients someone join */
