@@ -184,13 +184,11 @@ async function createRoom(input) {
         clearInterval(setup);
         return;
       }
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].room_id == room.id) {
-          if (data[i].room_id > 0) {
-            roomStatus.textContent = `${data[i].roomstatus}/${room.headcount}`;
-          }
-        }
-      }
+      // if (headcount.roomID > room.headcount) {
+      //   return "room is fulled";
+      // } else {
+      //   roomStatus.textContent = `${headcount.roomID}/${room.headcount}`;
+      // }
       if (deleteTime == null) {
         timeRemain.textContent = `No Limit Time`;
       } else {
@@ -203,6 +201,25 @@ async function createRoom(input) {
     setup();
 
     roomContainer.prepend(node);
+  }
+}
+
+function updateRoom(value) {
+  let rooms = document.querySelectorAll(".room-design");
+  console.log(rooms);
+  for (let room of rooms) {
+    let room_id = room
+      .querySelector(".room-id")
+      .textContent.replace("ROOM: ", "");
+    console.log(room_id);
+    console.log(value[room_id]);
+    if (value[room_id]) {
+      console.log("here");
+      let counts = room.querySelector(".room-headcount").textContent.split("/");
+      console.log({ counts });
+      counts[0] = value[room_id];
+      room.querySelector(".room-headcount").textContent = counts.join("/");
+    }
   }
 }
 
@@ -220,6 +237,11 @@ async function callRoomRouter() {
     body: JSON.stringify({}),
   });
 }
+
+socket.on("room_status", (value) => {
+  console.log("room_status", value);
+  updateRoom(value);
+});
 
 socket.on("connect", () => {
   console.log("connected to socket.io server");
