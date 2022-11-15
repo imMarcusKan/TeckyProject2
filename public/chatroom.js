@@ -28,21 +28,6 @@ window.onload = function () {
     });
   return username;
 };
-// if ((message.id = userID)) {
-//   let node = sentMsg.cloneNode(true);
-//   node.querySelector(
-//     ".message-info"
-//   ).innerHTML = `<h4>${message.username}</h4><h5> <i class="fa fa-clock-o"></i>${message.created_at}</h5>`;
-//   node.querySelector(".message-text").textContent = message.content;
-//   msgBox.appendChild(node);
-// } else {
-//   let node = receivedMsg.cloneNode(true);
-//   node.querySelector(
-//     ".message-info"
-//   ).innerHTML = `<h4 id=${message.id}>${message.username}</h4><h5> <i class="fa fa-clock-o"></i>${message.created_at}</h5>`;
-//   node.querySelector(".message-text").textContent = message.content;
-//   msgBox.appendChild(node);
-// }
 
 clearTimeout();
 
@@ -71,38 +56,6 @@ async function delTime() {
   }
 }
 
-// let time = await delTime();
-// let deleteTime = new Date(time);
-// let timeDiff = deleteTime.getTime() - Date.now();
-// console.log("timeDiff:", timeDiff);
-
-// window.onload = function () {
-//   setTimeout(() => {
-//     window.location.href = "/homepage.html";
-//     console.log(timeDiff);
-//   }, 30000);
-// };
-
-//Set time out to kick user back to homepage when room is expired
-
-// let msg = [
-//   {
-//     user_id: 1,
-//     nickname: "Hardy",
-//     content: "Let's go shopping!",
-//     time: "2:25PM",
-//   },
-//   {
-//     user_id: 2,
-//     nickname: "Marcus",
-//     content: "Where shall we go?",
-//     time: "2:28PM",
-//   },
-//   { user_id: 3, nickname: "Dennis", content: "MegaBox", time: "2:32PM" },
-// ];
-
-// console.log(user_id);
-
 let current_user_id;
 
 let numUsersInRoom = 0;
@@ -110,7 +63,6 @@ let numUsersInRoom = 0;
 let isConnect = true;
 
 socket.on("hello_user", (data) => {
-  // data has the content { msg: "Hello Client" }
   current_user_id = data.userId;
 });
 
@@ -122,13 +74,6 @@ socket.emit("current_pages", {
 });
 
 socket.on("receive_data_from_server", (data) => {
-  // data has the content { msg: "Hello Client" }
-  // console.log(data)
-  // console.log(data.sendUser);
-  // console.log(current_user_id);
-  // msgBox.innerHTML += showToast();
-  // $('.toast').toast('show');
-  // showToast();
   console.log("data.sendUser", data.sendUser);
   console.log("current_user", current_user_id);
   msgBox.innerHTML += creatMsgBox(data);
@@ -139,10 +84,9 @@ socket.on("receive_data_from_server", (data) => {
 
 /* (listen) notify other clients someone join */
 socket.on("user_joined", (data) => {
-  // data has the content { msg: "Hello Client" }
-  // console.log("jointed la:", data.userId);
-  console.log("showToast:", data.userId, "connected");
-  showToast(data.userId, true);
+  if (roomID == data.roomID){
+    showToast(data.userId, true);
+  }
 });
 
 /* (listen)notify other clients someone left */
@@ -153,7 +97,6 @@ socket.on("user_left", (data) => {
 
 function showToast(username, isConnect) {
   /* (library) https://github.com/apvarun/toastify-js */
-  // console.log("showToast:", username, isConnect);
   Toastify({
     text: `${username} has ${isConnect ? "enter" : "left"} the room`,
     duration: 3000,
@@ -161,15 +104,6 @@ function showToast(username, isConnect) {
 }
 
 submitBtn.addEventListener("click", () => {
-  // console.log(message.value);
-  // fetch('/message', {
-  //     method:'POST',
-  //     headers: {
-  //         'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({message: message.value})
-
-  // })
   if (!message.value) {
     console.log("no value sent");
     return;
@@ -246,27 +180,3 @@ function createMessage(data) {
     </div>
     `;
 }
-//testing
-
-// async function exitroom() {
-//   const a = await fetch("/userID");
-//   const data = await a.json();
-//   let userID = data.id;
-
-//   const formObject = {};
-
-//   formObject["userID"] = userID;
-
-//   const res = await fetch("/record", {
-//     method: "delete",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(formObject),
-//   });
-// }
-
-// let leaveroom = exitroom();
-// window.addEventListener("beforeunload", (event) => {
-//   exitroom();
-// });
