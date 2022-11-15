@@ -111,6 +111,36 @@ async function checkPassword(roomID) {
     }
   }
 }
+function setCategory(type) {
+  let str;
+  if (type == 1) {
+    str = "吹水台";
+  } else if (type == 2) {
+    str = "心事台";
+  } else if (type == 3) {
+    str = "體育台";
+  } else {
+    str = "電玩台";
+  }
+  return str;
+}
+async function selectCate(category) {
+  const formObject = {};
+
+  formObject["categoryID"] = category;
+  console.log("category", category);
+  const res = await fetch("/category", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formObject),
+  });
+  const value = await res.json();
+  console.log("value", value);
+
+  createRoom(value);
+}
 
 async function createRoom(input) {
   let data = await getRoomStatus();
@@ -118,11 +148,13 @@ async function createRoom(input) {
 
   roomContainer.textContent = "";
   for (let room of roomArr) {
+    let str = setCategory(room.category_id);
     //clone room design and add info.
     let node = roomTemplate.cloneNode(true);
     let roomStatus = node.querySelector(".room-headcount");
 
     if ("dev") {
+      node.querySelector(".room-category").textContent = str;
       node.querySelector(".room-id").textContent = `ROOM: ${room.id}`;
       node.querySelector(".room-content").textContent = room.topic;
       node.querySelector(".room-button button").onclick = () =>

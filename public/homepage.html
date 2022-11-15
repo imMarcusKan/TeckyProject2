@@ -62,28 +62,31 @@
       <div>
         <div class="row">
           <div class="col-md-10 left-box">
-            <div>choose category</div>
+            <div class="d-flex justify-content-around cate-container mt-3">
+              <div class="cate-css" onclick="selectCate(value=1)">吹水台</div>
+              <div class="cate-css" onclick="selectCate(value=2)">心事台</div>
+              <div class="cate-css" onclick="selectCate(value=3)">體育台</div>
+              <div class="cate-css" onclick="selectCate(value=4)">電玩台</div>
+            </div>
             <div>--------------------</div>
             <div class="room-container row">
               <div>No room exist yet...</div>
               <div class="room-template col-6 mt-3">
                 <div class="room-design">
                   <div class="d-flex justify-content-between">
-                    <div class="room-id"></div>
+                    <div id="room-cate" class="room-category"></div>
                     <div class="lock"><i class="fa-solid fa-lock"></i></div>
                   </div>
+                  <div class="room-id"></div>
                   <div class="room-header">
                     <div class="room-content"></div>
                     <div class="room-headcount"></div>
                   </div>
                   <div>
                     <div class="time-remain"></div>
-                    <!-- <a href="/chatroom.html"> -->
                     <div class="room-button">
                       <button>Enter</button>
                     </div>
-
-                    <!-- </a> -->
                   </div>
                 </div>
               </div>

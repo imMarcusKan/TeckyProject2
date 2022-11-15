@@ -11,7 +11,6 @@ export function createRoomRouter(io: socketIO.Server) {
     );
     
     io.emit("new-room", result.rows);
-
     res.json({});
   });
 
@@ -28,6 +27,15 @@ export function createRoomRouter(io: socketIO.Server) {
 roomRouter.get("/room_status", async (req, res) => {
   let result = await client.query(
     /* sql */ `select room_id, count(room_id) as roomstatus from room_participant group by room_id`
+  );
+  res.json(result.rows);
+});
+
+roomRouter.post("/category", async (req, res) => {
+  let { categoryID } = req.body;
+  let result = await client.query(
+    /* sql */ `select * from room where category_id = $1`,
+    [categoryID]
   );
   res.json(result.rows);
 });
