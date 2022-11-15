@@ -50,6 +50,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
         receivedData: data,
         sendUser: userName,
         msgTime: data.date,
+        id: userIDD,
       });
     });
 
