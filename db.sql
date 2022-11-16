@@ -22,7 +22,7 @@ create table room (
     haspassword boolean,
     category_id integer not null references category(id)
 );
-alter table room drop column category_id;
+
 ----------------------------------
 create table room_participant(
     id serial primary key,
@@ -36,7 +36,7 @@ create table message(
     users_id integer references users(id),
     room_id integer references room(id)
 );
--- ALTER TABLE message ALTER COLUMN created_at SET DEFAULT NOW();
+
 INSERT INTO message(content, users_id, room_id)
 values ('hi', 1, 24),
     ('bye', 2, 24);
