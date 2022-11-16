@@ -200,6 +200,7 @@ userRouter.post("/register", async (req, res) => {
   res.status(200);
   req.session["user.id"] = userID;
   req.session["user.username"] = username;
+
   return res.json({ status: true, message: `success` });
 });
 

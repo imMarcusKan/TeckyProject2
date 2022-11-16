@@ -11,6 +11,7 @@ import "./session";
 import { sessionMiddleware } from "./session";
 import { createChatRoomRouter } from "./chatroom";
 import { messageRouter } from "./message";
+import { isLoggedIn } from "./guards";
 
 const app = express();
 const server = new http.Server(app);
@@ -41,9 +42,8 @@ app.use(userRouter);
 app.use(messageRouter);
 app.use(createRoomRouter(io));
 app.use(createChatRoomRouter(io));
-
 app.use(express.static("public"));
-app.use(express.static("views"));
+app.use(isLoggedIn, express.static("public"));
 
 app.post("/message", (req, res) => {
   console.log("creating body", req.body);
