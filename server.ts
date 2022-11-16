@@ -37,13 +37,13 @@ app.get("/", (req, res) => {
   res.sendFile(path.resolve("public", "login.html"));
 });
 
+app.use(express.static("public"));
 app.use(roomsubmitRouter);
 app.use(userRouter);
 app.use(messageRouter);
 app.use(createRoomRouter(io));
 app.use(createChatRoomRouter(io));
-app.use(express.static("public"));
-app.use(isLoggedIn, express.static("public"));
+app.use(isLoggedIn, express.static("frontend"));
 
 app.post("/message", (req, res) => {
   console.log("creating body", req.body);

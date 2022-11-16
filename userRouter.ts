@@ -124,9 +124,12 @@ userRouter.post("/reset-password/:id/:token", async (req, res) => {
 
 /////////////////////homepage get username/////////////////////
 
-userRouter.get("/current-user", (req, res) => {
-  let username = req.session["user.username"];
-  res.json(username);
+userRouter.get("/current-user", async (req, res) => {
+  let username = await req.session["user.username"];
+
+  console.log(`req.session["user.username"]`, req.session["user.username"]);
+
+  return res.json(username);
 });
 /////////////////////login part/////////////////////
 userRouter.post("/login", async (req, res) => {
@@ -147,6 +150,7 @@ userRouter.post("/login", async (req, res) => {
   ]);
 
   let user = result.rows[0];
+  //console.log(user);
 
   if (!user) {
     return res.json({
@@ -158,20 +162,29 @@ userRouter.post("/login", async (req, res) => {
 
   const match = await checkPassword(password, user.password);
 
-  if (match) {
-    res.status(200);
-    req.session["user.id"] = user.id;
-    req.session["user.username"] = username;
-    // console.log("username: ", req.session["user.username"]);
-    return res.json({
-      status: true,
-      message: `match`,
-      redirectUrl: "/homepage.html",
-      username: "username",
-    });
+  if (!match) {
+    res.json({ status: false, message: `password is wrong` });
+    return;
   }
+  res.status(200);
+  req.session["user.id"] = user.id;
+  req.session["user.username"] = user.username;
 
-  return res.json({ status: false, message: `password is wrong` });
+  res.json({
+    status: true,
+    message: "match",
+    username: "username",
+    url: "/homepage.html",
+  });
+  return;
+
+  // console.log("username: ", req.session["user.username"]);
+  // return res.json({
+  //   status: true,
+  //   message: `match`,
+  //   redirectUrl: "../frontend/homepage.html",
+  //   username: "username",
+  // });
 });
 
 /////////////////////register part/////////////////////
@@ -192,14 +205,10 @@ userRouter.post("/register", async (req, res) => {
 
   let password_hash = await hashPassword(password);
 
-  let returnID = await client.query(
+  await client.query(
     "INSERT INTO users (username,password,email) values ($1,$2,$3)returning id",
     [username, password_hash, email]
   );
-  let userID = returnID.rows[0].id;
-  res.status(200);
-  req.session["user.id"] = userID;
-  req.session["user.username"] = username;
 
   return res.json({ status: true, message: `success` });
 });
