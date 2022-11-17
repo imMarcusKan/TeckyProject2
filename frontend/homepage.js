@@ -5,7 +5,6 @@ async function getName() {
   let result = await res.json();
   usernameBox.textContent = result;
 }
-
 getName();
 
 function logout() {
@@ -19,7 +18,7 @@ form.addEventListener("submit", async (e) => {
   formObject["username"] = form.username.value;
   formObject["password"] = form.password.value;
   formObject["password2"] = form.password2.value;
-  console.log(formObject);
+  //console.log(formObject);
   const res = await fetch("/edit", {
     method: "PATCH",
     headers: {

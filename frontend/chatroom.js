@@ -14,6 +14,7 @@ let message = document.querySelector(".send-message-text");
 
 var username;
 
+<<<<<<< HEAD:public/chatroom.js
 window.onload = function () {
   delTime();
   fetch(`/messages/${roomID}`)
@@ -34,10 +35,13 @@ window.onload = function () {
 
 clearTimeout();
 
+=======
+>>>>>>> 9e6644ecaa6efb1217f70fdb21a9a7a16ce188f1:frontend/chatroom.js
 async function delTime() {
   //TODO check if users have set password for room
   const res = await fetch("/rooms");
   const result = await res.json();
+  console.log("running function delTime");
   for (let i = 0; i < result.length; i++) {
     let deleteTime;
     let timeDiff;
@@ -49,6 +53,7 @@ async function delTime() {
         timeDiff = deleteTime.getTime() - Date.now();
       }
     }
+    console.log("timeDiff", timeDiff);
     if (deleteTime == null) {
       return;
     } else {
@@ -58,6 +63,21 @@ async function delTime() {
     }
   }
 }
+
+window.onload = function () {
+  delTime();
+  fetch(`/messages/${roomID}`)
+    .then((res) => res.json())
+    .then((data) => {
+      username = data.username;
+      console.log("username", username);
+      let messages = data.messages;
+      for (let message of messages) {
+        msgBox.innerHTML += createMessage(message);
+      }
+    });
+  return username;
+};
 
 let current_user_id;
 
@@ -87,7 +107,7 @@ socket.on("receive_data_from_server", (data) => {
 
 /* (listen) notify other clients someone join */
 socket.on("user_joined", (data) => {
-  if (roomID == data.roomID){
+  if (roomID == data.roomID) {
     showToast(data.userId, true);
   }
 });

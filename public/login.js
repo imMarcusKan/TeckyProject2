@@ -47,7 +47,7 @@ document
 
     if (result.status) {
       alert(result.message);
-      window.location = "/homepage.html";
+      window.location = "/frontend/homepage.html";
     } else {
       alert(result.message);
     }
@@ -77,8 +77,8 @@ document
 
     if (!result.status) {
       alert(result.message);
-    } else {
-      alert(result.message);
-      window.location = result.redirectUrl;
     }
+    alert(result.message);
+    location.href = result.url;
+    // window.location = result.redirectUrl;
   });
