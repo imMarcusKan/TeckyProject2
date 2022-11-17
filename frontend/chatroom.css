@@ -20,20 +20,15 @@ body{
   border-bottom: 0px;
 }
 
+.navigation-bar {
+  width: 100%;
+  background-color: #FFECEF;
+}
+
 .message-chat {
   width: 100%;
   overflow: hidden;
 }
-/* 
-.chat-body {
-  width: calc(100% + 17px);
-  min-height: 290px;
-  height: calc(100vh - 320px);
-  background-color: #fbfcff;
-  margin-bottom: 30px;
-  padding: 30px 5px 5px 5px;
-  overflow-y: scroll;
-} */
 
 .message {
   position: relative;
@@ -83,7 +78,7 @@ body{
   border-top: 11px solid transparent;
   border-left: none;
   border-bottom: 11px solid transparent;
-  border-right: 13px solid #0b222d;
+  border-right: 13px solid #5F6F94;
 }
 
 
@@ -174,7 +169,7 @@ body{
 
 .message.receiveMsg .message-body {
   background-color: #2da9e9;
-  border: 1px solid #0b222d;
+  border: 1px solid #5F6F94;
   color: #fff;
 }
 

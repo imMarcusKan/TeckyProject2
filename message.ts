@@ -15,8 +15,10 @@ messageRouter.get("/messages/:roomID", async (req, res) => {
   res.json({ messages: message, username: username }); // req.session["name"]
 });
 
-// messageRouter.post('/message/:roomID', async (req,res)=>{
-//     let roomID = req.params.roomID
-
-//     await client.query(/* sql*/ `insert into message(content, users_id, room_id) values ($1,$2,$3)`)
-// })
+messageRouter.get("/topic/:roomID", async (req, res) => {
+  let roomID = req.params.roomID;
+  // console.log(roomID)
+  let result = await client.query(`select * from room where id = $1`, [roomID]);
+  // console.log('result.rows', result.rows)
+  res.json(result.rows);
+});

@@ -11,14 +11,70 @@ let user_id = document.querySelector("#user_id");
 /* send message to the server */
 let submitBtn = document.querySelector(".send-message-button");
 let message = document.querySelector(".send-message-text");
+let navBarRoomID = document.getElementById("navigation-content-roomID");
+let navBarTopic = document.getElementById("navigation-content-topic");
 
 var username;
+
+window.onload = function () {
+  delTime();
+  topic();
+  fetch(`/messages/${roomID}`)
+    .then((res) => res.json())
+    .then((data) => {
+      username = data.username;
+      console.log("username", username);
+      // TODO
+      // navBarContent.textContent += "Room:" + roomID.toString()
+      let messages = data.messages;
+      for (let message of messages) {
+        msgBox.innerHTML += createMsgBox(message, false);
+        document
+          .querySelector(".messages-panel")
+          .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
+      }
+    });
+  return username;
+};
+
+async function topic() {
+  const res = await fetch(`/topic/${roomID}`);
+  const result = await res.json();
+  console.log("result.rows", result);
+  navBarRoomID.textContent += "Room:" + roomID.toString();
+  navBarTopic.textContent += result[0].topic;
+}
+
+clearTimeout();
+
+function showUserList(value) {
+  console.log("add value to user-list");
+  let userlist = document.querySelector(".nav-item .userlist");
+  if (value.length > 0) {
+    for (let v of value) {
+      userlist.textContent += v.username;
+    }
+  }
+}
+
+socket.on("user-list", (value) => {
+  showUserList(value);
+});
+
+async function callUserList() {
+  let res = await fetch(`/userlist/${roomID}`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({}),
+  });
+}
 
 async function delTime() {
   //TODO check if users have set password for room
   const res = await fetch("/rooms");
   const result = await res.json();
-  console.log("running function delTime");
   for (let i = 0; i < result.length; i++) {
     let deleteTime;
     let timeDiff;
@@ -41,33 +97,24 @@ async function delTime() {
   }
 }
 
-window.onload = function () {
-  delTime();
-  fetch(`/messages/${roomID}`)
-    .then((res) => res.json())
-    .then((data) => {
-      username = data.username;
-      console.log("username", username);
-      let messages = data.messages;
-      for (let message of messages) {
-        msgBox.innerHTML += createMessage(message);
-      }
-    });
-  return username;
-};
-
 let current_user_id;
 
 let numUsersInRoom = 0;
 
 let isConnect = true;
+let isFromSocket = true;
+
+socket.on("connect", () => {
+  console.log("testing connection");
+  callUserList();
+});
 
 socket.on("hello_user", (data) => {
   current_user_id = data.userId;
 });
 
 // "current_pages"
-socket.emit("join_room", { room: roomID, pw: "ok" });
+socket.emit("join_room", { room: roomID });
 socket.emit("current_pages", {
   current_pages: "chat_room",
   current_room: roomID,
@@ -76,7 +123,7 @@ socket.emit("current_pages", {
 socket.on("receive_data_from_server", (data) => {
   console.log("data.sendUser", data.sendUser);
   console.log("current_user", current_user_id);
-  msgBox.innerHTML += creatMsgBox(data);
+  msgBox.innerHTML += createMsgBox(data, true);
   document
     .querySelector(".messages-panel")
     .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
@@ -108,9 +155,7 @@ submitBtn.addEventListener("click", () => {
     console.log("no value sent");
     return;
   }
-  let date = Date.now();
-  socket.emit("user_message", { data: message.value, roomID, date });
-  message.value = "";
+  sendMessage();
 });
 
 message.addEventListener("keypress", (event) => {
@@ -119,17 +164,21 @@ message.addEventListener("keypress", (event) => {
   }
   if (event.key === "Enter") {
     event.preventDefault();
-    let date = Date.now();
-    socket.emit("user_message", { data: message.value, roomID, date });
-    message.value = "";
+    sendMessage();
   }
 });
+
+function sendMessage() {
+  let date = Date.now();
+  socket.emit("user_message", { data: message.value, roomID, date });
+  message.value = "";
+}
 
 function convertToTime(time) {
   let times = new Date(time);
   let hours = times.getHours();
   let minutes = times.getMinutes();
-  var ampm = hours >= 12 ? "pm" : "am";
+  var ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? "0" + minutes : minutes;
@@ -137,43 +186,23 @@ function convertToTime(time) {
   return strTime;
 }
 
-function creatMsgBox(data) {
-  let time = convertToTime(data.msgTime);
+function createMsgBox(data, isFromSocket) {
+  let time = isFromSocket
+    ? convertToTime(data.msgTime)
+    : convertToTime(data.created_at);
+  let sender = isFromSocket ? data.sendUser : data.username;
+  let message = isFromSocket ? data.receivedData.data : data.content;
 
   return `
-    <div class="message ${
-      data.sendUser !== username ? "receiveMsg" : "my-message"
-    }">
+    <div class="message ${sender !== username ? "receiveMsg" : "my-message"}">
         <div class="message-body">
             <div class="message-info">
-                <h4> ${data.sendUser} </h4>
+                <h4> ${sender} </h4>
                 <h5> <i class="fa fa-clock-o"></i> ${time} </h5>
             </div>
             <hr>
             <div class="message-text">
-               ${data.receivedData.data}
-            </div>
-        </div>
-        <br>
-    </div>
-    `;
-}
-
-function createMessage(data) {
-  let time = convertToTime(data.created_at);
-
-  return `
-    <div class="message ${
-      data.username !== username ? "receiveMsg" : "my-message"
-    }">
-        <div class="message-body">
-            <div class="message-info">
-                <h4> ${data.username} </h4>
-                <h5> <i class="fa fa-clock-o"></i> ${time} </h5>
-            </div>
-            <hr>
-            <div class="message-text">
-               ${data.content}
+               ${message}
             </div>
         </div>
         <br>

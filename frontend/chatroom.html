@@ -18,6 +18,30 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
+    <nav class="navbar navbar-dark bg-dark">
+          <div class="navbar-brand" id="navigation-content-roomID"></div>
+          <div id="navigation-content-topic" class="text-warning"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">USER-LIST</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                    <div class="userlist"></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+      </nav>
+    <!-- <div class="navigation-bar">
+        <h4 id="navigation-content-roomID"></h4>
+        <h3 id="navigation-content-topic"></h3>
+    </div> -->
     <div class="panel messages-panel">
         <div class="message-chat">
             <!-- <div class="message receiveMsg">
@@ -53,10 +77,10 @@
     </div>
     <form method="post" action="/message" class="chat-footer">
         <textarea class="send-message-text"></textarea>
-        <label class="upload-file">
+        <!-- <label class="upload-file">
             <input type="file" required="">
             <i class="fa fa-paperclip"></i>
-        </label>
+        </label> -->
         <button type="button" class="send-message-button btn-info"> <i class="fa fa-send"></i> </button>
     </form>
 </div>

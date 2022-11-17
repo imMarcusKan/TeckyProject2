@@ -78,10 +78,11 @@
         <div class="row">
           <div class="col-md-10 left-box">
             <div class="d-flex justify-content-around cate-container mt-3">
-              <div class="cate-css" onclick="selectCate(value=1)">吹水台</div>
-              <div class="cate-css" onclick="selectCate(value=2)">心事台</div>
-              <div class="cate-css" onclick="selectCate(value=3)">體育台</div>
-              <div class="cate-css" onclick="selectCate(value=4)">電玩台</div>
+              <div class="cate-css" onclick="selectCate(value=1)"><i class="fa-solid fa-comment"></i>吹水台</div>
+              <div class="cate-css" onclick="selectCate(value=2)"><i class="fa-solid fa-heart"></i>心事台</div>
+              <div class="cate-css" onclick="selectCate(value=3)"><i class="fa-solid fa-futbol"></i>體育台</div>
+              <div class="cate-css" onclick="selectCate(value=4)"><i class="fa-solid fa-gamepad"></i>電玩台</div>
+              <div class="cate-css" onclick="showAll()">Show All</div>
             </div>
             <div>--------------------</div>
             <div class="room-container row">
@@ -109,12 +110,13 @@
           </div>
           <div class="col-md-2">
             <br />
-            <div><button>1. Quick</button></div>
+            <div><button onclick="public()" class="button-92 mt-3">PUBLIC ROOM</button></div>
+            <div><button onclick="quick()" class="functionBtn mt-3">QUICK</button></div>
+            <div><button onclick="search()" class="functionBtn mt-3">SEARCH</button></div>
             <div>
-              <a href="/createRoom.html"><button>2. Create</button></a>
+              <a href="/createRoom.html"><button class="functionBtn mt-3">CREATE ROOM</button></a>
             </div>
-            <div><button>3. Search</button></div>
-            <div><button>4. public chat room</button></div>
+            <div>
           </div>
         </div>
       </div>
