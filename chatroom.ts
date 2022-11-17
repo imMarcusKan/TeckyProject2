@@ -54,7 +54,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
     });
 
     socket.on("join_room", (data) => {
-      console.log("Join Room:", data.room, "room pw(todo):", data.pw);
+      console.log("Join Room:", data.room);
       //todo pw check
       let userIDD = req.session["user.id"];
       if (true) {
@@ -121,13 +121,13 @@ export function createChatRoomRouter(io: socketIO.Server) {
     }
 
     socket.on("disconnect", (data) => {
-      console.log("reasons", data);
 
       // roomsList
 
       // const req = socket.request as express.Request;
       // let userName = req.session.user?.username;
       console.log("----------------------------------------------------------------")
+      console.log("Disconnect reasons:", data);
       console.log("Bye a user has left:", userName, "From Room:",userTracker[userName]["current_room"]);
       /* notify other clients someone left */
       // socket.broadcast.emit('user_left', {
