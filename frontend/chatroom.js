@@ -14,7 +14,6 @@ let message = document.querySelector(".send-message-text");
 
 var username;
 
-<<<<<<< HEAD:public/chatroom.js
 window.onload = function () {
   delTime();
   fetch(`/messages/${roomID}`)
@@ -35,8 +34,6 @@ window.onload = function () {
 
 clearTimeout();
 
-=======
->>>>>>> 9e6644ecaa6efb1217f70fdb21a9a7a16ce188f1:frontend/chatroom.js
 async function delTime() {
   //TODO check if users have set password for room
   const res = await fetch("/rooms");
