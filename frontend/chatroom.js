@@ -11,7 +11,7 @@ let user_id = document.querySelector("#user_id");
 /* send message to the server */
 let submitBtn = document.querySelector(".send-message-button");
 let message = document.querySelector(".send-message-text");
-let navBarContent = document.querySelector(".navbar-content");
+let navBarContent = document.getElementById("navigation-content");
 
 
 var username;
@@ -24,7 +24,7 @@ window.onload = function () {
       username = data.username;
       console.log("username", username);
       // TODO
-      // navBarContent.content = username;
+      navBarContent.textContent = "Room:" + roomID.toString()
       let messages = data.messages;
       for (let message of messages) {
         msgBox.innerHTML += createMsgBox(message, false);
@@ -35,6 +35,11 @@ window.onload = function () {
     });
   return username;
 };
+
+async function topic(){
+  const res = await fetch(`/topic/${roomID}`)
+  const result = await res.json()
+}
 
 clearTimeout();
 

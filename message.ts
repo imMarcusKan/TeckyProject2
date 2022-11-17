@@ -8,7 +8,7 @@ messageRouter.get("/messages/:roomID", async (req, res) => {
   let username = req.session["user.username"];
 
   let result = await client.query(
-    /* sql */ `select users.id, username, content, room_id, created_at from message left outer join users on message.users_id = users.id where room_id = $1 order by created_at ASC`,
+    /* sql */ `select users.id, username, content, ,topic, room_id, created_at from message left outer join users on message.users_id = users.id where room_id = $1 order by created_at ASC`,
     [roomID]
   );
   let message = result.rows;
@@ -20,3 +20,8 @@ messageRouter.get("/messages/:roomID", async (req, res) => {
 
 //     await client.query(/* sql*/ `insert into message(content, users_id, room_id) values ($1,$2,$3)`)
 // })
+messageRouter.get('/topic/:roomID',async (req,res)=>{
+  let roomID = req.params.roomID
+
+  let result = await client.query(/* sql*/ `select * from room where `)
+})
