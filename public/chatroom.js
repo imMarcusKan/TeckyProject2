@@ -24,6 +24,9 @@ window.onload = function () {
       let messages = data.messages;
       for (let message of messages) {
         msgBox.innerHTML += createMessage(message);
+        document
+        .querySelector(".messages-panel")
+        .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
       }
     });
   return username;
