@@ -11,7 +11,8 @@ let user_id = document.querySelector("#user_id");
 /* send message to the server */
 let submitBtn = document.querySelector(".send-message-button");
 let message = document.querySelector(".send-message-text");
-let navBar = document.querySelector(".navigation-bar")
+let navBarContent = document.querySelector(".navbar-content");
+
 
 var username;
 
@@ -23,7 +24,7 @@ window.onload = function () {
       username = data.username;
       console.log("username", username);
       // TODO
-      // navBar.
+      // navBarContent.content = username;
       let messages = data.messages;
       for (let message of messages) {
         msgBox.innerHTML += createMsgBox(message, false);

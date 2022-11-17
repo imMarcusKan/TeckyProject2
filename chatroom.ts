@@ -26,8 +26,8 @@ export function createChatRoomRouter(io: socketIO.Server) {
     }
 
     (socket.request as any).session.save();
-
-    console.log("Hello a user has enter:", userName);
+    console.log("----------------------------------------------------------------")
+    console.log("Hello a user has enter:", userName, "Joined Room:");
     // socket.join("room-A");
 
     /* notify other clients someone join */
@@ -127,7 +127,8 @@ export function createChatRoomRouter(io: socketIO.Server) {
 
       // const req = socket.request as express.Request;
       // let userName = req.session.user?.username;
-      console.log("Bye a user has left:", userName);
+      console.log("----------------------------------------------------------------")
+      console.log("Bye a user has left:", userName, "From Room:",userTracker[userName]["current_room"]);
       /* notify other clients someone left */
       // socket.broadcast.emit('user_left', {
       //   userId: userName
