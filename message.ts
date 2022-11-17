@@ -20,8 +20,8 @@ messageRouter.get("/messages/:roomID", async (req, res) => {
 
 //     await client.query(/* sql*/ `insert into message(content, users_id, room_id) values ($1,$2,$3)`)
 // })
-messageRouter.get('/topic/:roomID',async (req,res)=>{
-  let roomID = req.params.roomID
+// messageRouter.get('/topic/:roomID',async (req,res)=>{
+//   let roomID = req.params.roomID
 
-  let result = await client.query(/* sql*/ `select * from room where `)
-})
+//   let result = await client.query(/* sql*/ `select * from room where `)
+// })
