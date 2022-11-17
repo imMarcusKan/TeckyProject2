@@ -12,7 +12,6 @@ async function checkPw(id, pw) {
 
   formObject["roomID"] = id;
   formObject["password"] = pw;
-  console.log(formObject);
   const res = await fetch("/password", {
     method: "post",
     headers: {
@@ -29,7 +28,6 @@ async function getID() {
   const res = await fetch("/userID");
   const data = await res.json();
   let userID = data.id;
-  console.log(data.id);
   return userID;
 }
 
@@ -37,7 +35,6 @@ let userID;
 
 window.onload = async () => {
   userID = await getID();
-  console.log(userID);
 };
 
 async function getRoomStatus() {
@@ -65,7 +62,6 @@ async function checkPassword(roomID) {
   //TODO check if users have set password for room
   const res = await fetch("/rooms");
   const result = await res.json();
-  console.log("result now", result);
   let data = await getRoomStatus();
   for (let i = 0; i < result.length; i++) {
     if (result[i].id == roomID) {
@@ -103,9 +99,6 @@ async function checkPassword(roomID) {
 }
 function checkHead(value) {
   let a = true;
-  console.log(value);
-  console.log(value[0]);
-  console.log(value[2]);
   if (value[0] >= value[2]) {
     Swal.fire("Room is fulled!");
     a = false;
@@ -130,7 +123,6 @@ async function selectCate(category) {
   const formObject = {};
 
   formObject["categoryID"] = category;
-  console.log("category", category);
   const res = await fetch("/category", {
     method: "post",
     headers: {
@@ -139,7 +131,6 @@ async function selectCate(category) {
     body: JSON.stringify(formObject),
   });
   const value = await res.json();
-  console.log("value", value);
 
   createRoom(value);
 }
@@ -216,17 +207,12 @@ async function createRoom(input) {
 
 function updateRoom(value) {
   let rooms = document.querySelectorAll(".room-design");
-  console.log(rooms);
   for (let room of rooms) {
     let room_id = room
       .querySelector(".room-id")
       .textContent.replace("ROOM: ", "");
-    console.log(room_id);
-    console.log(value[room_id]);
     if (value[room_id]) {
-      console.log("here");
       let counts = room.querySelector(".room-headcount").textContent.split("/");
-      console.log({ counts });
       counts[0] = value[room_id];
       room.querySelector(".room-headcount").textContent = counts.join("/");
     }
@@ -235,7 +221,6 @@ function updateRoom(value) {
 
 socket.on("new-room", (value) => {
   createRoom(value);
-  console.log("value", value);
 });
 
 async function callRoomRouter() {
@@ -249,7 +234,6 @@ async function callRoomRouter() {
 }
 
 socket.on("room_status", (value) => {
-  console.log("room_status", value);
   updateRoom(value);
 });
 

@@ -14,6 +14,33 @@ let message = document.querySelector(".send-message-text");
 
 var username;
 
+async function delTime() {
+  //TODO check if users have set password for room
+  const res = await fetch("/rooms");
+  const result = await res.json();
+  console.log("running function delTime");
+  for (let i = 0; i < result.length; i++) {
+    let deleteTime;
+    let timeDiff;
+    if (result[i].id == roomID) {
+      if (result[i].deleted_at == null) {
+        deleteTime = null;
+      } else {
+        deleteTime = new Date(result[i].deleted_at);
+        timeDiff = deleteTime.getTime() - Date.now();
+      }
+    }
+    console.log("timeDiff", timeDiff);
+    if (deleteTime == null) {
+      return;
+    } else {
+      setTimeout(() => {
+        window.location.href = "/homepage.html";
+      }, timeDiff);
+    }
+  }
+}
+
 window.onload = function () {
   delTime();
   fetch(`/messages/${roomID}`)
@@ -28,33 +55,6 @@ window.onload = function () {
     });
   return username;
 };
-
-clearTimeout();
-
-async function delTime() {
-  //TODO check if users have set password for room
-  const res = await fetch("/rooms");
-  const result = await res.json();
-  for (let i = 0; i < result.length; i++) {
-    let deleteTime;
-    let timeDiff;
-    if (result[i].id == roomID) {
-      if (result[i].deleted_at == null) {
-        deleteTime = null;
-      } else {
-        deleteTime = new Date(result[i].deleted_at);
-        timeDiff = deleteTime.getTime() - Date.now();
-      }
-    }
-    if (deleteTime == null) {
-      return;
-    } else {
-      setTimeout(() => {
-        window.location.href = "/homepage.html";
-      }, timeDiff);
-    }
-  }
-}
 
 let current_user_id;
 
@@ -84,7 +84,7 @@ socket.on("receive_data_from_server", (data) => {
 
 /* (listen) notify other clients someone join */
 socket.on("user_joined", (data) => {
-  if (roomID == data.roomID){
+  if (roomID == data.roomID) {
     showToast(data.userId, true);
   }
 });
