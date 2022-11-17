@@ -5,16 +5,55 @@ import { hashPassword } from "./hash";
 import "./session";
 import jwt from "jsonwebtoken";
 import { sendEmailToUser } from "./email";
+import formidable from "formidable";
+import fs from "fs";
 
 export const userRouter = express.Router();
 const JWT_SECRET = "Some super secret..";
 
-/////////////////////edit username and password/////////////////////
-userRouter.patch("/edit", async (req, res) => {
-  try {
-    let { username, password, password2 } = req.body;
-    let user_id = req.session["user.id"];
+/////////////////////edit profile pic/////////////////////
+const uploadDir = "uploads";
+fs.mkdirSync(uploadDir, { recursive: true });
+const form = formidable({
+  uploadDir,
+  keepExtensions: true,
+  maxFiles: 1,
+  maxFileSize: 10 * 1024 ** 2,
+  filter: (part) => part.mimetype?.startsWith("image/") || false,
+});
+userRouter.post("/edit-profile", (req, res) => {
+  let user_id = req.session["user.id"];
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      res.status(400);
+      res.json({ err: "err in profile Pic form:" + err });
+      return;
+    }
+    let {} = fields;
+    let images = toArray(files.image);
+    let image = images[0];
+    await client.query(`UPDATE users set profile_pic=$1 where id=$2`, [
+      image.newFilename,
+      user_id,
+    ]);
+    return res.json({});
+  });
+});
 
+function toArray<T>(field: T[] | T | undefined): T[] {
+  if (Array.isArray(field)) {
+    return field;
+  }
+  if (!field) {
+    return [];
+  }
+  return [field];
+}
+/////////////////////edit username /////////////////////
+userRouter.post("/edit-username", async (req, res) => {
+  let { username } = req.body;
+  let user_id = req.session["user.id"];
+  try {
     if (username) {
       let result = await client.query(`select * from users where username=$1`, [
         username,
@@ -27,23 +66,64 @@ userRouter.patch("/edit", async (req, res) => {
         user_id,
       ]);
     }
-    if (password) {
-      if (password != password2) {
-        return res.json({ message: "password mismatch" });
-      }
-      let password_hash = await hashPassword(password);
-      await client.query(`UPDATE users set password=$1 where id=$2`, [
-        password_hash,
-        user_id,
-      ]);
+
+    return res.json({});
+  } catch (error) {
+    console.log(error);
+    return res.json({ err: "error" });
+  }
+});
+
+/////////////////////edit password/////////////////////
+
+userRouter.post("/edit-password", async (req, res) => {
+  let { password, password2 } = req.body;
+  let user_id = req.session["user.id"];
+
+  try {
+    // if (!password) {
+    //   return res.json({ err: "miss password" });
+    // }
+    if (password != password2) {
+      return res.json({ message: "password mismatch" });
     }
+    let password_hash = await hashPassword(password);
+    await client.query(`UPDATE users set password=$1 where id=$2`, [
+      password_hash,
+      user_id,
+    ]);
     return res.json({ message: "success" });
   } catch (error) {
     console.log(error);
-
-    return res.json({ message: "error" });
+    return res.json({ err: "error" });
   }
 });
+
+//       let pass = fields.password;
+//       let password: string = Array.isArray(pass) ? pass[0] : pass;
+//       let { password2 } = fields;
+//       console.log("files: ", files);
+
+//     // let { username, password, password2, profile_pic } = formidable();
+
+//     // if (username) {
+//     //   let result = await client.query(`select * from users where username=$1`, [
+//     //     username,
+//     //   ]);
+//     //   if (result.rows[0]) {
+//     //     return res.json({ message: "username already used" });
+//     //   }
+//     //   await client.query(`UPDATE users set username=$1 where id=$2`, [
+//     //     username,
+//     //     user_id,
+//     //   ]);
+//     // }
+//   } catch (error) {
+//     console.log(error);
+
+//     res.json({ err: "error" });
+//   }
+// });
 
 /////////////////////enter the registered email/////////////////////
 userRouter.post("/forgot-password", async (req, res, next) => {
@@ -190,8 +270,7 @@ userRouter.post("/login", async (req, res) => {
 /////////////////////register part/////////////////////
 
 userRouter.post("/register", async (req, res) => {
-  let { username, password, email } = req.body;
-
+  let { username, password, email, gender } = req.body;
   let result = await client.query(
     `select username from users where username=$1`,
     [username]
@@ -206,8 +285,8 @@ userRouter.post("/register", async (req, res) => {
   let password_hash = await hashPassword(password);
 
   await client.query(
-    "INSERT INTO users (username,password,email) values ($1,$2,$3)returning id",
-    [username, password_hash, email]
+    "INSERT INTO users (username,password,email,gender) values ($1,$2,$3,$4)returning id",
+    [username, password_hash, email, gender]
   );
 
   return res.json({ status: true, message: `success` });

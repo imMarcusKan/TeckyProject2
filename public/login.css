@@ -106,7 +106,7 @@ body {
   cursor: pointer;
   display: block;
   margin: auto;
-  margin-top: 50px;
+  margin-top: 10px;
   background: black;
   border: 0;
   outline: none;
@@ -117,16 +117,33 @@ body {
   font-display: 50px;
   margin: auto;
 }
-
+.gender-line {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  margin: auto;
+  margin: 10px auto;
+}
+/* #m:active {
+  background-color: #333;
+  color: white;
+}
+#f:hover {
+  background-color: #333;
+  color: white; */
+/* } */
 .check-box {
-  margin: 20px 10px 10px 10px;
-  display: inline-block;
+  display: flex;
+  margin: auto;
 }
 
 .line {
   color: #777;
+  display: flex;
+  justify-content: space-between;
+  margin: 1px 10px 9px 10px;
   font-size: 12px;
-  bottom: 48px;
+  bottom: 30px;
 }
 
 #login {
@@ -141,7 +158,7 @@ body {
   color: #777;
   font-size: 15px;
   margin-left: 10em;
-  margin-top: -1.5em;
+  margin-top: -1em;
 }
 
 .flash {

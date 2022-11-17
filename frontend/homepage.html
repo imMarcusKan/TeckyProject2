@@ -34,24 +34,44 @@
       </div>
     </header>
     <div class="container">
-      <div id="modalContainer" class="modalContainer" style="display:none">
+      <div id="modalContainer" class="modalContainer" style="display: none">
         <div class="modalbox">
-          <form action="/edit" method="PATCH" id="edit"class="edit">
+          <form
+            id="profile"
+            method="post"
+            enctype="multipart/form-data"
+            action="/edit-profile"
+          >
+            <input type="file" name="image" />
+            <input type="submit" value="submit" />
+          </form>
+          <form
+            id="editusername"
+            method="post"
+            class="editusername"
+            action="/edit-username"
+          >
             <label for="name">New Username:</label>
-            <input type="text" id="username" name="username" /><br /><br />
-            <label for="password">New Password:</label>
-            <input type="password" id="password" name="password" /><br /><br />
-            <label for="password2">Confirm Your Password:</label>
-            <input type="password" id="password2" name="password2" /><br /><br />
+            <input type="username" id="username" name="username" /><br />
             <div class="submitButton">
               <button type="submit" id="submit" class="btn">submit</button>
-            
             </div>
           </form>
-          <button id="close" class="btn">close</button>
-          <div class="heart" onclick="heart()">
-            <i class="fa-solid fa-heart fa-beat"></i>
-          </div>
+          <form
+            id="editpassword"
+            method="post"
+            class="editpassword"
+            action="/edit-password"
+          >
+            <label for="password">New Password:</label>
+            <input type="password" id="password" name="password" /><br />
+            <label for="password2">Confirm Your Password:</label>
+            <input type="password" id="password2" name="password2" /><br />
+            <div class="submitButton">
+              <button type="submit" id="submit" class="btn">submit</button>
+            </div>
+          </form>
+          <button id="close" class="btn close-btn">close</button>
         </div>
       </div>
       <div>
@@ -95,14 +115,13 @@
             </div>
             <div><button>3. Search</button></div>
             <div><button>4. public chat room</button></div>
-            <div>
           </div>
         </div>
       </div>
     </div>
 
     <footer>
-      <div id="editBtn" ><i class="fa-solid fa-gear"></i></div>
+      <div id="editBtn"><i class="fa-solid fa-gear"></i></div>
     </footer>
 
     <script src="/socket.io/socket.io.js"></script>

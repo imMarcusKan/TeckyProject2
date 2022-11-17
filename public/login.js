@@ -22,6 +22,28 @@ pwInput.addEventListener("input", (e) => {
   }
 });
 
+// const genderM = document.getElementById("m");
+// const genderF = document.getElementById("f");
+
+// function clickGender(genderStr) {
+//   if (genderStr === "M") {
+//     genderM.style.backgroundColor = "#777";
+//     genderF.style.backgroundColor = "#ffffff";
+//   } else {
+//     // F
+//     genderM.style.backgroundColor = "#ffffff";
+//     genderF.style.backgroundColor = "#777";
+//   }
+// }
+
+// genderM.addEventListener("click", (e) => {
+//   clickGender("M");
+// });
+
+// genderF.addEventListener("click", (e) => {
+//   clickGender("F");
+// });
+
 document
   .querySelector("#register")
   .addEventListener("submit", async function (event) {
@@ -34,6 +56,7 @@ document
     formObject["username"] = form.username.value;
     formObject["email"] = form.email.value;
     formObject["password"] = form.password.value;
+    formObject["gender"] = form.gender.value;
 
     const res = await fetch("/register", {
       method: "POST",
