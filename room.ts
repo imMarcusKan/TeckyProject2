@@ -38,3 +38,12 @@ roomRouter.post("/category", async (req, res) => {
   );
   res.json(result.rows);
 });
+
+roomRouter.get("/quick", async (req, res) => {
+  let result = await client.query(
+    /* sql */ `select (id) from room where haspassword = false and deleted_at > now() or deleted_at is null`
+  );
+  let data = result.rows;
+  let randomRoom = data[Math.floor(Math.random() * data.length)];
+  res.json(randomRoom);
+});

@@ -18,7 +18,6 @@ async function delTime() {
   //TODO check if users have set password for room
   const res = await fetch("/rooms");
   const result = await res.json();
-  console.log("running function delTime");
   for (let i = 0; i < result.length; i++) {
     let deleteTime;
     let timeDiff;

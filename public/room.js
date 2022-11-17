@@ -7,6 +7,48 @@ socket.emit("current_pages", { current_pages: "home_page" });
 
 roomTemplate.remove();
 
+async function quick() {
+  const res = await fetch("/quick");
+  const result = await res.json();
+  location.href = `/chatroom.html?roomID=${result.id}`;
+}
+
+async function search() {
+  const { value: content } = await Swal.fire({
+    title: "Search by keywords",
+    input: "text",
+    inputLabel: "Search by keywords",
+    inputPlaceholder: "Search",
+  });
+  console.log("front:", content);
+  if (!content) {
+    Swal.fire("Enter something to search!");
+    return;
+  }
+  const formObject = {};
+  formObject["content"] = content;
+  console.log("formObject", content);
+  const res = await fetch("/search", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formObject),
+  });
+  const result = await res.json();
+  createRoom(result);
+
+  let arr = document.querySelectorAll(".room-design");
+  if (arr.length == 0) {
+    document.querySelector(".room-container").textContent =
+      "   Sorry! No relevant content :(";
+  }
+}
+
+function showAll() {
+  location.reload();
+}
+
 async function checkPw(id, pw) {
   const formObject = {};
 
@@ -43,21 +85,6 @@ async function getRoomStatus() {
   return result;
 }
 
-async function checkRoomStatus(userID, roomID) {
-  const formObject = {};
-
-  formObject["userID"] = userID;
-  formObject["roomID"] = roomID;
-
-  const res = await fetch("/user_room_ID", {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formObject),
-  });
-}
-
 async function checkPassword(roomID) {
   //TODO check if users have set password for room
   const res = await fetch("/rooms");
@@ -84,15 +111,12 @@ async function checkPassword(roomID) {
             } else {
               location.href = `/chatroom.html?roomID=${roomID}`;
               console.log("forward to chatroom page");
-              // checkRoomStatus(userID, roomID);
             }
           },
         });
       } else {
         location.href = `/chatroom.html?roomID=${roomID}`;
         console.log("forward to chatroom page");
-
-        // checkRoomStatus(userID, roomID);
       }
     }
   }
@@ -136,7 +160,7 @@ async function selectCate(category) {
 }
 
 async function createRoom(input) {
-  let data = await getRoomStatus();
+  // let data = await getRoomStatus();
   let roomArr = input;
 
   roomContainer.textContent = "";
