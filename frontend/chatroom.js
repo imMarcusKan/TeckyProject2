@@ -18,13 +18,14 @@ var username;
 
 window.onload = function () {
   delTime();
+  topic();
   fetch(`/messages/${roomID}`)
     .then((res) => res.json())
     .then((data) => {
       username = data.username;
       console.log("username", username);
       // TODO
-      navBarContent.textContent = "Room:" + roomID.toString()
+      // navBarContent.textContent += "Room:" + roomID.toString()
       let messages = data.messages;
       for (let message of messages) {
         msgBox.innerHTML += createMsgBox(message, false);
@@ -39,6 +40,8 @@ window.onload = function () {
 async function topic(){
   const res = await fetch(`/topic/${roomID}`)
   const result = await res.json()
+  console.log("result.rows", result)
+  navBarContent.textContent += "Room:" + roomID.toString() + " " + "Topic:" + result[0].topic
 }
 
 clearTimeout();
@@ -81,7 +84,7 @@ socket.on("hello_user", (data) => {
 });
 
 // "current_pages"
-socket.emit("join_room", { room: roomID, pw: "ok" });
+socket.emit("join_room", { room: roomID});
 socket.emit("current_pages", {
   current_pages: "chat_room",
   current_room: roomID,
@@ -118,7 +121,7 @@ function showToast(username, isConnect) {
 }
 
 submitBtn.addEventListener("click", () => {
-  
+
   if (!message.value) {
     console.log("no value sent");
     return;

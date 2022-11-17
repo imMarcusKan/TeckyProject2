@@ -40,9 +40,9 @@ app.get("/", (req, res) => {
 app.use(express.static("public"));
 app.use(roomsubmitRouter);
 app.use(userRouter);
-app.use(messageRouter);
 app.use(createRoomRouter(io));
 app.use(createChatRoomRouter(io));
+app.use(messageRouter);
 app.use(isLoggedIn, express.static("frontend"));
 
 app.post("/message", (req, res) => {
