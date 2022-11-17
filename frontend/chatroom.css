@@ -20,20 +20,15 @@ body{
   border-bottom: 0px;
 }
 
+.navigation-bar {
+  width: 100%;
+  background-color: #FFECEF;
+}
+
 .message-chat {
   width: 100%;
   overflow: hidden;
 }
-/* 
-.chat-body {
-  width: calc(100% + 17px);
-  min-height: 290px;
-  height: calc(100vh - 320px);
-  background-color: #fbfcff;
-  margin-bottom: 30px;
-  padding: 30px 5px 5px 5px;
-  overflow-y: scroll;
-} */
 
 .message {
   position: relative;

@@ -12,7 +12,7 @@ roomsubmitRouter.post("/demo", async (req, res) => {
     deleteTime = null;
   } else {
     deleteTime = format(
-      add(new Date(), { seconds: addTime }),
+      add(new Date(), { minutes: addTime }),
       "yyyy-MM-dd HH:mm:ss"
     );
   }
