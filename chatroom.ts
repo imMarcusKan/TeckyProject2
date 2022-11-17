@@ -27,7 +27,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
 
     (socket.request as any).session.save();
     console.log("----------------------------------------------------------------")
-    console.log("Hello a user has enter:", userName, "Joined Room:");
+    console.log("Hello a user has enter:", userName);
     // socket.join("room-A");
 
     /* notify other clients someone join */
@@ -146,8 +146,8 @@ export function createChatRoomRouter(io: socketIO.Server) {
         });
         // updateRoomStatus(userIDD, userTracker[userName]["current_room"], false);
 
-        console.log("1", userIDD);
-        console.log("2", userTracker[userName]["current_room"]);
+        // console.log("1", userIDD);
+        // console.log("2", userTracker[userName]["current_room"]);
         updateRoomStatus(userIDD, userTracker[userName]["current_room"], false);
         socket.leave(userTracker[userName]["current_room"]);
       }
