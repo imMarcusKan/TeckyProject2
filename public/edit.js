@@ -20,6 +20,21 @@ editProfile.addEventListener("submit", async (event) => {
     body: formData,
   });
 });
+// const imgDiv = document.querySelector(".profile-pic");
+const img = document.querySelector("#photo");
+const file = document.querySelector("#file");
+// const uploadBtn = document.querySelector("#uploadBtn");
+
+file.addEventListener("change", () => {
+  const chooseFile = document.querySelector("input[type=file]").files[0];
+  if (chooseFile) {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      img.setAttribute("src", reader.result);
+    });
+    reader.readAsDataURL(chooseFile);
+  }
+});
 // function previewFile() {
 //   const preview = document.querySelector("img");
 //   const file = document.querySelector("input[type=file]").files[0];

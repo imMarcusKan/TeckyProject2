@@ -42,8 +42,11 @@
             enctype="multipart/form-data"
             action="/edit-profile"
           >
-            <input type="file" name="image" />
-            <input type="submit" value="submit" />
+          <div class="profile-pic">
+            <img src="blank.png"alt="profilePic" id="photo">
+          </div>
+            <input type="file" name="image" id="file">
+            <input type="submit" value="submit" id="uploadBtn" />
           </form>
           <form
             id="editusername"
