@@ -11,8 +11,8 @@ let user_id = document.querySelector("#user_id");
 /* send message to the server */
 let submitBtn = document.querySelector(".send-message-button");
 let message = document.querySelector(".send-message-text");
-let navBarContent = document.getElementById("navigation-content");
-
+let navBarRoomID = document.getElementById("navigation-content-roomID");
+let navBarTopic = document.getElementById("navigation-content-topic");
 
 var username;
 
@@ -30,21 +30,46 @@ window.onload = function () {
       for (let message of messages) {
         msgBox.innerHTML += createMsgBox(message, false);
         document
-        .querySelector(".messages-panel")
-        .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
+          .querySelector(".messages-panel")
+          .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
       }
     });
   return username;
 };
 
-async function topic(){
-  const res = await fetch(`/topic/${roomID}`)
-  const result = await res.json()
-  console.log("result.rows", result)
-  navBarContent.textContent += "Room:" + roomID.toString() + " " + "Topic:" + result[0].topic
+async function topic() {
+  const res = await fetch(`/topic/${roomID}`);
+  const result = await res.json();
+  console.log("result.rows", result);
+  navBarRoomID.textContent += "Room:" + roomID.toString();
+  navBarTopic.textContent += result[0].topic;
 }
 
 clearTimeout();
+
+function showUserList(value) {
+  console.log("add value to user-list");
+  let userlist = document.querySelector(".nav-item .userlist");
+  if (value.length > 0) {
+    for (let v of value) {
+      userlist.textContent += v.username;
+    }
+  }
+}
+
+socket.on("user-list", (value) => {
+  showUserList(value);
+});
+
+async function callUserList() {
+  let res = await fetch(`/userlist/${roomID}`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({}),
+  });
+}
 
 async function delTime() {
   //TODO check if users have set password for room
@@ -79,12 +104,17 @@ let numUsersInRoom = 0;
 let isConnect = true;
 let isFromSocket = true;
 
+socket.on("connect", () => {
+  console.log("testing connection");
+  callUserList();
+});
+
 socket.on("hello_user", (data) => {
   current_user_id = data.userId;
 });
 
 // "current_pages"
-socket.emit("join_room", { room: roomID});
+socket.emit("join_room", { room: roomID });
 socket.emit("current_pages", {
   current_pages: "chat_room",
   current_room: roomID,
@@ -121,12 +151,11 @@ function showToast(username, isConnect) {
 }
 
 submitBtn.addEventListener("click", () => {
-
   if (!message.value) {
     console.log("no value sent");
     return;
   }
-  sendMessage()
+  sendMessage();
 });
 
 message.addEventListener("keypress", (event) => {
@@ -135,11 +164,11 @@ message.addEventListener("keypress", (event) => {
   }
   if (event.key === "Enter") {
     event.preventDefault();
-    sendMessage()
+    sendMessage();
   }
 });
 
-function sendMessage(){
+function sendMessage() {
   let date = Date.now();
   socket.emit("user_message", { data: message.value, roomID, date });
   message.value = "";
@@ -158,14 +187,14 @@ function convertToTime(time) {
 }
 
 function createMsgBox(data, isFromSocket) {
-  let time = isFromSocket ? convertToTime(data.msgTime) : convertToTime(data.created_at);
+  let time = isFromSocket
+    ? convertToTime(data.msgTime)
+    : convertToTime(data.created_at);
   let sender = isFromSocket ? data.sendUser : data.username;
   let message = isFromSocket ? data.receivedData.data : data.content;
 
   return `
-    <div class="message ${
-      sender !== username ? "receiveMsg" : "my-message"
-    }">
+    <div class="message ${sender !== username ? "receiveMsg" : "my-message"}">
         <div class="message-body">
             <div class="message-info">
                 <h4> ${sender} </h4>
