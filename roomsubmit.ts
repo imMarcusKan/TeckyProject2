@@ -39,21 +39,6 @@ roomsubmitRouter.post("/password", async (req, res) => {
   res.json(data.rows);
 });
 
-roomsubmitRouter.post("/user_room_ID", async (req, res) => {
-  try {
-    let { userID, roomID } = req.body;
-    await client.query(
-      /* sql */ `insert into room_participant (users_id, room_id) values ($1,$2)`,
-      [userID, roomID]
-    );
-    res.json({});
-  } catch (error) {
-    console.log(error);
-
-    res.json({});
-  }
-});
-
 roomsubmitRouter.delete("/record", async (req, res) => {
   try {
     let { userID } = req.body;
@@ -69,4 +54,15 @@ roomsubmitRouter.delete("/record", async (req, res) => {
     console.log(error);
     res.json({});
   }
+});
+
+roomsubmitRouter.post("/search", async (req, res) => {
+  let { content } = req.body; //the value can be roomID or content
+  console.log("value", content);
+  let result = await client.query(
+    /* sql */ `select * from room where topic like $1 and deleted_at > now() or deleted_at is null`,
+    [`%${content}%`]
+  );
+  console.log("result", result.rows);
+  res.json(result.rows);
 });
