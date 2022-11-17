@@ -127,9 +127,18 @@ async function checkPassword(roomID) {
 }
 function checkHead(value) {
   let a = true;
-  if (value[0] >= value[2]) {
+  console.log("value", value);
+  if (value.length == 5) {
     Swal.fire("Room is fulled!");
     a = false;
+  }
+  if (value[0] >= value[2]) {
+    if (value[4]) {
+      a = true;
+    } else {
+      Swal.fire("Room is fulled!");
+      a = false;
+    }
   }
   return a;
 }
