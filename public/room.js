@@ -49,6 +49,10 @@ function showAll() {
   location.reload();
 }
 
+function public() {
+  location.href = `/chatroom.html?roomID=1`;
+}
+
 async function checkPw(id, pw) {
   const formObject = {};
 
