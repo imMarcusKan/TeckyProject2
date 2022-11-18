@@ -61,6 +61,9 @@ function showUserList(value) {
   </li></a>`;
     }
   }
+  // document.querySelector('#'+v.username).addEventListener('click', ()=>{
+
+  // })
 }
 
 socket.on("user-list", (value) => {
