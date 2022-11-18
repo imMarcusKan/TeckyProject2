@@ -149,6 +149,7 @@ socket.on("user_joined", (data) => {
 /* (listen)notify other clients someone left */
 socket.on("user_left", (data) => {
   console.log("showToast:", data.userId, "left");
+  deletedDIV(data.userId)
   showToast(data.userId, false);
 });
 
@@ -161,7 +162,6 @@ function showToast(username, isConnect) {
 }
 
 submitBtn.addEventListener("click", () => {
-  deletedDIV(username)
   if (!message.value) {
     console.log("no value sent");
     return;
