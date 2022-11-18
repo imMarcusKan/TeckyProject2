@@ -292,15 +292,13 @@ userRouter.post("/register", async (req, res) => {
   return res.json({ status: true, message: `success` });
 });
 /////////////////////pick name card/////////////////////
-userRouter.get("/namecard", async (req, res) => {
-  const user_id = req.query.user_id;
-  console.log(user_id);
-  // let result = await client.query(
-  //   `select username from users where username=$1`,
-  //   [username]
-  // );
-  // return result.rows[0];
-});
+// userRouter.get("/namecard", async (req, res) => {
+//   const user_id = req.query.user_id;
+//   let result = await client.query(
+//     `select username from users where username=$1`
+//   );
+//   return result.rows[0];
+// });
 
 /////////////////////session(ng g musk nei)/////////////////////
 
