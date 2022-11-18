@@ -33,94 +33,68 @@
         </div>
       </div>
     </header>
+
     <div class="container">
-      <div id="modalContainer" class="modalContainer" style="display: none">
-        <div class="modalbox">
-          <form
-            id="profile"
-            method="post"
-            enctype="multipart/form-data"
-            action="/edit-profile"
-          >
-          <div class="profile-pic">
-            <img src="blank.png"alt="profilePic" id="photo">
+      <div class="row">
+        <div class="col-md-10 left-box">
+          <div class="d-flex justify-content-around cate-container mt-3">
+            <div class="cate-css" onclick="selectCate(value=1)">
+              <i class="fa-solid fa-comment"></i>吹水台
+            </div>
+            <div class="cate-css" onclick="selectCate(value=2)">
+              <i class="fa-solid fa-heart"></i>心事台
+            </div>
+            <div class="cate-css" onclick="selectCate(value=3)">
+              <i class="fa-solid fa-futbol"></i>體育台
+            </div>
+            <div class="cate-css" onclick="selectCate(value=4)">
+              <i class="fa-solid fa-gamepad"></i>電玩台
+            </div>
+            <div class="cate-css" onclick="showAll()">Show All</div>
           </div>
-            <input type="file" name="image" id="file">
-            <input type="submit" value="submit" id="uploadBtn" />
-          </form>
-          <form
-            id="editusername"
-            method="post"
-            class="editusername"
-            action="/edit-username"
-          >
-            <label for="name">New Username:</label>
-            <input type="username" id="username" name="username" /><br />
-            <div class="submitButton">
-              <button type="submit" id="submit" class="btn">submit</button>
-            </div>
-          </form>
-          <form
-            id="editpassword"
-            method="post"
-            class="editpassword"
-            action="/edit-password"
-          >
-            <label for="password">New Password:</label>
-            <input type="password" id="password" name="password" /><br />
-            <label for="password2">Confirm Your Password:</label>
-            <input type="password" id="password2" name="password2" /><br />
-            <div class="submitButton">
-              <button type="submit" id="submit" class="btn">submit</button>
-            </div>
-          </form>
-          <button id="close" class="btn close-btn">close</button>
-        </div>
-      </div>
-      <div>
-        <div class="row">
-          <div class="col-md-10 left-box">
-            <div class="d-flex justify-content-around cate-container mt-3">
-              <div class="cate-css" onclick="selectCate(value=1)"><i class="fa-solid fa-comment"></i>吹水台</div>
-              <div class="cate-css" onclick="selectCate(value=2)"><i class="fa-solid fa-heart"></i>心事台</div>
-              <div class="cate-css" onclick="selectCate(value=3)"><i class="fa-solid fa-futbol"></i>體育台</div>
-              <div class="cate-css" onclick="selectCate(value=4)"><i class="fa-solid fa-gamepad"></i>電玩台</div>
-              <div class="cate-css" onclick="showAll()">Show All</div>
-            </div>
-            <div>--------------------</div>
-            <div class="room-container row">
-              <div>No room exist yet...</div>
-              <div class="room-template col-6 mt-3">
-                <div class="room-design">
-                  <div class="d-flex justify-content-between">
-                    <div id="room-cate" class="room-category"></div>
-                    <div class="lock"><i class="fa-solid fa-lock"></i></div>
-                  </div>
-                  <div class="room-id"></div>
-                  <div class="room-header">
-                    <div class="room-content"></div>
-                    <div class="room-headcount"></div>
-                  </div>
-                  <div>
-                    <div class="time-remain"></div>
-                    <div class="room-button">
-                      <button>Enter</button>
-                    </div>
+          <div>--------------------</div>
+          <div class="room-container row">
+            <div>No room exist yet...</div>
+            <div class="room-template col-6 mt-3">
+              <div class="room-design">
+                <div class="d-flex justify-content-between">
+                  <div id="room-cate" class="room-category"></div>
+                  <div class="lock"><i class="fa-solid fa-lock"></i></div>
+                </div>
+                <div class="room-id"></div>
+                <div class="room-header">
+                  <div class="room-content"></div>
+                  <div class="room-headcount"></div>
+                </div>
+                <div>
+                  <div class="time-remain"></div>
+                  <div class="room-button">
+                    <button>Enter</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-md-2">
-            <br />
-            <div><button onclick="public()" class="button-92 mt-3">PUBLIC ROOM</button></div>
-            <div><button onclick="quick()" class="functionBtn mt-3">QUICK</button></div>
-            <div><button onclick="search()" class="functionBtn mt-3">SEARCH</button></div>
-            <div>
-              <a href="/createRoom.html"><button class="functionBtn mt-3">CREATE ROOM</button></a>
-            </div>
-            <div>
+        </div>
+        <div class="col-md-2">
+          <br />
+          <div>
+            <button onclick="public()" class="button-92 mt-3">
+              PUBLIC ROOM
+            </button>
           </div>
+          <div>
+            <button onclick="quick()" class="functionBtn mt-3">QUICK</button>
+          </div>
+          <div>
+            <button onclick="search()" class="functionBtn mt-3">SEARCH</button>
+          </div>
+          <div>
+            <a href="/createRoom.html"
+              ><button class="functionBtn mt-3">CREATE ROOM</button></a
+            >
+          </div>
+          <div></div>
         </div>
       </div>
     </div>
