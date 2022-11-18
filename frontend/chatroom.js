@@ -56,7 +56,11 @@ function showUserList(value) {
     userlistContainer.innerHTML = "";
     for (let v of value) {
       console.log("for loop");
+<<<<<<< HEAD
       userlistContainer.innerHTML += ` <li class="nav-item">
+=======
+      userlistContainer.innerHTML += ` <a href=""> <li class="nav-item">
+>>>>>>> 4c627d577f10a3ecd21ab36bb0f2d50702531c5d
       <div class="userlist" id=${v.username} >${v.username}</div>
   </li></a>`;
     }
@@ -215,8 +219,8 @@ function popup2(e) {
 
 
 submitBtn.addEventListener("click", () => {
+  deletedDIV(username);
   if (!message.value) {
-    console.log("no value sent");
     return;
   }
   sendMessage();

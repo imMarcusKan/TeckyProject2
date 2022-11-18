@@ -11,22 +11,22 @@ function logout() {
   document.location.href = "/login.html";
 }
 
-async function submitForm(form) {
-  console.log(form);
-  let formData = new FormData(form);
-  let result = await fetch("/edit", {
-    method: "PATCH",
-    body: formData,
-  });
+// async function submitForm(form) {
+//   console.log(form);
+//   let formData = new FormData(form);
+//   let result = await fetch("/edit", {
+//     method: "post",
+//     body: formData,
+//   });
 
-  let json = await result.json();
-  if (json.err) {
-    console.log("Something wrong with the formidable err");
-  }
-  console.log("success reset password");
-  console.log(json);
-  return;
-}
+//   let json = await result.json();
+//   if (json.err) {
+//     console.log("Something wrong with the formidable err");
+//   }
+//   console.log("success reset password");
+//   console.log(json);
+//   return;
+// }
 
 // let form = document.querySelector("#edit");
 // form.addEventListener("submit", async (e) => {
