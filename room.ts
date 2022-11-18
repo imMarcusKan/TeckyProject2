@@ -16,12 +16,21 @@ export function createRoomRouter(io: socketIO.Server) {
   roomRouter.post("/userlist/:roomID", async (req, res) => {
     let roomID = req.params.roomID;
     let result = await client.query(
-      /* sql */ `select users_id, room_id, username from room_participant left outer join users on room_participant.users_id = users.id where room_id = $1`,
+      /* sql */ `select users_id, room_id, username, gender, profile_pic from room_participant left outer join users on room_participant.users_id = users.id where room_id = $1`,
       [roomID]
     );
     io.emit("user-list", result.rows);
     console.log("user-list", result.rows);
     res.json({});
+  });
+
+  roomRouter.get("/user-list/:username", async (req, res) => {
+    let username = req.params.username;
+    let result = await client.query(
+      /* sql */ `select id, username, profile_pic, gender from users where username = $1`,
+      [username]
+    );
+    res.json(result.rows);
   });
 
   roomRouter.get("/rooms", async (req, res) => {
