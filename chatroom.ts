@@ -160,7 +160,16 @@ export function createChatRoomRouter(io: socketIO.Server) {
     // let roomsDate = io.of("/").adapter.rooms;
     // let roomsList = Array.from(roomsDate).map((v) => [v[0], Array.from(v[1])]);
     // console.log("roomList:",roomsList);
-  });
+
+    /* invite by other */
+    socket.on("user_invited", (data) => {
+     console.log("socket.on:user_invited")
+     //todo: 改指定user接收
+     io.to(userTracker[userName]["current_room"]).emit("getInvited", {
+      userId: userName,
+    });
+    });
+    });
 
   return chatRoomRouter;
 }
