@@ -36,7 +36,7 @@ userRouter.post("/edit-profile", (req, res) => {
       image.newFilename,
       user_id,
     ]);
-    return res.json({});
+    return res.json({ message: "success" });
   });
 });
 
@@ -50,7 +50,7 @@ function toArray<T>(field: T[] | T | undefined): T[] {
   return [field];
 }
 /////////////////////edit username /////////////////////
-userRouter.post("/edit-username", async (req, res) => {
+userRouter.post("/user/username", async (req, res) => {
   let { username } = req.body;
   let user_id = req.session["user.id"];
   try {
@@ -67,7 +67,7 @@ userRouter.post("/edit-username", async (req, res) => {
       ]);
     }
 
-    return res.json({});
+    return res.json({ message: "success" });
   } catch (error) {
     console.log(error);
     return res.json({ err: "error" });
@@ -76,7 +76,7 @@ userRouter.post("/edit-username", async (req, res) => {
 
 /////////////////////edit password/////////////////////
 
-userRouter.post("/edit-password", async (req, res) => {
+userRouter.post("/user/password", async (req, res) => {
   let { password, password2 } = req.body;
   let user_id = req.session["user.id"];
 
@@ -236,7 +236,7 @@ userRouter.post("/login", async (req, res) => {
     return res.json({
       status: false,
       message: `username is wrong`,
-      redirectUrl: "/",
+      // redirectUrl: "/",
     });
   }
 
@@ -291,14 +291,6 @@ userRouter.post("/register", async (req, res) => {
 
   return res.json({ status: true, message: `success` });
 });
-/////////////////////pick name card/////////////////////
-// userRouter.get("/namecard", async (req, res) => {
-//   const user_id = req.query.user_id;
-//   let result = await client.query(
-//     `select username from users where username=$1`
-//   );
-//   return result.rows[0];
-// });
 
 /////////////////////session(ng g musk nei)/////////////////////
 

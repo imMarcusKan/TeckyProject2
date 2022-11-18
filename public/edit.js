@@ -16,12 +16,12 @@ editBtn.addEventListener("click", () => {
         id="profile"
         method="post"
         enctype="multipart/form-data"
-        action="/edit-profile"
+        action="/user/profile"
         >
         <div class="profile-pic">
         <img src="blank.png" alt="profilePic" id="photo" />
         </div>
-        <input type="file" name="image" id="file" />
+        <input type="file" name="image" id="file" required/>
         <input type="submit" value="submit" id="uploadBtn" />
         </form>
 
@@ -29,11 +29,11 @@ editBtn.addEventListener("click", () => {
         id="editusername"
         method="post"
         class="editusername"
-        action="/edit-username"
+        action="/user/username"
         style="display:none;"
         >
         <label for="name">New Username:</label>
-        <input type="username" id="username" name="username" /><br />
+        <input type="username" id="username" name="username" required/><br />
         <div class="submitButton">
         <button type="submit" id="submit" class="btn">submit</button>
         </div>
@@ -48,9 +48,9 @@ editBtn.addEventListener("click", () => {
         style="display:none;"
         >
         <label for="password">New Password:</label>
-        <input type="password" id="password" name="password" /><br />
+        <input type="password" id="password" name="password" required/><br />
         <label for="password2">Confirm Your Password:</label>
-        <input type="password" id="password2" name="password2" /><br />
+        <input type="password" id="password2" name="password2" required/><br />
         <div class="submitButton">
         <button type="submit" id="submit" class="btn">submit</button>
         </div>
@@ -65,15 +65,67 @@ editBtn.addEventListener("click", () => {
   const img = document.querySelector("#photo");
   const file = document.querySelector("#file");
   const editProfile = document.querySelector("#profile");
-
+  const editusername = document.querySelector("#editusername");
+  const editpassword = document.querySelector("#editpassword");
   editProfile.addEventListener("submit", async (event) => {
     event.preventDefault();
     let form = editProfile;
     let formData = new FormData(form);
-    let res = await fetch("/edit-profile", {
+    let res = await fetch("/user/profile", {
       method: form.method,
       body: formData,
     });
+    let result = await res.json();
+    if (result.err) {
+      alert(result.err);
+      return;
+    }
+    if (result.message) {
+      alert(result.message);
+    }
+  });
+
+  editusername.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const formObject = {};
+    formObject["username"] = editusername.username.value;
+    let res = await fetch("/user/username", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formObject),
+    });
+    let result = await res.json();
+    if (result.err) {
+      alert(result.err);
+      return;
+    }
+    if (result.message) {
+      alert(result.message);
+    }
+  });
+
+  editpassword.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const formObject = {};
+    formObject["password"] = editpassword.password.value;
+    formObject["password2"] = editpassword.password2.value;
+    let res = await fetch("/user/password", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formObject),
+    });
+    let result = await res.json();
+    if (result.err) {
+      alert(result.err);
+      return;
+    }
+    if (result.message) {
+      alert(result.message);
+    }
   });
 
   file.addEventListener("change", () => {
@@ -93,29 +145,6 @@ function changeForm(show, hide1, hide2) {
   document.querySelector(hide1).style.display = "none";
   document.querySelector(hide2).style.display = "none";
 }
-
-// function changePic() {
-//   const editusername = document.querySelector("#editusername");
-//   const editpassword = document.querySelector("#editpassword");
-//   const pic = document.querySelector("#profile");
-//   editusername.style.display = "none";
-//   editpassword.style.display = "none";
-//   pic.style.display = "unset";
-// }
-
-// function changeUsername() {
-//   const pic = document.querySelector("#profile");
-//   const editpassword = document.querySelector("#editpassword");
-//   pic.style.display = "none";
-//   editpassword.style.display = "none";
-// }
-
-// function changePassword() {
-//   const pic = document.querySelector("#profile");
-//   const editusername = document.querySelector("#editusername");
-//   pic.style.display = "none";
-//   editusername.style.display = "none";
-// }
 
 // const imgDiv = document.querySelector(".profile-pic");
 

@@ -50,3 +50,7 @@ values ('電玩台');
 select *
 from room_participant
     left outer join room on room_participant.room_id = room.id;
+alter table users
+add column gender varchar(1);
+alter table users
+add column profile_pic varchar(255);
