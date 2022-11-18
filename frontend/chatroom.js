@@ -50,15 +50,15 @@ clearTimeout();
 function showUserList(value) {
   console.log("add value to user-list");
   let userlistContainer = document.querySelector("#userlistContainer");
-  
+
   if (value.length > 0) {
-    console.log("v.value:",value.length);
-    userlistContainer.innerHTML =""
+    console.log("v.value:", value.length);
+    userlistContainer.innerHTML = "";
     for (let v of value) {
       console.log("for loop");
-      userlistContainer.innerHTML+=` <a href=""> <li class="nav-item">
+      userlistContainer.innerHTML += ` <a href=""> <li class="nav-item">
       <div class="userlist" id=${v.username} >${v.username}</div>
-  </li></a>`
+  </li></a>`;
     }
   }
 }
@@ -68,7 +68,7 @@ socket.on("user-list", (value) => {
 });
 
 function deletedDIV(username) {
-  document.querySelector(`#${username}`).remove()
+  document.querySelector(`#${username}`).remove();
 }
 
 async function callUserList() {
@@ -161,9 +161,8 @@ function showToast(username, isConnect) {
 }
 
 submitBtn.addEventListener("click", () => {
-  deletedDIV(username)
+  deletedDIV(username);
   if (!message.value) {
-    console.log("no value sent");
     return;
   }
   sendMessage();

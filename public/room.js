@@ -127,18 +127,16 @@ async function checkPassword(roomID) {
 }
 function checkHead(value) {
   let a = true;
-  console.log("value", value);
-  if (value.length == 5) {
-    Swal.fire("Room is fulled!");
+  let current = value.substring(0, 1);
+  let total = value.substring(2);
+  if (value[5]) {
     a = false;
+    return;
   }
-  if (value[0] >= value[2]) {
-    if (value[4]) {
-      a = true;
-    } else {
-      Swal.fire("Room is fulled!");
-      a = false;
-    }
+  if (+current >= total) {
+    a = false;
+  } else {
+    a = true;
   }
   return a;
 }
@@ -189,11 +187,11 @@ async function createRoom(input) {
       node.querySelector(".room-content").textContent = room.topic;
       node.querySelector(".room-button button").onclick = () => {
         let a = checkHead(node.querySelector(".room-headcount").textContent);
-        if (!a) {
-          Swal.fire("Room is fulled!");
+        if (a) {
+          checkPassword(room.id);
           return;
         } else {
-          checkPassword(room.id);
+          Swal.fire("Fulled!");
         }
       };
 
