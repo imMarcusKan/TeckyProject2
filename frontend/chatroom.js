@@ -50,15 +50,15 @@ clearTimeout();
 function showUserList(value) {
   console.log("add value to user-list");
   let userlistContainer = document.querySelector("#userlistContainer");
-  
+
   if (value.length > 0) {
-    console.log("v.value:",value.length);
-    userlistContainer.innerHTML =""
+    console.log("v.value:", value.length);
+    userlistContainer.innerHTML = "";
     for (let v of value) {
       console.log("for loop");
-      userlistContainer.innerHTML+=` <a href=""> <li class="nav-item">
+      userlistContainer.innerHTML += ` <li class="nav-item">
       <div class="userlist" id=${v.username} >${v.username}</div>
-  </li></a>`
+  </li></a>`;
     }
   }
 }
@@ -68,7 +68,7 @@ socket.on("user-list", (value) => {
 });
 
 function deletedDIV(username) {
-  document.querySelector(`#${username}`).remove()
+  document.querySelector(`#${username}`).remove();
 }
 
 async function callUserList() {
@@ -149,7 +149,7 @@ socket.on("user_joined", (data) => {
 /* (listen)notify other clients someone left */
 socket.on("user_left", (data) => {
   console.log("showToast:", data.userId, "left");
-  deletedDIV(data.userId)
+  deletedDIV(data.userId);
   showToast(data.userId, false);
 });
 
@@ -160,6 +160,59 @@ function showToast(username, isConnect) {
     duration: 3000,
   }).showToast();
 }
+
+/* click userlist user */
+document.querySelector("#userlistContainer").addEventListener("click", () => {
+  console.log("clicked userlistContainer")
+  /* invite one on one chat */
+  socket.emit("user_invited",{
+    // userId: username
+  });
+});
+
+// document.querySelector("#userlistContainer").addEventListener("click", (popup2))
+
+/* invite by other */
+socket.on("getInvited", (data) => {
+  //todo: show window: get XXXuser Invite
+  console.log("getInvited")
+});
+
+// socket.on("user_invited", (data) => {
+//   console.log("socket.on:user_invited")
+//   showToast(username, true);
+//   popup2()
+// });
+
+/* accept one on one chat */
+socket.emit("user_accepted", (data) => {
+  location.href = "/chatroom.html?user_id=" + data.userId;
+});
+
+/* got accepted */
+socket.on("user_accepted", (data) => {
+  location.href = "/chatroom.html?user_id=" + data.userId;
+});
+
+/* reject one on one chat */
+socket.emit("user_rejected", (data) => {
+});
+
+/* got reject */
+socket.on("user_rejected", (data) => {
+});
+
+
+function popup2(e) {
+  window.confirm('ConfirmBox測試成功嗎');
+  if (confirm('ConfirmBox測試成功嗎') == true) {
+      showtxt.innerHTML = 'Yes，測試成功';
+  } else {
+      showtxt.innerHTML = '您已取消確認';
+  }
+
+};
+
 
 submitBtn.addEventListener("click", () => {
   if (!message.value) {
