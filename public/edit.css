@@ -6,11 +6,9 @@
   flex-direction: column;
   position: relative;
   padding-inline: 10rem;
-  padding-top: 10rem;
+  /* padding-top: 5rem; */
   background-color: #fff;
   color: black;
-  border-radius: 25px 25px 25px 25px;
-  margin: auto;
 
   text-align: center;
 }
@@ -21,7 +19,6 @@
   left: 50%;
   transform: translateX(-50%);
   top: 0px;
-  z-index: 1001;
   padding: 10px;
   border-radius: 50%;
 }

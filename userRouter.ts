@@ -291,8 +291,17 @@ userRouter.post("/register", async (req, res) => {
 
   return res.json({ status: true, message: `success` });
 });
+/////////////////////pick name card/////////////////////
+userRouter.get("/namecard", async (req, res) => {
+  const user_id = req.query.user_id;
+  let result = await client.query(
+    `select username from users where username=$1`,
+    [username]
+  );
+  return result.rows[0];
+});
 
-/////////////////////session/////////////////////
+/////////////////////session(ng g musk nei)/////////////////////
 
 userRouter.get("/userID", async (req, res) => {
   let username = req.session["user.username"];
