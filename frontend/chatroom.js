@@ -67,7 +67,6 @@ function showUserList(value) {
       fetch(`/user-list/${current_username}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log("received data", data);
           user.addEventListener("click", () => {
             Swal.fire({
               html: `<div class="namecard">
