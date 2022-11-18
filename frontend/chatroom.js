@@ -49,10 +49,16 @@ clearTimeout();
 
 function showUserList(value) {
   console.log("add value to user-list");
-  let userlist = document.querySelector(".nav-item .userlist");
+  let userlistContainer = document.querySelector("#userlistContainer");
+  
   if (value.length > 0) {
+    console.log("v.value:",value.length);
+    userlistContainer.innerHTML =""
     for (let v of value) {
-      userlist.textContent += v.username;
+      console.log("for loop");
+      userlistContainer.innerHTML+=` <a href=""> <li class="nav-item">
+      <div class="userlist" id=${v.username} >${v.username}</div>
+  </li></a>`
     }
   }
 }
@@ -60,6 +66,10 @@ function showUserList(value) {
 socket.on("user-list", (value) => {
   showUserList(value);
 });
+
+function deletedDIV(username) {
+  document.querySelector(`#${username}`).remove()
+}
 
 async function callUserList() {
   let res = await fetch(`/userlist/${roomID}`, {
@@ -151,6 +161,7 @@ function showToast(username, isConnect) {
 }
 
 submitBtn.addEventListener("click", () => {
+  deletedDIV(username)
   if (!message.value) {
     console.log("no value sent");
     return;
