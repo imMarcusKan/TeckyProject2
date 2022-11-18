@@ -294,11 +294,12 @@ userRouter.post("/register", async (req, res) => {
 /////////////////////pick name card/////////////////////
 userRouter.get("/namecard", async (req, res) => {
   const user_id = req.query.user_id;
-  let result = await client.query(
-    `select username from users where username=$1`,
-    [username]
-  );
-  return result.rows[0];
+  console.log(user_id);
+  // let result = await client.query(
+  //   `select username from users where username=$1`,
+  //   [username]
+  // );
+  // return result.rows[0];
 });
 
 /////////////////////session(ng g musk nei)/////////////////////

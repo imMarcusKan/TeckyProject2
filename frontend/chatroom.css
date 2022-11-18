@@ -1,7 +1,6 @@
-
-body{
-    margin-top:20px;
-    background:black; 
+body {
+  margin-top: 20px;
+  background: black;
 }
 
 .messages-panel {
@@ -12,7 +11,7 @@ body{
   display: inline-block;
   border-top-left-radius: 5px;
   margin-bottom: 0;
-  overflow-y:auto
+  overflow-y: auto;
 }
 
 .messages-panel {
@@ -22,7 +21,7 @@ body{
 
 .navigation-bar {
   width: 100%;
-  background-color: #FFECEF;
+  background-color: #ffecef;
 }
 
 .message-chat {
@@ -78,9 +77,8 @@ body{
   border-top: 11px solid transparent;
   border-left: none;
   border-bottom: 11px solid transparent;
-  border-right: 13px solid #5F6F94;
+  border-right: 13px solid #5f6f94;
 }
-
 
 .message .message-info {
   width: 100%;
@@ -121,7 +119,6 @@ body{
   padding: 3px 13px 10px 13px;
   font-size: 14px;
 }
-
 
 /* my message */
 .message.my-message .message-body {
@@ -169,18 +166,16 @@ body{
 
 .message.receiveMsg .message-body {
   background-color: #2da9e9;
-  border: 1px solid #5F6F94;
+  border: 1px solid #5f6f94;
   color: #fff;
 }
 
-.message.receiveMsg .message-info > h4
- {
+.message.receiveMsg .message-info > h4 {
   color: #fff;
 }
 
-.message.receiveMsg .message-info > h5, 
-.message.receiveMsg .message-info > h5 > i
-{
+.message.receiveMsg .message-info > h5,
+.message.receiveMsg .message-info > h5 > i {
   color: #fff;
   opacity: 0.9;
 }
@@ -189,7 +184,7 @@ body{
   position: relative;
   width: 100%;
   border: 5px solid rgb(253 153 38);
-  border-top: 0px
+  border-top: 0px;
 }
 
 .chat-footer .send-message-text {
@@ -216,7 +211,7 @@ body{
   top: 0;
   bottom: 0;
   margin: auto;
-  border: 1px solid rgba(0,0,0,0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
   outline: none;
   font-weight: 600;
   border-radius: 50%;
@@ -243,4 +238,11 @@ body{
   bottom: 0;
   margin: auto;
   opacity: 0.25;
+}
+.nav-item img {
+  max-width: 3rem !important;
+  border-radius: 25%;
+}
+.profilepic img {
+  max-width: 8rem;
 }

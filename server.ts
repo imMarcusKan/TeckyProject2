@@ -38,6 +38,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(express.static("public"));
+app.use(express.static("uploads"));
 app.use(roomsubmitRouter);
 app.use(userRouter);
 app.use(createRoomRouter(io));

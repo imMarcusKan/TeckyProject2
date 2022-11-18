@@ -56,18 +56,37 @@ function showUserList(value) {
     userlistContainer.innerHTML = "";
     for (let v of value) {
       console.log("for loop");
-<<<<<<< HEAD
-      userlistContainer.innerHTML += ` <li class="nav-item">
-=======
-      userlistContainer.innerHTML += ` <a href=""> <li class="nav-item">
->>>>>>> 4c627d577f10a3ecd21ab36bb0f2d50702531c5d
+      userlistContainer.innerHTML += `<li class="nav-item d-flex">
+      <img class="w-10" src="${v.profile_pic}" alt="">
       <div class="userlist" id=${v.username} >${v.username}</div>
-  </li></a>`;
+  </li>`;
+    }
+    let userlist = document.querySelectorAll(".userlist");
+    for (let user of userlist) {
+      let current_username = user.textContent;
+      fetch(`/user-list/${current_username}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("received data", data);
+          user.addEventListener("click", () => {
+            Swal.fire({
+              html: `<div class="namecard">
+              <div class="profilepic"><img src ="${data[0].profile_pic}" class="container"></src></div>
+              <div class="username">${data[0].username}</div>
+              <div class="gender">${data[0].gender}</div>
+              <div class="create_room_counter"></div>
+              <div class="heart">
+                <i class="fa-solid fa-heart fa-beat"></i>
+              </div>
+          </div>`,
+              showCloseButton: true,
+              showCancelButton: true,
+              focusConfirm: false,
+            });
+          });
+        });
     }
   }
-  // document.querySelector('#'+v.username).addEventListener('click', ()=>{
-
-  // })
 }
 
 socket.on("user-list", (value) => {
@@ -167,59 +186,6 @@ function showToast(username, isConnect) {
     duration: 3000,
   }).showToast();
 }
-
-/* click userlist user */
-document.querySelector("#userlistContainer").addEventListener("click", () => {
-  console.log("clicked userlistContainer")
-  /* invite one on one chat */
-  socket.emit("user_invited",{
-    // userId: username
-  });
-});
-
-// document.querySelector("#userlistContainer").addEventListener("click", (popup2))
-
-/* invite by other */
-socket.on("getInvited", (data) => {
-  //todo: show window: get XXXuser Invite
-  console.log("getInvited")
-});
-
-// socket.on("user_invited", (data) => {
-//   console.log("socket.on:user_invited")
-//   showToast(username, true);
-//   popup2()
-// });
-
-/* accept one on one chat */
-socket.emit("user_accepted", (data) => {
-  location.href = "/chatroom.html?user_id=" + data.userId;
-});
-
-/* got accepted */
-socket.on("user_accepted", (data) => {
-  location.href = "/chatroom.html?user_id=" + data.userId;
-});
-
-/* reject one on one chat */
-socket.emit("user_rejected", (data) => {
-});
-
-/* got reject */
-socket.on("user_rejected", (data) => {
-});
-
-
-function popup2(e) {
-  window.confirm('ConfirmBox測試成功嗎');
-  if (confirm('ConfirmBox測試成功嗎') == true) {
-      showtxt.innerHTML = 'Yes，測試成功';
-  } else {
-      showtxt.innerHTML = '您已取消確認';
-  }
-
-};
-
 
 submitBtn.addEventListener("click", () => {
   deletedDIV(username);
