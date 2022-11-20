@@ -24,8 +24,6 @@ window.onload = function () {
     .then((data) => {
       username = data.username;
       console.log("username", username);
-      // TODO
-      // navBarContent.textContent += "Room:" + roomID.toString()
       let messages = data.messages;
       for (let message of messages) {
         msgBox.innerHTML += createMsgBox(message, false);
@@ -57,7 +55,7 @@ function showUserList(value) {
     for (let v of value) {
       console.log("for loop");
       userlistContainer.innerHTML += `<li class="nav-item d-flex">
-      <img class="w-10" src="${v.profile_pic}" alt="">
+        <img class="w-10" src="${v.profile_pic}" alt=""> 
       <div class="userlist" id=${v.username} >${v.username}</div>
   </li>`;
     }
@@ -82,17 +80,74 @@ function showUserList(value) {
               showCancelButton: true,
               focusConfirm: false,
             });
+            /* click heart to send invited */
+            let heart = document.querySelector(".heart");
+            heart.addEventListener("click", () => {
+              console.log(username,"clicked heart:", `${data[0].username}`)
+              socket.emit("user_invited",{
+                invitee: username,
+                inviter: data[0].username
+              });
+            });
           });
         });
     }
   }
 }
 
+/* can del click userlist user */
+// document.querySelector("#userlistContainer").addEventListener("click", () => {
+//   console.log("clicked userlistContainer")
+//   /* invite one on one chat */
+//   socket.emit("user_invited",{
+//     // userId: username
+//   });
+// });
+
+// document.querySelector("#userlistContainer").addEventListener("click", (popup2))
+
+/* invite by other */
+// socket.on("getInvited", (data) => {
+//   //todo: show window: get XXXuser Invite
+//   console.log("getInvited")
+// });
+// inviter get invited
+socket.on("getInvited", (data) => {
+  console.log("socket.on(getInvited) is ok");
+  // console.log("getInvited by:", data.inviter);  
+});
+
+// socket.on("user_invited", (data) => {
+//   console.log("socket.on:user_invited")
+//   showToast(username, true);
+//   popup2()
+// });
+
+/* accept one on one chat */
+socket.emit("user_accepted", (data) => {
+  location.href = "/chatroom.html?user_id=" + data.userId;
+});
+
+/* got accepted */
+socket.on("user_accepted", (data) => {
+  location.href = "/chatroom.html?user_id=" + data.userId;
+});
+
+/* reject one on one chat */
+socket.emit("user_rejected", (data) => {
+});
+
+/* got reject */
+socket.on("user_rejected", (data) => {
+});
+
+
 socket.on("user-list", (value) => {
+  console.log("user-list", value);
   showUserList(value);
 });
 
-function deletedDIV(username) {
+function deleteDIV(leftUsername) {
   document.querySelector(`#${username}`).remove();
 }
 
@@ -133,6 +188,7 @@ async function delTime() {
 }
 
 let current_user_id;
+let socketId = null;
 
 let numUsersInRoom = 0;
 
@@ -146,6 +202,8 @@ socket.on("connect", () => {
 
 socket.on("hello_user", (data) => {
   current_user_id = data.userId;
+  socketId = data.socketId;
+  console.log("user:",current_user_id, "(socketId):", socketId);
 });
 
 // "current_pages"
@@ -174,7 +232,7 @@ socket.on("user_joined", (data) => {
 /* (listen)notify other clients someone left */
 socket.on("user_left", (data) => {
   console.log("showToast:", data.userId, "left");
-  deletedDIV(data.userId);
+  deleteDIV(data.userId);
   showToast(data.userId, false);
 });
 
@@ -187,7 +245,6 @@ function showToast(username, isConnect) {
 }
 
 submitBtn.addEventListener("click", () => {
-  deletedDIV(username);
   if (!message.value) {
     return;
   }
