@@ -47,6 +47,8 @@ app.use(createChatRoomRouter(io));
 app.use(messageRouter);
 app.use(isLoggedIn, express.static("frontend"));
 
+app.use("/", isLoggedIn, express.static("protected"));
+
 app.post("/message", (req, res) => {
   console.log("creating body", req.body);
   const { message } = req.body;
