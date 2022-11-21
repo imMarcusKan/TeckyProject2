@@ -70,7 +70,7 @@ document
 
     if (result.status) {
       alert(result.message);
-      window.location = "/frontend/homepage.html";
+      window.location = "/homepage.html";
     } else {
       alert(result.message);
     }

@@ -26,7 +26,7 @@ roomsubmitRouter.post("/demo", async (req, res) => {
     /* sql */ `insert into room (topic,headcount,deleted_at,password, haspassword,category_id, user_id) values ($1,$2,$3,$4,$5,$6,$7)`,
     [content, headNumber, deleteTime, password, checkPW, category, userID]
   );
-  await client.query;
+  // await client.query;
   res.redirect("/homePage.html");
 });
 

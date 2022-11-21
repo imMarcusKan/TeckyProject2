@@ -219,3 +219,7 @@ body {
   cursor: pointer;
   padding: 0.1em 0.3em;
 }
+
+.col-md-10 {
+  overflow: scroll;
+}
