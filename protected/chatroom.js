@@ -24,6 +24,11 @@ async function isPermittedToThisPage() {
   return result.status;
 }
 
+window.onbeforeunload = function () {
+  window.location.href = "/homepage.html";
+  console.log("refreshed to homepage");
+};
+
 window.onload = async function () {
   let isAccessible = await isPermittedToThisPage();
 

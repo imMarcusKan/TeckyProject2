@@ -8,8 +8,8 @@ export async function sendEmailToUser(user_email: string, link: string) {
     },
     from: "hardyleung@outlook.com",
     to: user_email, //"leunghardy@gmail.com",
-    subject: "Hey you, awesome!",
-    html: `<b>This is the link to reset the password ${link}</b>`,
+    subject: "Reset password for chathub",
+    html: `<b>This is the link to reset the password :<br>${link}</b>`,
     text: "This is text version!",
     replyTo: "hardyleung@outlook.com",
 

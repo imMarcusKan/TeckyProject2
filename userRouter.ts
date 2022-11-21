@@ -65,6 +65,8 @@ userRouter.post("/user/username", async (req, res) => {
         username,
         user_id,
       ]);
+
+      req.session["user.username"] = username;
     }
 
     return res.json({ message: "success" });
@@ -236,14 +238,18 @@ userRouter.post("/login", async (req, res) => {
     return res.json({
       status: false,
       message: `username is wrong`,
-      // redirectUrl: "/",
+      redirectUrl: "/",
     });
   }
 
   const match = await checkPassword(password, user.password);
 
   if (!match) {
-    res.json({ status: false, message: `password is wrong` });
+    res.json({
+      status: false,
+      message: `password is wrong`,
+      redirectUrl: "/login",
+    });
     return;
   }
   res.status(200);
@@ -254,7 +260,7 @@ userRouter.post("/login", async (req, res) => {
     status: true,
     message: "match",
     username: "username",
-    url: "/homepage.html",
+    url: "/login",
   });
   return;
 
