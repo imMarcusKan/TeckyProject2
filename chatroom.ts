@@ -156,7 +156,6 @@ export function createChatRoomRouter(io: socketIO.Server) {
         console.log("----------------------------------------------------------------")
         console.log("(邀請訊號)","邀請者:",inviter,"受邀者:",invitee)
         console.log("(邀請訊號)","邀請者SocketId:",inviterSocketId,"受邀者SocketId:",inviteeSocketId)
-      //todo: 改指定user接收
       //invitee send to a inviter
         io.to(inviteeSocketId).emit("getInvited", {
           invitee: invitee,
@@ -164,14 +163,6 @@ export function createChatRoomRouter(io: socketIO.Server) {
           inviteeSocketId: inviteeSocketId,
           inviterSocketId: inviterSocketId
         })
-
-      // io.to(inviter).emit("getInvited", {
-      // //   inviter: inviter
-      // // not working
-      // });
-      //  io.to(userTracker[userName]["current_room"]).emit("getInvited", {
-      //   userId: userName,
-      // });
       });
       
       /* user accept invite */
@@ -185,6 +176,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
         let inviterSocketId = userTracker[inviter]["socketId"]
         console.log("(同意邀請訊號)","邀請者:",inviter,"受邀者:",invitee)
         console.log("(同意邀請訊號)","邀請者SocketId:",inviterSocketId,"受邀者SocketId:",inviteeSocketId)
+        /* 回覆邀請者，已被Accept */
         io.to(inviterSocketId).emit("getAccept", {
           invitee: invitee,
           inviter: inviter,

@@ -96,17 +96,10 @@ function showUserList(value) {
             /* click heart to send invited */
             let heart = document.querySelector(".heart");
             heart.addEventListener("click", () => {
-<<<<<<< HEAD:protected/chatroom.js
-              console.log(username, "clicked heart:", `${data[0].username}`);
-              socket.emit("user_invited", {
-                invitee: username,
-                inviter: data[0].username,
-=======
               console.log(username,"clicked heart:", `${data[0].username}`)
               socket.emit("user_invited",{
                 invitee: data[0].username,
                 inviter: username
->>>>>>> 50448386dd35a6e63ef10e84218008d5f764145f:frontend/chatroom.js
               });
             });
           });
