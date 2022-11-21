@@ -27,9 +27,13 @@ export function createRoomRouter(io: socketIO.Server) {
   roomRouter.get("/user-list/:username", async (req, res) => {
     let username = req.params.username;
     let result = await client.query(
-      /* sql */ `select id, username, profile_pic, gender from users where username = $1`,
+      /* sql */ `select users.id,username,profile_pic,gender,content,count(content)as count from users join room on users.id=room.user_id join category on room.category_id=category.id where username=$1 group by content,users.id`,
       [username]
     );
+    //   /* sql */ `select id, username, profile_pic, gender from users where username = $1`,
+    //   [username]
+    // );
+
     res.json(result.rows);
   });
 

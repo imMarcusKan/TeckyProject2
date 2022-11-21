@@ -246,3 +246,8 @@ body {
 .profilepic img {
   max-width: 8rem;
 }
+.content {
+  display: flex;
+  justify-content: space-around;
+  text-align: justify;
+}

@@ -1,6 +1,7 @@
 const socket = io.connect(); // You can pass in an optional parameter like "http://localhost:8080"
 let url = new URL(window.location.href);
 let roomID = url.searchParams.get("roomID");
+console.log("roomID:", roomID);
 const msgBox = document.querySelector(".message-chat");
 
 let receivedMsg = document.querySelector("#message receiveMsg");
@@ -66,16 +67,25 @@ function showUserList(value) {
         .then((res) => res.json())
         .then((data) => {
           user.addEventListener("click", () => {
+            let loopedHtml = ``;
+            for (let each of data) {
+              loopedHtml += `<div class="content"><div class="create_room_content">${each.content}</div>
+            <div class="create_room_count">${each.count}</div></div>`;
+            }
+
+            let htmlElm =
+              `<div class="namecard">
+<div class="profilepic"><img src ="${data[0].profile_pic}" class="container"></src></div>
+<div class="username">${data[0].username}</div>
+<div class="gender">${data[0].gender}</div>` +
+              loopedHtml +
+              `<div class="heart">
+  <i class="fa-solid fa-heart fa-beat"></i>
+</div>
+</div>`;
+
             Swal.fire({
-              html: `<div class="namecard">
-              <div class="profilepic"><img src ="${data[0].profile_pic}" class="container"></src></div>
-              <div class="username">${data[0].username}</div>
-              <div class="gender">${data[0].gender}</div>
-              <div class="create_room_counter"></div>
-              <div class="heart">
-                <i class="fa-solid fa-heart fa-beat"></i>
-              </div>
-          </div>`,
+              html: htmlElm,
               showCloseButton: true,
               showCancelButton: true,
               focusConfirm: false,
@@ -83,10 +93,10 @@ function showUserList(value) {
             /* click heart to send invited */
             let heart = document.querySelector(".heart");
             heart.addEventListener("click", () => {
-              console.log(username,"clicked heart:", `${data[0].username}`)
-              socket.emit("user_invited",{
+              console.log(username, "clicked heart:", `${data[0].username}`);
+              socket.emit("user_invited", {
                 invitee: username,
-                inviter: data[0].username
+                inviter: data[0].username,
               });
             });
           });
@@ -114,47 +124,49 @@ function showUserList(value) {
 // inviter get invited
 socket.on("getInvited", (data) => {
   // console.log("socket.on(getInvited) is ok");
-  // console.log("getInvited by:", data.inviter);  
+  // console.log("getInvited by:", data.inviter);
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
-      cancelButton: 'btn btn-danger',
-      confirmButton: 'btn btn-success'
+      cancelButton: "btn btn-danger",
+      confirmButton: "btn btn-success",
     },
-    buttonsStyling: false
-  })
-  
-  swalWithBootstrapButtons.fire({
-    title: data.inviter,
-    text: "邀請你展開激情對話",
-    // icon: 'warning', 
-    imageUrl: 'https://unsplash.it/400/200',
-    imageWidth: 200,
-    imageHeight: 100,
-    imageAlt: 'Custom image',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, Open Room!',
-    cancelButtonText: 'No, Reject!',
-    reverseButtons: true
-  }).then((result) => {
-    if (result.isConfirmed) {
-      userAccepted(data)
-      // swalWithBootstrapButtons.fire(
-      //   'Deleted!',
-      //   'Your file has been deleted.',
-      //   'success'
-      // )
-    } else if (
-      /* Read more about handling dismissals below */
-      result.dismiss === Swal.DismissReason.cancel
-    ) {
-      userRejected(data)
-      // swalWithBootstrapButtons.fire(
-      //   'Cancelled',
-      //   'Your imaginary file is safe :)',
-      //   'error'
-      // )
-    }
-  })
+    buttonsStyling: false,
+  });
+
+  swalWithBootstrapButtons
+    .fire({
+      title: data.inviter,
+      text: "邀請你展開激情對話",
+      // icon: 'warning',
+      imageUrl: "https://unsplash.it/400/200",
+      imageWidth: 200,
+      imageHeight: 100,
+      imageAlt: "Custom image",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Open Room!",
+      cancelButtonText: "No, Reject!",
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        userAccepted(data);
+        // swalWithBootstrapButtons.fire(
+        //   'Deleted!',
+        //   'Your file has been deleted.',
+        //   'success'
+        // )
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        userRejected(data);
+        // swalWithBootstrapButtons.fire(
+        //   'Cancelled',
+        //   'Your imaginary file is safe :)',
+        //   'error'
+        // )
+      }
+    });
 });
 
 // socket.on("user_invited", (data) => {
@@ -164,12 +176,12 @@ socket.on("getInvited", (data) => {
 // });
 
 /* accept one on one chat */
-function userAccepted (data) {
+function userAccepted(data) {
   // console.log("userAccepted")
-  console.log("userAccepted,data:", data)
+  console.log("userAccepted,data:", data);
   //todo : create room and join room （踢user去新room）
   // location.href = "/chatroom.html?user_id=" + data.userId;
-  socket.emit("user_accepted",(data) =>{});
+  socket.emit("user_accepted", (data) => {});
 }
 // socket.emit("user_accepted", (data) => {
 //   location.href = "/chatroom.html?user_id=" + data.userId;
@@ -181,19 +193,16 @@ socket.on("user_accepted", (data) => {
 });
 
 /* reject one on one chat */
-function userRejected (data) {
-  console.log("userRejected")
-  console.log("data:", data)
-  socket.emit("user_rejected",(data) =>{
-  });
+function userRejected(data) {
+  console.log("userRejected");
+  console.log("data:", data);
+  socket.emit("user_rejected", (data) => {});
 }
 // socket.emit("user_rejected", (data) => {
 // });
 
 /* got reject */
-socket.on("user_rejected", (data) => {
-});
-
+socket.on("user_rejected", (data) => {});
 
 socket.on("user-list", (value) => {
   console.log("user-list", value);
@@ -256,7 +265,7 @@ socket.on("connect", () => {
 socket.on("hello_user", (data) => {
   current_user_id = data.userId;
   socketId = data.socketId;
-  console.log("user:",current_user_id, "(socketId):", socketId);
+  console.log("user:", current_user_id, "(socketId):", socketId);
 });
 
 // "current_pages"
