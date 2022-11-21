@@ -1,6 +1,5 @@
 import express from "express";
 import { client } from "./database";
-
 export let messageRouter = express.Router();
 
 messageRouter.get("/messages/:roomID", async (req, res) => {

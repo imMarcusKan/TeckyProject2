@@ -21,7 +21,7 @@ const form = formidable({
   maxFileSize: 10 * 1024 ** 2,
   filter: (part) => part.mimetype?.startsWith("image/") || false,
 });
-userRouter.post("/edit-profile", (req, res) => {
+userRouter.post("/user/profile", (req, res) => {
   let user_id = req.session["user.id"];
   form.parse(req, async (err, fields, files) => {
     if (err) {
