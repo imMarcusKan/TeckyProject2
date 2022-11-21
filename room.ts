@@ -20,7 +20,7 @@ export function createRoomRouter(io: socketIO.Server) {
       [roomID]
     );
     io.emit("user-list", result.rows);
-    console.log("user-list", result.rows);
+    // console.log("user-list", result.rows);
     res.json({});
   });
 

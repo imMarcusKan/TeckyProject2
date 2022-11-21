@@ -85,8 +85,8 @@ function showUserList(value) {
             heart.addEventListener("click", () => {
               console.log(username,"clicked heart:", `${data[0].username}`)
               socket.emit("user_invited",{
-                invitee: username,
-                inviter: data[0].username
+                invitee: data[0].username,
+                inviter: username
               });
             });
           });
@@ -169,15 +169,19 @@ function userAccepted (data) {
   console.log("userAccepted,data:", data)
   //todo : create room and join room （踢user去新room）
   // location.href = "/chatroom.html?user_id=" + data.userId;
-  socket.emit("user_accepted",(data) =>{});
+  socket.emit("user_accept_invite",{
+    data: data
+  });
 }
 // socket.emit("user_accepted", (data) => {
 //   location.href = "/chatroom.html?user_id=" + data.userId;
 // });
 
 /* got accepted */
-socket.on("user_accepted", (data) => {
-  location.href = "/chatroom.html?user_id=" + data.userId;
+socket.on("getAccept", (data) => {
+  // todo : 對面接受邀請，踢user去新room
+  // location.href = "/chatroom.html?user_id=" + data.userId;
+  // location.href = "/chatroom.html?user_id=" + data.userId;
 });
 
 /* reject one on one chat */
