@@ -10,14 +10,6 @@ export function createRoomRouter(io: socketIO.Server) {
       /* sql */ `select * from room where (deleted_at > now() or deleted_at is null) and id >2`
     );
     io.emit("new-room", result.rows);
-
-    io.on("secretmessage", (data: any) => {
-      console.log("received data secretmessage", data);
-      io.to(data.socketID).emit("sentMessage", {
-        data,
-      });
-    });
-
     res.json({});
   });
 
@@ -38,10 +30,6 @@ export function createRoomRouter(io: socketIO.Server) {
       /* sql */ `select users.id,username,profile_pic,gender,content,count(content)as count from users join room on users.id=room.user_id join category on room.category_id=category.id where username=$1 group by content,users.id`,
       [username]
     );
-    //   /* sql */ `select id, username, profile_pic, gender from users where username = $1`,
-    //   [username]
-    // );
-
     res.json(result.rows);
   });
 
