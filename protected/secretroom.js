@@ -14,6 +14,8 @@ let sentMsg = document.querySelector("#message my-message");
 let messagePanel = document.querySelector(".message-panel");
 
 /* send message to the server */
+
+
 let navBarRoomID = document.getElementById("navigation-content-roomID");
 let navBarTopic = document.getElementById("navigation-content-topic");
 
@@ -25,6 +27,7 @@ window.onload = function () {
       username = data[0].username;
     });
     console.log("roomID:",roomID)
+    navBarTopic.textContent = user_id + " 與 " + otherUser + " 的私人聊天室";
 };
 
 console.log(user_id, otherUser, socketID);

@@ -21,7 +21,8 @@ body {
 
 .navigation-bar {
   width: 100%;
-  background-color: #ffecef;
+  background-color: rgb(253 153 38);
+  text-align: center;
 }
 
 .message-chat {
