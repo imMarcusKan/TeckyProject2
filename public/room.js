@@ -2,6 +2,7 @@ let roomTemplate = document.querySelector(".room-template");
 let roomContainer = roomTemplate.parentElement;
 let socket = io.connect();
 let counter = document.querySelector("#counter");
+let createRoomBtn = document.querySelector(".functionBtn");
 
 socket.emit("current_pages", { current_pages: "home_page" });
 

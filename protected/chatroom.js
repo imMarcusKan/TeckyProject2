@@ -16,7 +16,20 @@ let navBarTopic = document.getElementById("navigation-content-topic");
 
 var username;
 
-window.onload = function () {
+async function isPermittedToThisPage() {
+  let res = await fetch(`/getPermissionToRoom?roomID=${roomID}`);
+  let result = await res.json();
+
+  return result.status;
+}
+
+window.onload = async function () {
+  let isAccessible = await isPermittedToThisPage();
+
+  if (!isAccessible) {
+    location.href = "/homepage.html";
+  }
+
   delTime();
   topic();
   fetch(`/messages/${roomID}`)
@@ -83,10 +96,17 @@ function showUserList(value) {
             /* click heart to send invited */
             let heart = document.querySelector(".heart");
             heart.addEventListener("click", () => {
+<<<<<<< HEAD:protected/chatroom.js
+              console.log(username, "clicked heart:", `${data[0].username}`);
+              socket.emit("user_invited", {
+                invitee: username,
+                inviter: data[0].username,
+=======
               console.log(username,"clicked heart:", `${data[0].username}`)
               socket.emit("user_invited",{
                 invitee: data[0].username,
                 inviter: username
+>>>>>>> 50448386dd35a6e63ef10e84218008d5f764145f:frontend/chatroom.js
               });
             });
           });
@@ -98,58 +118,64 @@ function showUserList(value) {
 // inviter get invited
 socket.on("getInvited", (data) => {
   // console.log("socket.on(getInvited) is ok");
-  // console.log("getInvited by:", data.inviter);  
+  // console.log("getInvited by:", data.inviter);
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
-      cancelButton: 'btn btn-danger',
-      confirmButton: 'btn btn-success'
+      cancelButton: "btn btn-danger",
+      confirmButton: "btn btn-success",
     },
-    buttonsStyling: false
-  })
-  
-  swalWithBootstrapButtons.fire({
-    title: data.inviter,
-    text: "邀請你展開激情對話",
-    // icon: 'warning', 
-    imageUrl: 'https://unsplash.it/400/200',
-    imageWidth: 200,
-    imageHeight: 100,
-    imageAlt: 'Custom image',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, Open Room!',
-    cancelButtonText: 'No, Reject!',
-    reverseButtons: true
-  }).then((result) => {
-    if (result.isConfirmed) {
-      userAccepted(data)
-      // swalWithBootstrapButtons.fire(
-      //   'Deleted!',
-      //   'Your file has been deleted.',
-      //   'success'
-      // )
-    } else if (
-      /* Read more about handling dismissals below */
-      result.dismiss === Swal.DismissReason.cancel
-    ) {
-      userRejected(data)
-      // swalWithBootstrapButtons.fire(
-      //   'Cancelled',
-      //   'Your imaginary file is safe :)',
-      //   'error'
-      // )
-    }
-  })
+    buttonsStyling: false,
+  });
+
+  swalWithBootstrapButtons
+    .fire({
+      title: data.inviter,
+      text: "邀請你展開激情對話",
+      // icon: 'warning',
+      imageUrl: "https://unsplash.it/400/200",
+      imageWidth: 200,
+      imageHeight: 100,
+      imageAlt: "Custom image",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Open Room!",
+      cancelButtonText: "No, Reject!",
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        userAccepted(data);
+        // swalWithBootstrapButtons.fire(
+        //   'Deleted!',
+        //   'Your file has been deleted.',
+        //   'success'
+        // )
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        userRejected(data);
+        // swalWithBootstrapButtons.fire(
+        //   'Cancelled',
+        //   'Your imaginary file is safe :)',
+        //   'error'
+        // )
+      }
+    });
 });
 
 /* accept one on one chat */
-function userAccepted (data) {
+function userAccepted(data) {
   // console.log("userAccepted")
-  console.log("userAccepted,data:", data)
+  console.log("userAccepted,data:", data);
   //todo : create room and join room （踢user去新room）
   // location.href = "/chatroom.html?user_id=" + data.userId;
+<<<<<<< HEAD:protected/chatroom.js
+  socket.emit("user_accepted", (data) => {});
+=======
   socket.emit("user_accept_invite",{
     data: data
   });
+>>>>>>> 50448386dd35a6e63ef10e84218008d5f764145f:frontend/chatroom.js
 }
 
 
@@ -161,17 +187,14 @@ socket.on("getAccept", (data) => {
 });
 
 /* reject one on one chat */
-function userRejected (data) {
-  console.log("userRejected")
-  console.log("data:", data)
-  socket.emit("user_rejected",(data) =>{
-  });
+function userRejected(data) {
+  console.log("userRejected");
+  console.log("data:", data);
+  socket.emit("user_rejected", (data) => {});
 }
 
 /* got reject */
-socket.on("user_rejected", (data) => {
-});
-
+socket.on("user_rejected", (data) => {});
 
 socket.on("user-list", (value) => {
   console.log("user-list", value);
@@ -234,7 +257,7 @@ socket.on("connect", () => {
 socket.on("hello_user", (data) => {
   current_user_id = data.userId;
   socketId = data.socketId;
-  console.log("user:",current_user_id, "(socketId):", socketId);
+  console.log("user:", current_user_id, "(socketId):", socketId);
 });
 
 // "current_pages"
