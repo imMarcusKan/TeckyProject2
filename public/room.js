@@ -86,11 +86,6 @@ window.onload = async () => {
   updateRoomWhenLoadedPage(result); //looking for headcount value
 };
 
-window.onbeforeunload = function () {
-  window.location.href = "/homepage.html";
-  console.log("refreshed to homepage");
-};
-
 async function getRoomStatus() {
   const res = await fetch("/room_status");
   const result = await res.json();
