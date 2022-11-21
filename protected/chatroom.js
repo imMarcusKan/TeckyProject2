@@ -92,8 +92,8 @@ function showUserList(value) {
             }
 
             let htmlElm =
-              `<div class="namecard">
-<div class="profilepic"><img src ="${data[0].profile_pic}" class="container"></src></div>
+              `<div class="nameCard">
+<div class="profilepic"><img src ="${data[0].profile_pic}" class="container"/></div>
 <div class="username">${data[0].username}</div>
 <div class="gender">${data[0].gender}</div>` +
               loopedHtml +
