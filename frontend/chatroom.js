@@ -113,8 +113,48 @@ function showUserList(value) {
 // });
 // inviter get invited
 socket.on("getInvited", (data) => {
-  console.log("socket.on(getInvited) is ok");
+  // console.log("socket.on(getInvited) is ok");
   // console.log("getInvited by:", data.inviter);  
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      cancelButton: 'btn btn-danger',
+      confirmButton: 'btn btn-success'
+    },
+    buttonsStyling: false
+  })
+  
+  swalWithBootstrapButtons.fire({
+    title: data.inviter,
+    text: "邀請你展開激情對話",
+    // icon: 'warning', 
+    imageUrl: 'https://unsplash.it/400/200',
+    imageWidth: 200,
+    imageHeight: 100,
+    imageAlt: 'Custom image',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Open Room!',
+    cancelButtonText: 'No, Reject!',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      userAccepted(data)
+      // swalWithBootstrapButtons.fire(
+      //   'Deleted!',
+      //   'Your file has been deleted.',
+      //   'success'
+      // )
+    } else if (
+      /* Read more about handling dismissals below */
+      result.dismiss === Swal.DismissReason.cancel
+    ) {
+      userRejected(data)
+      // swalWithBootstrapButtons.fire(
+      //   'Cancelled',
+      //   'Your imaginary file is safe :)',
+      //   'error'
+      // )
+    }
+  })
 });
 
 // socket.on("user_invited", (data) => {
@@ -124,9 +164,16 @@ socket.on("getInvited", (data) => {
 // });
 
 /* accept one on one chat */
-socket.emit("user_accepted", (data) => {
-  location.href = "/chatroom.html?user_id=" + data.userId;
-});
+function userAccepted (data) {
+  // console.log("userAccepted")
+  console.log("userAccepted,data:", data)
+  //todo : create room and join room （踢user去新room）
+  // location.href = "/chatroom.html?user_id=" + data.userId;
+  socket.emit("user_accepted",(data) =>{});
+}
+// socket.emit("user_accepted", (data) => {
+//   location.href = "/chatroom.html?user_id=" + data.userId;
+// });
 
 /* got accepted */
 socket.on("user_accepted", (data) => {
@@ -134,8 +181,14 @@ socket.on("user_accepted", (data) => {
 });
 
 /* reject one on one chat */
-socket.emit("user_rejected", (data) => {
-});
+function userRejected (data) {
+  console.log("userRejected")
+  console.log("data:", data)
+  socket.emit("user_rejected",(data) =>{
+  });
+}
+// socket.emit("user_rejected", (data) => {
+// });
 
 /* got reject */
 socket.on("user_rejected", (data) => {
