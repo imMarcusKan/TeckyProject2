@@ -69,13 +69,18 @@ function showUserList(value) {
           user.addEventListener("click", () => {
             let loopedHtml = ``;
             for (let each of data) {
-              loopedHtml += `<div class="content"><div class="create_room_content">${each.content}</div>
-            <div class="create_room_count">${each.count}</div></div>`;
+              if (each.content == null) {
+                loopedHtml += `<div class="content"><div class="create_room_content">開房記錄</div>
+              <div class="create_room_count">0</div></div>`;
+              } else {
+                loopedHtml += `<div class="content"><div class="create_room_content">${each.content}</div>
+              <div class="create_room_count">${each.count}</div></div>`;
+              }
             }
 
             let htmlElm =
-              `<div class="namecard">
-<div class="profilepic"><img src ="${data[0].profile_pic}" class="container"></src></div>
+              `<div class="nameCard">
+<div class="profilepic"><img src ="${data[0].profile_pic}" class="container"/></div>
 <div class="username">${data[0].username}</div>
 <div class="gender">${data[0].gender}</div>` +
               loopedHtml +
