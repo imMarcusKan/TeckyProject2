@@ -4,13 +4,7 @@ import socketIO from "socket.io";
 import { v4 as uuidv4 } from "uuid";
 import { client } from "./database";
 
-// const genId = () => Math.floor(Math.random() * 10000000);
-
 let chatRoomRouter = express.Router();
-
-// let myRoomList = {}
-
-// myRoomList["room"].push("tom")
 
 let userTracker = {} as any;
 
@@ -20,6 +14,8 @@ export function createChatRoomRouter(io: socketIO.Server) {
   io.on("connection", async function (socket) {
     const req = socket.request as express.Request;
     let userName = req.session["user.username"] || uuidv4();
+    let socketId = socket.id;
+
 
     if (!userTracker[userName]) {
       userTracker[userName] = {};
@@ -28,19 +24,15 @@ export function createChatRoomRouter(io: socketIO.Server) {
     (socket.request as any).session.save();
     console.log("----------------------------------------------------------------")
     console.log("Hello a user has enter:", userName);
-    // socket.join("room-A");
 
-    /* notify other clients someone join */
-    // socket.broadcast.emit("user_joined",{ userId: userName });
-
-    socket.emit("hello_user", { data: "hello", userId: userName });
+    socket.emit("hello_user", { data: "hello", userId: userName , socketId: socketId});
 
     socket.on("user_message", async (data) => {
       console.log(data, userName);
       let userIDD = req.session["user.id"];
-      console.log("data on click", data);
-      console.log("userID", userIDD);
-      console.log("received time:", data.date);
+      // console.log("data on click", data);
+      // console.log("userID", userIDD);
+      // console.log("received time:", data.date);
       await client.query(
         /* sql */ `insert into message(content, users_id,room_id) values ($1,$2,$3)`,
         [data.data, userIDD, data.roomID]
@@ -55,8 +47,8 @@ export function createChatRoomRouter(io: socketIO.Server) {
 
     socket.on("join_room", (data) => {
       console.log("Join Room:", data.room, "room pw(todo):", data.pw);
-      //todo pw check
       let userIDD = req.session["user.id"];
+      //todo: if (pw check)
       if (true) {
         socket.join(data.room);
         /* notify other clients someone join */
@@ -80,6 +72,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
       );
       userTracker[userName]["current_pages"] = data.current_pages;
       userTracker[userName]["current_room"] = data.current_room;
+      userTracker[userName]["socketId"] = socketId;
 
       console.log("Tracker", userTracker);
     });
@@ -130,10 +123,6 @@ export function createChatRoomRouter(io: socketIO.Server) {
       console.log("----------------------------------------------------------------")
       console.log("Bye a user has left:", userName, "From Room:",userTracker[userName]["current_room"]);
       /* notify other clients someone left */
-      // socket.broadcast.emit('user_left', {
-      //   userId: userName
-      //   // numUsers: numUsers
-      // });
       let userIDD = req.session["user.id"];
 
       console.log("LEAVEING", userTracker[userName]);
@@ -144,10 +133,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
         io.to(userTracker[userName]["current_room"]).emit("user_left", {
           userId: userName,
         });
-        // updateRoomStatus(userIDD, userTracker[userName]["current_room"], false);
 
-        // console.log("1", userIDD);
-        // console.log("2", userTracker[userName]["current_room"]);
         updateRoomStatus(userIDD, userTracker[userName]["current_room"], false);
         socket.leave(userTracker[userName]["current_room"]);
       }
@@ -163,11 +149,28 @@ export function createChatRoomRouter(io: socketIO.Server) {
 
     /* invite by other */
     socket.on("user_invited", (data) => {
-     console.log("socket.on:user_invited")
+      let invitee = data.invitee
+      let inviter = data.inviter
+      let inviteeSocketId = userTracker[invitee]["socketId"]
+      let inviterSocketId = userTracker[inviter]["socketId"]
+     console.log("(socket.on:user_invited)","invitee:",invitee,"inviter:",inviter)
+     console.log("(socket.on:user_invited)","inviteeSocketId:",inviteeSocketId,"inviterSocketId:",inviterSocketId)
      //todo: 改指定user接收
-     io.to(userTracker[userName]["current_room"]).emit("getInvited", {
-      userId: userName,
-    });
+    //invitee send to a inviter
+      io.to(inviterSocketId).emit("getInvited", {
+        invitee: invitee,
+        inviter: inviter,
+        inviteeSocketId: inviteeSocketId,
+        inviterSocketId: inviterSocketId
+      })
+
+    // io.to(inviter).emit("getInvited", {
+    // //   inviter: inviter
+    // // not working
+    // });
+    //  io.to(userTracker[userName]["current_room"]).emit("getInvited", {
+    //   userId: userName,
+    // });
     });
     });
 

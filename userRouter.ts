@@ -271,6 +271,7 @@ userRouter.post("/login", async (req, res) => {
 
 userRouter.post("/register", async (req, res) => {
   let { username, password, email, gender } = req.body;
+
   let result = await client.query(
     `select username from users where username=$1`,
     [username]
