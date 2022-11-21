@@ -23,7 +23,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
 
     (socket.request as any).session.save();
     console.log("----------------------------------------------------------------")
-    console.log("Hello a user has enter:", userName);
+    console.log("Hello a user has 進入:", userName);
 
     socket.emit("hello_user", { data: "hello", userId: userName , socketId: socketId});
 
@@ -121,7 +121,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
       // const req = socket.request as express.Request;
       // let userName = req.session.user?.username;
       console.log("----------------------------------------------------------------")
-      console.log("Bye a user has left:", userName, "From Room:",userTracker[userName]["current_room"]);
+      console.log("Bye a user has 離開:", userName, "From Room:",userTracker[userName]["current_room"]);
       /* notify other clients someone left */
       let userIDD = req.session["user.id"];
 
@@ -185,7 +185,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
         let inviterSocketId = userTracker[inviter]["socketId"]
         console.log("(同意邀請訊號)","邀請者:",inviter,"受邀者:",invitee)
         console.log("(同意邀請訊號)","邀請者SocketId:",inviterSocketId,"受邀者SocketId:",inviteeSocketId)
-        io.to(inviteeSocketId).emit("getAccept", {
+        io.to(inviterSocketId).emit("getAccept", {
           invitee: invitee,
           inviter: inviter,
           inviteeSocketId: inviteeSocketId,

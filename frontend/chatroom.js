@@ -95,22 +95,6 @@ function showUserList(value) {
   }
 }
 
-/* can del click userlist user */
-// document.querySelector("#userlistContainer").addEventListener("click", () => {
-//   console.log("clicked userlistContainer")
-//   /* invite one on one chat */
-//   socket.emit("user_invited",{
-//     // userId: username
-//   });
-// });
-
-// document.querySelector("#userlistContainer").addEventListener("click", (popup2))
-
-/* invite by other */
-// socket.on("getInvited", (data) => {
-//   //todo: show window: get XXXuser Invite
-//   console.log("getInvited")
-// });
 // inviter get invited
 socket.on("getInvited", (data) => {
   // console.log("socket.on(getInvited) is ok");
@@ -157,12 +141,6 @@ socket.on("getInvited", (data) => {
   })
 });
 
-// socket.on("user_invited", (data) => {
-//   console.log("socket.on:user_invited")
-//   showToast(username, true);
-//   popup2()
-// });
-
 /* accept one on one chat */
 function userAccepted (data) {
   // console.log("userAccepted")
@@ -173,9 +151,7 @@ function userAccepted (data) {
     data: data
   });
 }
-// socket.emit("user_accepted", (data) => {
-//   location.href = "/chatroom.html?user_id=" + data.userId;
-// });
+
 
 /* got accepted */
 socket.on("getAccept", (data) => {
@@ -191,8 +167,6 @@ function userRejected (data) {
   socket.emit("user_rejected",(data) =>{
   });
 }
-// socket.emit("user_rejected", (data) => {
-// });
 
 /* got reject */
 socket.on("user_rejected", (data) => {
