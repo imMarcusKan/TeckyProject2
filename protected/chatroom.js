@@ -117,10 +117,12 @@ function showUserList(value) {
             let heart = document.querySelector(".heart");
             heart.addEventListener("click", () => {
               console.log(username, "clicked heart:", `${data[0].username}`);
-              socket.emit("user_invited", {
-                invitee: data[0].username,
-                inviter: username,
-              });
+              if (username != data[0].username){
+                socket.emit("user_invited", {
+                  invitee: data[0].username,
+                  inviter: username,
+                });
+              }
             });
           });
         });
