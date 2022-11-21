@@ -30,7 +30,7 @@ socket.on("connect", () => {
   console.log("connected to secret room");
 });
 
-socket.emit('joinsecret', (user_id, otherUser))
+socket.emit('joinSecret', {user_id, otherUser});
 
 submitBtn.addEventListener("click", () => {
   if (!message.value) {
@@ -50,12 +50,13 @@ message.addEventListener("keypress", (event) => {
 });
 
 function sendMessage() {
-  socket.emit("secretmessage", {
+  socket.emit("secretMessage", {
     data: message.value,
     user_id,
     otherUser,
     socketID,
   });
+  createMsgBox()
   message.value = "";
 }
 
@@ -68,16 +69,16 @@ function createMsgBox(data) {
   let time = convertToTime(Date.now());
   return `
       <div class="message ${
-        data.data.user_id !== username ? "receiveMsg" : "my-message"
+        data.user_id !== username ? "receiveMsg" : "my-message"
       }">
           <div class="message-body">
               <div class="message-info">
-                  <h4> ${data.data.user_id} </h4>
+                  <h4> ${data.user_id} </h4>
                   <h5> <i class="fa fa-clock-o"></i> ${time} </h5>
               </div>
               <hr>
               <div class="message-text">
-                 ${data.data.data}
+                 ${data.data}
               </div>
           </div>
           <br>
