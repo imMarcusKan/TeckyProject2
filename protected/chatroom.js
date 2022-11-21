@@ -82,13 +82,18 @@ function showUserList(value) {
           user.addEventListener("click", () => {
             let loopedHtml = ``;
             for (let each of data) {
-              loopedHtml += `<div class="content"><div class="create_room_content">${each.content}</div>
-            <div class="create_room_count">${each.count}</div></div>`;
+              if (each.content == null) {
+                loopedHtml += `<div class="content"><div class="create_room_content">開房記錄</div>
+              <div class="create_room_count">0</div></div>`;
+              } else {
+                loopedHtml += `<div class="content"><div class="create_room_content">${each.content}</div>
+              <div class="create_room_count">${each.count}</div></div>`;
+              }
             }
 
             let htmlElm =
-              `<div class="namecard">
-<div class="profilepic"><img src ="${data[0].profile_pic}" class="container"></src></div>
+              `<div class="nameCard">
+<div class="profilepic"><img src ="${data[0].profile_pic}" class="container"/></div>
 <div class="username">${data[0].username}</div>
 <div class="gender">${data[0].gender}</div>` +
               loopedHtml +
@@ -146,33 +151,19 @@ socket.on("getInvited", (data) => {
     })
     .then((result) => {
       if (result.isConfirmed) {
+        /* 接受 */
         userAccepted(data);
-        // swalWithBootstrapButtons.fire(
-        //   'Deleted!',
-        //   'Your file has been deleted.',
-        //   'success'
-        // )
       } else if (
         /* Read more about handling dismissals below */
         result.dismiss === Swal.DismissReason.cancel
       ) {
+        /* 拒絕 */
         userRejected(data);
-        // swalWithBootstrapButtons.fire(
-        //   'Cancelled',
-        //   'Your imaginary file is safe :)',
-        //   'error'
-        // )
       }
     });
 });
 
-// socket.on("user_invited", (data) => {
-//   console.log("socket.on:user_invited")
-//   showToast(username, true);
-//   popup2()
-// });
-
-/* accept one on one chat */
+/* 接受 one on one chat */
 function userAccepted(data) {
   // console.log("userAccepted")
   console.log("userAccepted,data:", data);
@@ -191,15 +182,33 @@ socket.on("getAccept", (data) => {
   // location.href = "/chatroom.html?user_id=" + data.userId;
 });
 
-/* reject one on one chat */
+/* 拒絕 one on one chat */
 function userRejected(data) {
   console.log("userRejected");
   console.log("data:", data);
-  socket.emit("user_rejected", (data) => {});
+  socket.emit("user_reject_invite", {
+    data: data,
+  });
 }
 
 /* got reject */
-socket.on("user_rejected", (data) => {});
+socket.on("getReject", (data) => {
+  console.log("getReject");
+  console.log("data:", data);
+  let invitee = data.invitee;
+  Swal.fire({
+    title: data.invitee + "已拒絕你的邀請",
+    width: 600,
+    padding: "3em",
+    color: "#716add",
+    backdrop: `
+    rgba(0,0,123,0.4)
+    url("https://sweetalert2.github.io/images/nyan-cat.gif")
+      left top
+      no-repeat
+    `,
+  });
+});
 
 socket.on("user-list", (value) => {
   console.log("user-list", value);
