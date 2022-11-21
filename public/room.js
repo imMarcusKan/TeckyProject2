@@ -115,11 +115,13 @@ async function checkPassword(roomID) {
               return "wrong password";
             } else {
               location.href = `/chatroom.html?roomID=${roomID}`;
+              console.log("forward to chatroom page");
             }
           },
         });
       } else {
         location.href = `/chatroom.html?roomID=${roomID}`;
+        console.log("forward to chatroom page");
       }
     }
   }
