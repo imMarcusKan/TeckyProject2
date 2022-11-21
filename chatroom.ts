@@ -241,14 +241,14 @@ export function createChatRoomRouter(io: socketIO.Server) {
       });
     });
 
-    socket.on("joinsecret", (data) => {
-      socket.join("room1");
-    });
+    // socket.on("joinsecret", (data) => {
+    //   socket.join("room1");
+    // });
 
     socket.on("secretmessage", (data: any) => {
       console.log("received data secretmessage", data);
       console.log(data.socketID);
-      io.to(data.socketID).emit("sentSecret", data);
+      io.emit("sentSecret", data);
     });
   });
 

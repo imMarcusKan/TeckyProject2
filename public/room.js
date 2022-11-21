@@ -82,6 +82,13 @@ let userID;
 
 window.onload = async () => {
   userID = await getID();
+  let result = await getRoomStatus();
+  updateRoomWhenLoadedPage(result); //looking for headcount value
+};
+
+window.onbeforeunload = function () {
+  window.location.href = "/homepage.html";
+  console.log("refreshed to homepage");
 };
 
 async function getRoomStatus() {
@@ -251,6 +258,25 @@ function updateRoom(value) {
       let counts = room.querySelector(".room-headcount").textContent.split("/");
       counts[0] = value[room_id];
       room.querySelector(".room-headcount").textContent = counts.join("/");
+    }
+  }
+}
+
+function updateRoomWhenLoadedPage(value) {
+  let rooms = document.querySelectorAll(".room-design");
+  for (let room of rooms) {
+    let room_id = room
+      .querySelector(".room-id")
+      .textContent.replace("ROOM: ", "");
+    for (let i = 0; i < value.length; i++) {
+      if (value[i].room_id == room_id) {
+        let counts = room
+          .querySelector(".room-headcount")
+          .textContent.split("/");
+        counts[0] = value[i].roomstatus;
+        room.querySelector(".room-headcount").textContent = counts.join("/");
+      } else {
+      }
     }
   }
 }
