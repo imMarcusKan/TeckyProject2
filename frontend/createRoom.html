@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,17 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Room</title>
-    <link rel="stylesheet" href="createRoom.css" />
   </head>
   <body>
     <form action="/demo" method="post">
       <label for="topic">Topic</label>
       <input type="text" name="content" id="topic" required />
-      <label for="password">Password(optional): </label>
-      <div><input type="text" name="password" id="password" /></div>
+      <label for="password">Password(optional)</label>
+      <input type="text" name="password" id="password" />
+      <!-- <label for="checkbox">Is Active?</label>
+      <input type="checkbox" id="checkbox" name="active" value="true" /> -->
       <div class="head-count">
-        <label for="headNumber">房間人數：</label>
-        <select name="headNumber" id="headNumber" required>
+        <select name="headNumber" required>
+          <option value="0">Room size</option>
           <option value="2">2</option>
           <option value="3">3</option>
           <option value="5">5</option>
@@ -23,8 +25,8 @@
         </select>
       </div>
       <div class="timer">
-        <label for="addTime">房間限時：</label>
-        <select name="addTime" id="addTime" required>
+        <select name="addTime" required>
+          <option value="0">Time (minutes)</option>
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="30">30</option>
@@ -33,8 +35,8 @@
         </select>
       </div>
       <div class="category">
-        <label for="category">主題：</label>
-        <select name="category" id="category" required>
+        <select name="category" required>
+          <option value="0">主題</option>
           <option value="1">吹水台</option>
           <option value="2">心事台</option>
           <option value="3">體育台</option>

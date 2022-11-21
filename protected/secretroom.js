@@ -30,6 +30,8 @@ socket.on("connect", () => {
   console.log("connected to secret room");
 });
 
+socket.emit('joinsecret', (user_id, otherUser))
+
 submitBtn.addEventListener("click", () => {
   if (!message.value) {
     return;
