@@ -30,11 +30,6 @@ export function createRoomRouter(io: socketIO.Server) {
       /* sql */ `select users.id,username,profile_pic,gender,content,count(content)as count from users full outer join room on users.id=room.user_id full outer join category on room.category_id=category.id where username=$1 group by content,users.id`,
       [username]
     );
-    console.log(result.rows);
-    //   /* sql */ `select id, username, profile_pic, gender from users where username = $1`,
-    //   [username]
-    // );
-
     res.json(result.rows);
   });
 
