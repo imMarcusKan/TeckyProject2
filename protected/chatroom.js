@@ -162,13 +162,9 @@ function userAccepted(data) {
   console.log("userAccepted,data:", data);
   //todo : create room and join room （踢user去新room）
   // location.href = "/chatroom.html?user_id=" + data.userId;
-<<<<<<< HEAD:protected/chatroom.js
-  socket.emit("user_accepted", (data) => {});
-=======
   socket.emit("user_accept_invite",{
     data: data
   });
->>>>>>> 50448386dd35a6e63ef10e84218008d5f764145f:frontend/chatroom.js
 }
 
 
