@@ -241,16 +241,20 @@ export function createChatRoomRouter(io: socketIO.Server) {
       });
     });
 
-    socket.on("joinSecret", (data) => {
-      socket.join("room1");
-      console.log("joinSecret",data);
-      console.log("Tracker", userTracker);
-    });
+    // socket.on("joinSecret", (data) => {
+    //   socket.join("room1");
+    //   console.log("joinSecret",data);
+    //   console.log("Tracker", userTracker);
+    // });
+    // socket.on("joinsecret", (data) => {
+    //   socket.join("room1");
+    // });
 
     socket.on("secretMessage", (data: any) => {
       console.log("received data secretMessage", data);
       console.log(data.socketID);
-      io.to(data.socketID).emit("sentSecret", {data});
+      // io.to(data.socketID).emit("sentSecret", {data});
+      io.emit("sentSecret", data);
     });
   });
 
