@@ -260,7 +260,7 @@ userRouter.post("/login", async (req, res) => {
     status: true,
     message: "match",
     username: "username",
-    url: "/login",
+    url: "/homepage.html",
   });
   return;
 
