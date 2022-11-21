@@ -82,8 +82,13 @@ function showUserList(value) {
           user.addEventListener("click", () => {
             let loopedHtml = ``;
             for (let each of data) {
-              loopedHtml += `<div class="content"><div class="create_room_content">${each.content}</div>
-            <div class="create_room_count">${each.count}</div></div>`;
+              if (each.content == null) {
+                loopedHtml += `<div class="content"><div class="create_room_content">開房記錄</div>
+              <div class="create_room_count">0</div></div>`;
+              } else {
+                loopedHtml += `<div class="content"><div class="create_room_content">${each.content}</div>
+              <div class="create_room_count">${each.count}</div></div>`;
+              }
             }
 
             let htmlElm =
@@ -181,8 +186,8 @@ socket.on("getAccept", (data) => {
 function userRejected(data) {
   console.log("userRejected");
   console.log("data:", data);
-  socket.emit("user_reject_invite",{
-    data: data
+  socket.emit("user_reject_invite", {
+    data: data,
   });
 }
 
@@ -192,17 +197,17 @@ socket.on("getReject", (data) => {
   console.log("data:", data);
   let invitee = data.invitee;
   Swal.fire({
-    title: data.invitee + '已拒絕你的邀請',
+    title: data.invitee + "已拒絕你的邀請",
     width: 600,
-    padding: '3em',
-    color: '#716add',
+    padding: "3em",
+    color: "#716add",
     backdrop: `
     rgba(0,0,123,0.4)
     url("https://sweetalert2.github.io/images/nyan-cat.gif")
       left top
       no-repeat
-    `
-  })
+    `,
+  });
 });
 
 socket.on("user-list", (value) => {
