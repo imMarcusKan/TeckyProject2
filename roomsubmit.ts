@@ -7,6 +7,7 @@ export let roomsubmitRouter = express.Router();
 roomsubmitRouter.post("/demo", async (req, res) => {
   let { content, headNumber, addTime, password, category } = req.body;
   let deleteTime;
+  let userID = req.session["user.id"];
   console.log("category", category);
   if (addTime == 99) {
     deleteTime = null;
@@ -22,8 +23,8 @@ roomsubmitRouter.post("/demo", async (req, res) => {
     checkPW = false;
   }
   await client.query(
-    /* sql */ `insert into room (topic,headcount,deleted_at,password, haspassword,category_id) values ($1,$2,$3,$4,$5,$6)`,
-    [content, headNumber, deleteTime, password, checkPW, category]
+    /* sql */ `insert into room (topic,headcount,deleted_at,password, haspassword,category_id, user_id) values ($1,$2,$3,$4,$5,$6,$7)`,
+    [content, headNumber, deleteTime, password, checkPW, category, userID]
   );
   await client.query;
   res.redirect("/homePage.html");
