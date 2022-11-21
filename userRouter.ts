@@ -245,7 +245,11 @@ userRouter.post("/login", async (req, res) => {
   const match = await checkPassword(password, user.password);
 
   if (!match) {
-    res.json({ status: false, message: `password is wrong`, redirectUrl: "/" });
+    res.json({
+      status: false,
+      message: `password is wrong`,
+      redirectUrl: "/login",
+    });
     return;
   }
   res.status(200);
@@ -256,7 +260,7 @@ userRouter.post("/login", async (req, res) => {
     status: true,
     message: "match",
     username: "username",
-    url: "/homepage.html",
+    url: "/login",
   });
   return;
 
