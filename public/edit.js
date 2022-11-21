@@ -146,27 +146,27 @@ function changeForm(show, hide1, hide2) {
   document.querySelector(hide2).style.display = "none";
 }
 
-// const imgDiv = document.querySelector(".profile-pic");
+const imgDiv = document.querySelector(".profile-pic");
 
-// const uploadBtn = document.querySelector("#uploadBtn");
+const uploadBtn = document.querySelector("#uploadBtn");
 
-// function previewFile() {
-//   const preview = document.querySelector("img");
-//   const file = document.querySelector("input[type=file]").files[0];
-//   const reader = new FileReader();
+function previewFile() {
+  const preview = document.querySelector("img");
+  const file = document.querySelector("input[type=file]").files[0];
+  const reader = new FileReader();
 
-//   reader.addEventListener(
-//     "load",
-//     function () {
-//       preview.src = reader.result;
-//     },
-//     false
-//   );
+  reader.addEventListener(
+    "load",
+    function () {
+      preview.src = reader.result;
+    },
+    false
+  );
 
-//   if (file) {
-//     reader.readAsDataURL(file);
-//   }
-// }
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+}
 // $(function () {
 //   $("#profile-image1").on("click", function () {
 //     $("#profile_pic").click();
