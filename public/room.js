@@ -83,11 +83,11 @@ window.onload = async () => {
   userID = await getID();
 };
 
-// async function getRoomStatus() {
-//   const res = await fetch("/room_status");
-//   const result = await res.json();
-//   return result;
-// }
+async function getRoomStatus() {
+  const res = await fetch("/room_status");
+  const result = await res.json();
+  return result;
+}
 
 async function checkPassword(roomID) {
   //TODO check if users have set password for room
@@ -114,11 +114,13 @@ async function checkPassword(roomID) {
               return "wrong password";
             } else {
               location.href = `/chatroom.html?roomID=${roomID}`;
+              console.log("forward to chatroom page");
             }
           },
         });
       } else {
         location.href = `/chatroom.html?roomID=${roomID}`;
+        console.log("forward to chatroom page");
       }
     }
   }
