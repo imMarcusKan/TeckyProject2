@@ -108,8 +108,8 @@ function showUserList(value) {
             heart.addEventListener("click", () => {
               console.log(username, "clicked heart:", `${data[0].username}`);
               socket.emit("user_invited", {
-                invitee: username,
-                inviter: data[0].username,
+                invitee: data[0].username,
+                inviter: username,
               });
             });
           });
