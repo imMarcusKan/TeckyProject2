@@ -16,16 +16,21 @@ export function createChatRoomRouter(io: socketIO.Server) {
     let userName = req.session["user.username"] || uuidv4();
     let socketId = socket.id;
 
-
     if (!userTracker[userName]) {
       userTracker[userName] = {};
     }
 
     (socket.request as any).session.save();
-    console.log("----------------------------------------------------------------")
+    console.log(
+      "----------------------------------------------------------------"
+    );
     console.log("Hello a user has enter:", userName);
 
-    socket.emit("hello_user", { data: "hello", userId: userName , socketId: socketId});
+    socket.emit("hello_user", {
+      data: "hello",
+      userId: userName,
+      socketId: socketId,
+    });
 
     socket.on("user_message", async (data) => {
       console.log(data, userName);
@@ -120,8 +125,15 @@ export function createChatRoomRouter(io: socketIO.Server) {
 
       // const req = socket.request as express.Request;
       // let userName = req.session.user?.username;
-      console.log("----------------------------------------------------------------")
-      console.log("Bye a user has left:", userName, "From Room:",userTracker[userName]["current_room"]);
+      console.log(
+        "----------------------------------------------------------------"
+      );
+      console.log(
+        "Bye a user has left:",
+        userName,
+        "From Room:",
+        userTracker[userName]["current_room"]
+      );
       /* notify other clients someone left */
       let userIDD = req.session["user.id"];
 
@@ -148,22 +160,30 @@ export function createChatRoomRouter(io: socketIO.Server) {
     // console.log("roomList:",roomsList);
 
     /* invite by other */
-      socket.on("user_invited", (data) => {
-        let invitee = data.invitee
-        let inviter = data.inviter
-        let inviteeSocketId = userTracker[invitee]["socketId"]
-        let inviterSocketId = userTracker[inviter]["socketId"]
-        console.log("----------------------------------------------------------------")
-        console.log("(邀請訊號)","邀請者:",inviter,"受邀者:",invitee)
-        console.log("(邀請訊號)","邀請者SocketId:",inviterSocketId,"受邀者SocketId:",inviteeSocketId)
+    socket.on("user_invited", (data) => {
+      let invitee = data.invitee;
+      let inviter = data.inviter;
+      let inviteeSocketId = userTracker[invitee]["socketId"];
+      let inviterSocketId = userTracker[inviter]["socketId"];
+      console.log(
+        "----------------------------------------------------------------"
+      );
+      console.log("(邀請訊號)", "邀請者:", inviter, "受邀者:", invitee);
+      console.log(
+        "(邀請訊號)",
+        "邀請者SocketId:",
+        inviterSocketId,
+        "受邀者SocketId:",
+        inviteeSocketId
+      );
       //todo: 改指定user接收
       //invitee send to a inviter
-        io.to(inviteeSocketId).emit("getInvited", {
-          invitee: invitee,
-          inviter: inviter,
-          inviteeSocketId: inviteeSocketId,
-          inviterSocketId: inviterSocketId
-        })
+      io.to(inviteeSocketId).emit("getInvited", {
+        invitee: invitee,
+        inviter: inviter,
+        inviteeSocketId: inviteeSocketId,
+        inviterSocketId: inviterSocketId,
+      });
 
       // io.to(inviter).emit("getInvited", {
       // //   inviter: inviter
@@ -172,27 +192,42 @@ export function createChatRoomRouter(io: socketIO.Server) {
       //  io.to(userTracker[userName]["current_room"]).emit("getInvited", {
       //   userId: userName,
       // });
-      });
-      
-      /* user accept invite */
-      socket.on("user_accept_invite", (data) => {
-        console.log("----------------------------------------------------------------")
-        console.log("user_accept_invite")
-        console.log("data:",data.data)
-        let invitee = data.data.invitee
-        let inviter = data.data.inviter
-        let inviteeSocketId = userTracker[invitee]["socketId"]
-        let inviterSocketId = userTracker[inviter]["socketId"]
-        console.log("(同意邀請訊號)","邀請者:",inviter,"受邀者:",invitee)
-        console.log("(同意邀請訊號)","邀請者SocketId:",inviterSocketId,"受邀者SocketId:",inviteeSocketId)
-        io.to(inviteeSocketId).emit("getAccept", {
-          invitee: invitee,
-          inviter: inviter,
-          inviteeSocketId: inviteeSocketId,
-          inviterSocketId: inviterSocketId
-        })
+    });
+
+    /* user accept invite */
+    socket.on("user_accept_invite", (data) => {
+      console.log(
+        "----------------------------------------------------------------"
+      );
+      console.log("user_accept_invite");
+      console.log("data:", data.data);
+      let invitee = data.data.invitee;
+      let inviter = data.data.inviter;
+      let inviteeSocketId = userTracker[invitee]["socketId"];
+      let inviterSocketId = userTracker[inviter]["socketId"];
+      console.log("(同意邀請訊號)", "邀請者:", inviter, "受邀者:", invitee);
+      console.log(
+        "(同意邀請訊號)",
+        "邀請者SocketId:",
+        inviterSocketId,
+        "受邀者SocketId:",
+        inviteeSocketId
+      );
+      console.log("inviterSocketID:", inviterSocketId);
+      console.log("type of inviterSocketID:", typeof inviterSocketId);
+      io.to(inviterSocketId).emit("getAccept", {
+        invitee: invitee,
+        inviter: inviter,
+        inviteeSocketId: inviteeSocketId,
+        inviterSocketId: inviterSocketId,
       });
     });
+    socket.on("secretmessage", (data: any) => {
+      console.log("received data secretmessage", data);
+      console.log(data.socketID);
+      io.to(data.socketID).emit("sentSecret", data);
+    });
+  });
 
   return chatRoomRouter;
 }

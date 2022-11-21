@@ -96,17 +96,10 @@ function showUserList(value) {
             /* click heart to send invited */
             let heart = document.querySelector(".heart");
             heart.addEventListener("click", () => {
-<<<<<<< HEAD:protected/chatroom.js
               console.log(username, "clicked heart:", `${data[0].username}`);
               socket.emit("user_invited", {
-                invitee: username,
-                inviter: data[0].username,
-=======
-              console.log(username,"clicked heart:", `${data[0].username}`)
-              socket.emit("user_invited",{
                 invitee: data[0].username,
-                inviter: username
->>>>>>> 50448386dd35a6e63ef10e84218008d5f764145f:frontend/chatroom.js
+                inviter: username,
               });
             });
           });
@@ -189,15 +182,11 @@ socket.on("getInvited", (data) => {
 function userAccepted(data) {
   // console.log("userAccepted")
   console.log("userAccepted,data:", data);
-  //todo : create room and join room （踢user去新room）
-  // location.href = "/chatroom.html?user_id=" + data.userId;
-<<<<<<< HEAD:protected/chatroom.js
-  socket.emit("user_accepted", (data) => {});
-=======
-  socket.emit("user_accept_invite",{
-    data: data
+  socket.emit("user_accept_invite", {
+    data: data,
   });
->>>>>>> 50448386dd35a6e63ef10e84218008d5f764145f:frontend/chatroom.js
+  //todo : create room and join room （踢user去新room）
+  location.href = `/secretroom.html?user_id=${data.invitee}&otheruser=${data.inviter}&socket_id=${data.inviterSocketId} `;
 }
 // socket.emit("user_accepted", (data) => {
 //   location.href = "/chatroom.html?user_id=" + data.userId;
@@ -206,7 +195,8 @@ function userAccepted(data) {
 /* got accepted */
 socket.on("getAccept", (data) => {
   // todo : 對面接受邀請，踢user去新room
-  // location.href = "/chatroom.html?user_id=" + data.userId;
+  console.log("getAccept");
+  location.href = `/secretroom.html?user_id=${data.inviter}&otheruser=${data.invitee}&socket_id=${data.inviteeSocketId} `;
   // location.href = "/chatroom.html?user_id=" + data.userId;
 });
 

@@ -10,6 +10,14 @@ export function createRoomRouter(io: socketIO.Server) {
       /* sql */ `select * from room where (deleted_at > now() or deleted_at is null) and id >2`
     );
     io.emit("new-room", result.rows);
+
+    io.on("secretmessage", (data: any) => {
+      console.log("received data secretmessage", data);
+      io.to(data.socketID).emit("sentMessage", {
+        data,
+      });
+    });
+
     res.json({});
   });
 
