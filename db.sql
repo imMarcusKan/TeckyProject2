@@ -56,5 +56,4 @@ alter table users
 add column profile_pic varchar(255);
 insert into room(id, topic, headcount)
 values (1, 'public', 100);
-alter table room
-add column user_id integer references users(id);
+alter table room add column user_id integer references users(id);

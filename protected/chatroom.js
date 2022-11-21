@@ -17,7 +17,20 @@ let navBarTopic = document.getElementById("navigation-content-topic");
 
 var username;
 
-window.onload = function () {
+async function isPermittedToThisPage() {
+  let res = await fetch(`/getPermissionToRoom?roomID=${roomID}`);
+  let result = await res.json();
+
+  return result.status;
+}
+
+window.onload = async function () {
+  let isAccessible = await isPermittedToThisPage();
+
+  if (!isAccessible) {
+    location.href = "/homepage.html";
+  }
+
   delTime();
   topic();
   fetch(`/messages/${roomID}`)
@@ -105,22 +118,6 @@ function showUserList(value) {
   }
 }
 
-/* can del click userlist user */
-// document.querySelector("#userlistContainer").addEventListener("click", () => {
-//   console.log("clicked userlistContainer")
-//   /* invite one on one chat */
-//   socket.emit("user_invited",{
-//     // userId: username
-//   });
-// });
-
-// document.querySelector("#userlistContainer").addEventListener("click", (popup2))
-
-/* invite by other */
-// socket.on("getInvited", (data) => {
-//   //todo: show window: get XXXuser Invite
-//   console.log("getInvited")
-// });
 // inviter get invited
 socket.on("getInvited", (data) => {
   // console.log("socket.on(getInvited) is ok");
@@ -183,13 +180,12 @@ function userAccepted(data) {
   // location.href = "/chatroom.html?user_id=" + data.userId;
   socket.emit("user_accepted", (data) => {});
 }
-// socket.emit("user_accepted", (data) => {
-//   location.href = "/chatroom.html?user_id=" + data.userId;
-// });
 
 /* got accepted */
-socket.on("user_accepted", (data) => {
-  location.href = "/chatroom.html?user_id=" + data.userId;
+socket.on("getAccept", (data) => {
+  // todo : 對面接受邀請，踢user去新room
+  // location.href = "/chatroom.html?user_id=" + data.userId;
+  // location.href = "/chatroom.html?user_id=" + data.userId;
 });
 
 /* reject one on one chat */
@@ -198,8 +194,6 @@ function userRejected(data) {
   console.log("data:", data);
   socket.emit("user_rejected", (data) => {});
 }
-// socket.emit("user_rejected", (data) => {
-// });
 
 /* got reject */
 socket.on("user_rejected", (data) => {});

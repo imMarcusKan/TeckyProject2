@@ -36,7 +36,13 @@ roomsubmitRouter.post("/password", async (req, res) => {
     /* sql */ `select (id) from room where id = $1 and password = $2`,
     [roomID, password]
   );
-  req.session["user.roomID"] = roomID;
+
+  if (!req.session["user.roomID"]) {
+    req.session["user.roomID"] = [roomID];
+  } else {
+    req.session["user.roomID"] = [...req.session["user.roomID"], roomID];
+  }
+  // req.session["user.roomID"] = roomID;
   console.log("session roomID", req.session["user.roomID"]);
 
   res.json(data.rows);
@@ -51,4 +57,33 @@ roomsubmitRouter.post("/search", async (req, res) => {
   );
   console.log("result", result.rows);
   res.json(result.rows);
+});
+
+//
+roomsubmitRouter.get("/getPermissionToRoom", async (req, res) => {
+  let { roomID } = req.query;
+  let roomIdArray: number[] = req.session?.["user.roomID"];
+
+  let data = await client.query(
+    /* sql */ `select haspassword 
+    from room where id = $1`,
+    [roomID]
+  );
+
+  if (data.rows[0].haspassword === false) {
+    return res.status(200).json({ status: true });
+  }
+
+  console.log(roomID, roomIdArray);
+
+  if (
+    !!roomID &&
+    !!roomIdArray &&
+    Array.isArray(roomIdArray) &&
+    roomIdArray.indexOf(+roomID as number) >= 0
+  ) {
+    return res.status(200).json({ status: true });
+  } else {
+    return res.status(400).json({ status: false });
+  }
 });
