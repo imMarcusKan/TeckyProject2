@@ -6,6 +6,7 @@ let url = new URL(window.location.href);
 let user_id = url.searchParams.get("user_id");
 let otherUser = url.searchParams.get("otheruser");
 let socketID = url.searchParams.get("socket_id");
+let roomID = url.searchParams.get("room_id");
 const msgBox = document.querySelector(".message-chat");
 
 let receivedMsg = document.querySelector("#message receiveMsg");
@@ -23,6 +24,7 @@ window.onload = function () {
     .then((data) => {
       username = data[0].username;
     });
+    console.log("roomID:",roomID)
 };
 
 console.log(user_id, otherUser, socketID);
@@ -30,7 +32,10 @@ socket.on("connect", () => {
   console.log("connected to secret room");
 });
 
-socket.emit('joinSecret', {user_id, otherUser});
+// socket.emit('joinSecret', {user_id, otherUser});
+socket.emit('joinSecret', {
+  roomID : roomID
+});
 
 submitBtn.addEventListener("click", () => {
   if (!message.value) {
@@ -55,14 +60,17 @@ function sendMessage() {
     user_id,
     otherUser,
     socketID,
+    roomID,
   });
-  createMsgBox()
   message.value = "";
 }
 
 socket.on("sentSecret", (data) => {
   console.log("sentSecret", data);
   msgBox.innerHTML += createMsgBox(data);
+  document
+  .querySelector(".messages-panel")
+  .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
 });
 
 function createMsgBox(data) {

@@ -246,15 +246,18 @@ export function createChatRoomRouter(io: socketIO.Server) {
     //   console.log("joinSecret",data);
     //   console.log("Tracker", userTracker);
     // });
-    // socket.on("joinsecret", (data) => {
-    //   socket.join("room1");
-    // });
+    socket.on("joinSecret", (data) => {
+      socket.join(data.roomID);
+      // socket.join("room1")
+      console.log("joinSecret", data.roomID);
+    });
 
     socket.on("secretMessage", (data: any) => {
       console.log("received data secretMessage", data);
-      console.log(data.socketID);
-      // io.to(data.socketID).emit("sentSecret", {data});
-      io.emit("sentSecret", data);
+      // console.log(data.socketID);
+      io.to(data.roomID).emit("sentSecret", data);
+      // work to all users
+      // io.emit("sentSecret", data);
     });
   });
 

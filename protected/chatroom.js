@@ -171,14 +171,14 @@ function userAccepted(data) {
     data: data,
   });
   //todo : create room and join room （踢user去新room）
-  location.href = `/secretroom.html?user_id=${data.invitee}&otheruser=${data.inviter}&socket_id=${data.inviterSocketId} `;
+  location.href = `/secretroom.html?user_id=${data.invitee}&otheruser=${data.inviter}&socket_id=${data.inviterSocketId}&room_id=${data.inviteeSocketId}${data.inviterSocketId} `;
 }
 
 /* got accepted */
 socket.on("getAccept", (data) => {
   // todo : 對面接受邀請，踢user去新room
   console.log("getAccept");
-  location.href = `/secretroom.html?user_id=${data.inviter}&otheruser=${data.invitee}&socket_id=${data.inviteeSocketId} `;
+  location.href = `/secretroom.html?user_id=${data.inviter}&otheruser=${data.invitee}&socket_id=${data.inviteeSocketId}&room_id=${data.inviteeSocketId}${data.inviterSocketId} `;
   // location.href = "/chatroom.html?user_id=" + data.userId;
 });
 
