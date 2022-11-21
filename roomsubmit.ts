@@ -35,7 +35,9 @@ roomsubmitRouter.post("/password", async (req, res) => {
     /* sql */ `select (id) from room where id = $1 and password = $2`,
     [roomID, password]
   );
-  console.log("data.rows when typing wrong pw", data.rows);
+  req.session["user.roomID"] = roomID;
+  console.log("session roomID", req.session["user.roomID"]);
+
   res.json(data.rows);
 });
 
