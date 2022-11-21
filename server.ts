@@ -12,6 +12,7 @@ import { sessionMiddleware } from "./session";
 import { createChatRoomRouter } from "./chatroom";
 import { messageRouter } from "./message";
 import { isLoggedIn } from "./guards";
+// import { isEnteredPassword } from "./roomguard";
 
 const app = express();
 const server = new http.Server(app);

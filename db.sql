@@ -54,3 +54,5 @@ alter table users
 add column gender varchar(1);
 alter table users
 add column profile_pic varchar(255);
+insert into room(id, topic, headcount)
+values (1, 'public', 100);
