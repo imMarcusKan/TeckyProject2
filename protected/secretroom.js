@@ -2,12 +2,15 @@ const socket = io.connect(); // You can pass in an optional parameter like "http
 
 let submitBtn = document.querySelector(".send-message-button");
 let message = document.querySelector(".send-message-text");
+const msgBox = document.querySelector(".message-chat");
+
 let url = new URL(window.location.href);
+
 let user_id = url.searchParams.get("user_id");
 let otherUser = url.searchParams.get("otheruser");
 let socketID = url.searchParams.get("socket_id");
 let roomID = url.searchParams.get("room_id");
-const msgBox = document.querySelector(".message-chat");
+
 
 let receivedMsg = document.querySelector("#message receiveMsg");
 let sentMsg = document.querySelector("#message my-message");
@@ -26,8 +29,8 @@ window.onload = function () {
     .then((data) => {
       username = data[0].username;
     });
-    console.log("roomID:",roomID)
-    navBarTopic.textContent = user_id + " 與 " + otherUser + " 的私人聊天室";
+  console.log("roomID:", roomID)
+  navBarTopic.textContent = user_id + " 與 " + otherUser + " 的私人聊天室";
 };
 
 console.log(user_id, otherUser, socketID);
@@ -37,7 +40,7 @@ socket.on("connect", () => {
 
 // socket.emit('joinSecret', {user_id, otherUser});
 socket.emit('joinSecret', {
-  roomID : roomID
+  roomID: roomID
 });
 
 submitBtn.addEventListener("click", () => {
@@ -72,16 +75,15 @@ socket.on("sentSecret", (data) => {
   console.log("sentSecret", data);
   msgBox.innerHTML += createMsgBox(data);
   document
-  .querySelector(".messages-panel")
-  .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
+    .querySelector(".messages-panel")
+    .scrollTo(0, document.querySelector(".messages-panel").scrollHeight);
 });
 
 function createMsgBox(data) {
   let time = convertToTime(Date.now());
   return `
-      <div class="message ${
-        data.user_id !== username ? "receiveMsg" : "my-message"
-      }">
+      <div class="message ${data.user_id !== username ? "receiveMsg" : "my-message"
+    }">
           <div class="message-body">
               <div class="message-info">
                   <h4> ${data.user_id} </h4>

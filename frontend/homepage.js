@@ -5,6 +5,7 @@ async function getName() {
   let result = await res.json();
   usernameBox.textContent = result;
 }
+
 getName();
 
 function logout() {

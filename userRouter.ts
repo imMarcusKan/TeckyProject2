@@ -13,6 +13,7 @@ const JWT_SECRET = "Some super secret..";
 
 /////////////////////edit profile pic/////////////////////
 const uploadDir = "uploads";
+
 fs.mkdirSync(uploadDir, { recursive: true });
 const form = formidable({
   uploadDir,
@@ -21,21 +22,26 @@ const form = formidable({
   maxFileSize: 10 * 1024 ** 2,
   filter: (part) => part.mimetype?.startsWith("image/") || false,
 });
+
 userRouter.post("/user/profile", (req, res) => {
   let user_id = req.session["user.id"];
+
   form.parse(req, async (err, fields, files) => {
     if (err) {
       res.status(400);
       res.json({ err: "err in profile Pic form:" + err });
       return;
     }
+
     let {} = fields;
     let images = toArray(files.image);
     let image = images[0];
+
     await client.query(`UPDATE users set profile_pic=$1 where id=$2`, [
       image.newFilename,
       user_id,
     ]);
+
     return res.json({ message: "success" });
   });
 });
@@ -49,18 +55,22 @@ function toArray<T>(field: T[] | T | undefined): T[] {
   }
   return [field];
 }
+
 /////////////////////edit username /////////////////////
 userRouter.post("/user/username", async (req, res) => {
   let { username } = req.body;
   let user_id = req.session["user.id"];
+
   try {
     if (username) {
       let result = await client.query(`select * from users where username=$1`, [
         username,
       ]);
+
       if (result.rows[0]) {
         return res.json({ message: "username already used" });
       }
+
       await client.query(`UPDATE users set username=$1 where id=$2`, [
         username,
         user_id,
@@ -89,11 +99,14 @@ userRouter.post("/user/password", async (req, res) => {
     if (password != password2) {
       return res.json({ message: "password mismatch" });
     }
+
     let password_hash = await hashPassword(password);
+
     await client.query(`UPDATE users set password=$1 where id=$2`, [
       password_hash,
       user_id,
     ]);
+
     return res.json({ message: "success" });
   } catch (error) {
     console.log(error);
@@ -135,9 +148,10 @@ userRouter.post("/forgot-password", async (req, res, next) => {
   //console.log(data);
   let user = data.rows[0];
   if (!user) {
-    res.json("user not registered");
+    res.json("user not registered"); // object { msg: "yo"}
     return;
   }
+
   const secret = JWT_SECRET + user.password;
   const payload = {
     email: user.email,
@@ -163,7 +177,9 @@ userRouter.get("/reset-password/:id/:token", async (req, res, next) => {
     res.send("invalid id...");
     return;
   }
+
   const secret = JWT_SECRET + user.password;
+
   try {
     const payload = jwt.verify(token, secret);
 
@@ -186,17 +202,21 @@ userRouter.post("/reset-password/:id/:token", async (req, res) => {
   let user = data.rows[0];
 
   const secret = JWT_SECRET + user.password;
+
   try {
     const payload = jwt.verify(token, secret);
     console.log(payload);
+
     if (password != password2) {
       return res.json({ message: "password different, please confirm again" });
     }
+
     let hashedPassword = await hashPassword(password);
     await client.query(`update users set password = $1 where id = $2`, [
       hashedPassword,
       user.id,
     ]);
+
     return res.json({ message: "success" });
   } catch (error) {
     console.log(error);
@@ -238,7 +258,7 @@ userRouter.post("/login", async (req, res) => {
     return res.json({
       status: false,
       message: `username is wrong`,
-      redirectUrl: "/",
+      redirectUrl: "/login",
     });
   }
 
@@ -252,6 +272,7 @@ userRouter.post("/login", async (req, res) => {
     });
     return;
   }
+
   res.status(200);
   req.session["user.id"] = user.id;
   req.session["user.username"] = user.username;
@@ -278,6 +299,13 @@ userRouter.post("/login", async (req, res) => {
 userRouter.post("/register", async (req, res) => {
   let { username, password, email, gender } = req.body;
 
+  if (password.length <= 7) {
+    return res.json({
+      status: false,
+      message: "pw length must be larger than 8 words",
+    });
+  }
+
   let result = await client.query(
     `select username from users where username=$1`,
     [username]
@@ -303,10 +331,13 @@ userRouter.post("/register", async (req, res) => {
 
 userRouter.get("/userID", async (req, res) => {
   let username = req.session["user.username"];
+
   let data = await client.query(
     /* sql */ `select id from users where username = $1`,
     [username]
   );
+
   const id = data.rows.length === 1 ? data.rows[0].id : "";
+
   res.json({ id: id });
 });

@@ -4,6 +4,9 @@ import socketIO from "socket.io";
 import { v4 as uuidv4 } from "uuid";
 import { client } from "./database";
 
+import {escape} from 'html-escaper';
+
+
 let chatRoomRouter = express.Router();
 
 let userTracker = {} as any;
@@ -13,18 +16,22 @@ export function createChatRoomRouter(io: socketIO.Server) {
   // let userName = req.session.user?.username;
   io.on("connection", async function (socket) {
     const req = socket.request as express.Request;
-    let userName = req.session["user.username"] || uuidv4();
+
+    let userName:string = req.session["user.username"] || uuidv4();
     let socketId = socket.id;
 
     if (!userTracker[userName]) {
       userTracker[userName] = {};
     }
 
+    
     (socket.request as any).session.save();
     console.log(
-      "----------------------------------------------------------------"
+        "----------------------------------------------------------------"
     );
     console.log("Hello a user has 進入:", userName);
+
+    socket.join(userName)
 
     socket.emit("hello_user", {
       data: "hello",
@@ -38,12 +45,18 @@ export function createChatRoomRouter(io: socketIO.Server) {
       // console.log("data on click", data);
       // console.log("userID", userIDD);
       // console.log("received time:", data.date);
+
+      let scapeHTML = escape(data.data);
+      console.log(scapeHTML);
+      
       await client.query(
         /* sql */ `insert into message(content, users_id,room_id) values ($1,$2,$3)`,
-        [data.data, userIDD, data.roomID]
+        [scapeHTML, userIDD, data.roomID]
       );
+
+
       io.to(data.roomID).emit("receive_data_from_server", {
-        receivedData: data,
+        receivedData: {...data, data: scapeHTML},
         sendUser: userName,
         msgTime: data.date,
         id: userIDD,
@@ -53,6 +66,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
     socket.on("join_room", (data) => {
       console.log("Join Room:", data.room, "room pw(todo):", data.pw);
       let userIDD = req.session["user.id"];
+
       //todo: if (pw check)
       if (true) {
         socket.join(data.room);
@@ -62,6 +76,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
           roomID: data.room,
         });
       }
+
       countNumOfPeople();
       updateRoomStatus(userIDD, data.room, true);
     });
@@ -75,6 +90,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
         ",Room:",
         data.current_room
       );
+
       userTracker[userName]["current_pages"] = data.current_pages;
       userTracker[userName]["current_room"] = data.current_room;
       userTracker[userName]["socketId"] = socketId;
@@ -128,31 +144,40 @@ export function createChatRoomRouter(io: socketIO.Server) {
       console.log(
         "----------------------------------------------------------------"
       );
-      console.log(
-        "Bye a user has 離開:",
-        userName,
-        "From Room:",
-        userTracker[userName]["current_room"]
-      );
-      /* notify other clients someone left */
-      let userIDD = req.session["user.id"];
+      try {
+        console.log(
+          "Bye a user has 離開:",
+          userName,
+          "From Room:",
+          userTracker[userName]["current_room"]
+        );
+        /* notify other clients someone left */
+        let userIDD = req.session["user.id"];
 
-      console.log("LEAVEING", userTracker[userName]);
-      if (
-        userTracker[userName] &&
-        userTracker[userName]["current_pages"] === "chat_room"
-      ) {
-        io.to(userTracker[userName]["current_room"]).emit("user_left", {
-          userId: userName,
-        });
+        console.log("LEAVEING", userTracker[userName]);
+        if (
+          userTracker[userName] &&
+          userTracker[userName]["current_pages"] === "chat_room"
+        ) {
+          io.to(userTracker[userName]["current_room"]).emit("user_left", {
+            userId: userName,
+          });
 
-        updateRoomStatus(userIDD, userTracker[userName]["current_room"], false);
-        socket.leave(userTracker[userName]["current_room"]);
+          updateRoomStatus(
+            userIDD,
+            userTracker[userName]["current_room"],
+            false
+          );
+          socket.leave(userTracker[userName]["current_room"]);
+        }
+
+        delete userTracker[userName];
+
+        countNumOfPeople();
+      } 
+      catch (error) {
+        console.log(error);
       }
-
-      delete userTracker[userName];
-
-      countNumOfPeople();
     });
 
     // let roomsDate = io.of("/").adapter.rooms;
@@ -163,8 +188,10 @@ export function createChatRoomRouter(io: socketIO.Server) {
     socket.on("user_invited", (data) => {
       let invitee = data.invitee;
       let inviter = data.inviter;
+
       let inviteeSocketId = userTracker[invitee]["socketId"];
       let inviterSocketId = userTracker[inviter]["socketId"];
+
       console.log(
         "----------------------------------------------------------------"
       );
@@ -176,6 +203,7 @@ export function createChatRoomRouter(io: socketIO.Server) {
         "受邀者SocketId:",
         inviteeSocketId
       );
+
       /* 通知受邀者 */
       io.to(inviteeSocketId).emit("getInvited", {
         invitee: invitee,
@@ -187,15 +215,19 @@ export function createChatRoomRouter(io: socketIO.Server) {
 
     /* user 接受邀請 */
     socket.on("user_accept_invite", (data) => {
+
       console.log(
         "----------------------------------------------------------------"
       );
       console.log("user_accept_invite");
       console.log("data:", data.data);
+
       let invitee = data.data.invitee;
       let inviter = data.data.inviter;
+
       let inviteeSocketId = userTracker[invitee]["socketId"];
       let inviterSocketId = userTracker[inviter]["socketId"];
+      
       console.log("(同意邀請訊號)", "邀請者:", inviter, "受邀者:", invitee);
       console.log(
         "(同意邀請訊號)",
@@ -204,6 +236,8 @@ export function createChatRoomRouter(io: socketIO.Server) {
         "受邀者SocketId:",
         inviteeSocketId
       );
+
+      // socket.join(user.id)
       /* 回覆邀請者，已被Accept */
       io.to(inviterSocketId).emit("getAccept", {
         invitee: invitee,
@@ -259,7 +293,15 @@ export function createChatRoomRouter(io: socketIO.Server) {
       // work to all users
       // io.emit("sentSecret", data);
     });
+
   });
 
   return chatRoomRouter;
 }
+
+
+// () => {
+
+// }
+
+// ()=>{console.log("jfhb");}
